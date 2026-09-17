@@ -6,6 +6,8 @@ import { exportNews } from "@/lib/db/json-export";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 export default async function NoticesPage({
@@ -91,12 +93,19 @@ export default async function NoticesPage({
   return (
     <div className="mx-auto max-w-[1280px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#231F20]">공지사항 관리</h1>
-        <CreateButton href="/admin/notices/new">새 공지</CreateButton>
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">공지사항 관리</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">뉴스/소식 페이지의 공지사항 탭에 표시됩니다</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PreviewLink path="/news" label="뉴스 페이지 보기" />
+          <CreateButton href="/admin/notices/new">새 공지</CreateButton>
+        </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 뉴스/소식 페이지에 즉시 반영됩니다.</div>}
+      <SavePreview previewPath="/news" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="공지 검색" />
       <DataTable columns={columns} rows={rows} total={notices.length} tableId="notices" />

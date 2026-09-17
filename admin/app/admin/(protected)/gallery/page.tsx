@@ -7,6 +7,8 @@ import { imageUrl } from "@/lib/storage";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 export default async function GalleryPage({
@@ -62,12 +64,19 @@ export default async function GalleryPage({
   return (
     <div className="mx-auto max-w-[1280px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#231F20]">사진 갤러리</h1>
-        <CreateButton href="/admin/gallery/new">새 사진</CreateButton>
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">사진 갤러리</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">갤러리 페이지에 카테고리별로 표시됩니다</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PreviewLink path="/gallery" label="갤러리 보기" />
+          <CreateButton href="/admin/gallery/new">새 사진</CreateButton>
+        </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 갤러리 페이지에 즉시 반영됩니다.</div>}
+      <SavePreview previewPath="/gallery" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="사진 검색" />
       <DataTable columns={columns} rows={rows} total={images.length} tableId="gallery" />

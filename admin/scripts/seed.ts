@@ -9,6 +9,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import Database from "better-sqlite3";
 
 const DATA_DIR = path.join(__dirname, "..", "..", "src", "static", "data");
@@ -263,7 +264,6 @@ console.log("  ✓ default settings");
 
 // ── Bootstrap admin user ──
 console.log("Seeding admin user...");
-const crypto = await import("node:crypto");
 function hashSync(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
   const key = crypto.scryptSync(password, salt, 64).toString("hex");

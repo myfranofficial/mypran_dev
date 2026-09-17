@@ -6,6 +6,8 @@ import { exportEvents } from "@/lib/db/json-export";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 const STATUS_MAP: Record<string, string> = {
@@ -66,12 +68,19 @@ export default async function EventsPage({
   return (
     <div className="mx-auto max-w-[1280px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#231F20]">이벤트 관리</h1>
-        <CreateButton href="/admin/events/new">새 이벤트</CreateButton>
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">이벤트 관리</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">이벤트 페이지에 카드형으로 표시됩니다</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PreviewLink path="/events" label="이벤트 보기" />
+          <CreateButton href="/admin/events/new">새 이벤트</CreateButton>
+        </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 이벤트 페이지에 즉시 반영됩니다.</div>}
+      <SavePreview previewPath="/events" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="이벤트 검색" />
       <DataTable columns={columns} rows={rows} total={events.length} tableId="events" />

@@ -6,6 +6,7 @@ import { imageUrl } from "@/lib/storage";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
+import { PreviewLink } from "../ui/preview-link";
 import * as s from "../ui/styles";
 
 export default async function BannersPage({
@@ -95,8 +96,14 @@ export default async function BannersPage({
   return (
     <div className="mx-auto max-w-[1280px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#231F20]">배너 관리</h1>
-        <CreateButton href="/admin/banners/new">새 배너</CreateButton>
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">배너 관리</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">메인 페이지 상단 히어로 슬라이더에 표시됩니다</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PreviewLink path="/" label="메인 페이지 보기" />
+          <CreateButton href="/admin/banners/new">새 배너</CreateButton>
+        </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}

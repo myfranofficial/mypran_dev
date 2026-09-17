@@ -6,6 +6,8 @@ import { exportDownloads } from "@/lib/db/json-export";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 export default async function DownloadsPage({
@@ -58,12 +60,19 @@ export default async function DownloadsPage({
   return (
     <div className="mx-auto max-w-[1280px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#231F20]">자료실</h1>
-        <CreateButton href="/admin/downloads/new">새 자료</CreateButton>
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">자료실</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">자료실 페이지에서 방문자가 다운로드할 수 있습니다</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <PreviewLink path="/downloads" label="자료실 보기" />
+          <CreateButton href="/admin/downloads/new">새 자료</CreateButton>
+        </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 자료실 페이지에 즉시 반영됩니다.</div>}
+      <SavePreview previewPath="/downloads" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="자료 검색" />
       <DataTable columns={columns} rows={rows} total={files.length} tableId="downloads" />

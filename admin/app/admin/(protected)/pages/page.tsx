@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
 import { getPageSection, setPageSection, listAllPages } from "@/lib/db/pages";
 import { exportAll } from "@/lib/db/json-export";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 const PAGE_CONFIGS: { slug: string; label: string; sections: { key: string; label: string; fields: { name: string; label: string; type: "text" | "textarea" }[] }[] }[] = [
@@ -200,10 +202,15 @@ export default async function PagesEditorPage({
 
   return (
     <div className="mx-auto max-w-[800px]">
-      <h1 className="text-xl font-bold text-[#231F20]">서브페이지 편집</h1>
-      <p className="mt-1 text-sm text-[#9E9F9C]">각 페이지의 히어로 섹션 텍스트를 편집합니다. 저장 시 JSON이 자동 갱신됩니다.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">서브페이지 편집</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">각 페이지 상단 히어로 영역의 제목/부제목을 편집합니다</p>
+        </div>
+      </div>
 
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 각 페이지 상단에 즉시 반영됩니다.</div>}
+      <SavePreview previewPath="/stores" saved={sp.msg === "saved"} />
 
       <form action={saveAction} className="mt-6 space-y-6">
         {PAGE_CONFIGS.map((page) => (

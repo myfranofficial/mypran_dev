@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
 import { getSettings, setSettings } from "@/lib/db/settings";
 import { exportAll } from "@/lib/db/json-export";
+import { PreviewLink } from "../ui/preview-link";
+import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
 
 const SETTINGS_KEYS = [
@@ -42,11 +44,17 @@ export default async function SettingsPage({
 
   return (
     <div className="mx-auto max-w-[800px]">
-      <h1 className="text-xl font-bold text-[#231F20]">설정</h1>
-      <p className="mt-1 text-sm text-[#9E9F9C]">사이트 기본 정보 관리. 저장 시 프론트엔드 JSON이 자동 갱신됩니다.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-[#231F20]">설정</h1>
+          <p className="mt-1 text-sm text-[#9E9F9C]">사이트 기본 정보 관리. 저장하면 모든 페이지 하단 연락처에 반영됩니다.</p>
+        </div>
+        <PreviewLink path="/" label="사이트 보기" />
+      </div>
 
-      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다.</div>}
+      {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 모든 페이지 하단에 즉시 반영됩니다.</div>}
       {sp.error && <div className={`mt-4 ${s.errorBox}`}>{sp.error}</div>}
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <form action={saveAction} className="mt-6 space-y-6">
         {/* 연락처 */}
