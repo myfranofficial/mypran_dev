@@ -24,9 +24,9 @@ const schemaPath = path.join(__dirname, "..", "lib", "db", "schema.ts");
 const schemaSource = fs.readFileSync(schemaPath, "utf-8");
 
 // Extract SQL from the schema file (between backticks of CREATE_TABLES)
-const match = schemaSource.match(/export const CREATE_TABLES = `([\s\S]*?)`;/);
+const match = schemaSource.match(/export const SCHEMA_SQL = \/\* sql \*\/ `([\s\S]*?)`;/);
 if (!match) {
-  console.error("Could not extract CREATE_TABLES from schema.ts");
+  console.error("Could not extract SCHEMA_SQL from schema.ts");
   process.exit(1);
 }
 const createSql = match[1];
