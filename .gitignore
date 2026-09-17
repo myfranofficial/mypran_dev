@@ -26,3 +26,12 @@ temp/
 
 # Claude
 .claude/
+
+# Reference code (not deployed)
+teddyshop/
+teddyshop.zip
+
+# Admin build artifacts
+admin/.next/
+admin/data/
+admin/.env.local
