@@ -2,7 +2,7 @@
 
 import { useActionState, useState, useCallback } from "react";
 import { ImageUploadField } from "../ui/image-upload-field";
-import { imageUrl } from "@/lib/storage";
+import { imageUrl } from "@/lib/storage/url";
 import * as s from "../ui/styles";
 
 const CATEGORIES = ["매장소개", "이벤트", "교육", "기타"];
