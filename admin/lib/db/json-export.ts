@@ -42,6 +42,27 @@ function resolveUrl(key: string | null): string {
 
 // ── 개별 Export 함수 ──
 
+export function exportBanners(): void {
+  const db = getDb();
+  const now = new Date().toISOString().slice(0, 10);
+  const banners = db.prepare(
+    `SELECT * FROM banners WHERE is_active = 1
+     AND (start_at IS NULL OR start_at <= ?)
+     AND (end_at IS NULL OR end_at >= ?)
+     ORDER BY sort_order ASC, id ASC`
+  ).all(now, now) as any[];
+
+  writeJson("banners.json", {
+    banners: banners.map((b) => ({
+      title: b.title || "",
+      subtitle: b.subtitle || "",
+      image: resolveUrl(b.image_url),
+      imageMobile: b.image_url_mobile ? resolveUrl(b.image_url_mobile) : "",
+      link: b.link_url || "",
+    })),
+  });
+}
+
 export function exportStores(): void {
   const db = getDb();
   const stores = db.prepare("SELECT * FROM stores WHERE is_active = 1 ORDER BY sort_order ASC, id ASC").all() as any[];
@@ -273,6 +294,7 @@ export function exportSupport(): void {
 }
 
 export function exportAll(): void {
+  try { exportBanners(); } catch (e) { console.error("[json-export] banners:", e); }
   try { exportStores(); } catch (e) { console.error("[json-export] stores:", e); }
   try { exportGallery(); } catch (e) { console.error("[json-export] gallery:", e); }
   try { exportVideos(); } catch (e) { console.error("[json-export] videos:", e); }

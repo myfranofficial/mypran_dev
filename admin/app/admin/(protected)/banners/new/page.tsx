@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireWrite } from "@/lib/auth/user";
 import { createBanner } from "@/lib/db/banners";
+import { exportBanners } from "@/lib/db/json-export";
 import { BannerForm } from "../banner-form";
 
 async function createAction(_prev: any, formData: FormData) {
@@ -21,6 +22,7 @@ async function createAction(_prev: any, formData: FormData) {
     is_active: formData.get("is_active") ? 1 : 0,
   });
 
+  exportBanners();
   revalidatePath("/admin/banners");
   redirect("/admin/banners?msg=saved");
 }

@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
 import { listBanners, setBannerActive, deleteBanner, moveBanner } from "@/lib/db/banners";
+import { exportBanners } from "@/lib/db/json-export";
 import { imageUrl } from "@/lib/storage";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
@@ -24,6 +25,7 @@ export default async function BannersPage({
     const id = Number(formData.get("id"));
     const active = Number(formData.get("active"));
     setBannerActive(id, active);
+    exportBanners();
     revalidatePath("/admin/banners");
   }
 
@@ -33,6 +35,7 @@ export default async function BannersPage({
     const id = Number(formData.get("id"));
     const dir = String(formData.get("dir")) as "up" | "down";
     moveBanner(id, dir);
+    exportBanners();
     revalidatePath("/admin/banners");
   }
 
@@ -41,6 +44,7 @@ export default async function BannersPage({
     await requireWrite();
     const id = Number(formData.get("id"));
     deleteBanner(id);
+    exportBanners();
     revalidatePath("/admin/banners");
     redirect("/admin/banners?msg=deleted");
   }
