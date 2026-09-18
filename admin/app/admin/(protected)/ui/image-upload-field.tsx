@@ -16,6 +16,7 @@ export function ImageUploadField({
   required = false,
   hintText,
   aspect,
+  allowFreeRatio = false,
   onUrlChange,
 }: {
   name: string;
@@ -26,6 +27,7 @@ export function ImageUploadField({
   required?: boolean;
   hintText?: string;
   aspect?: number;
+  allowFreeRatio?: boolean;
   onUrlChange?: (url: string) => void;
 }) {
   const [key, setKey] = useState(initialKey);
@@ -92,6 +94,7 @@ export function ImageUploadField({
         <ImageCropper
           imageSrc={editSrc}
           aspect={aspect}
+          allowFreeRatio={allowFreeRatio}
           onCancel={() => { URL.revokeObjectURL(editSrc); setEditSrc(null); }}
           onDone={(blob) => { URL.revokeObjectURL(editSrc); setEditSrc(null); void uploadBlob(blob, "crop.jpg"); }}
         />
