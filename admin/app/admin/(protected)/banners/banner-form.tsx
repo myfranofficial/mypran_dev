@@ -57,8 +57,9 @@ export function BannerForm({ action, banner }: BannerFormProps) {
           label="PC 배너 이미지"
           required
           aspect={16 / 9}
+          allowFreeRatio
           maxWidth={1920}
-          hintText="권장 비율 16:9, 최대 1920px · 메인 페이지 전체 너비로 표시"
+          hintText="권장 비율 16:9, 최대 1920px · 원본 비율도 사용 가능"
           initialKey={banner?.image_url ?? ""}
           initialUrl={banner?.image_url ? imageUrl(banner.image_url) : ""}
         />
@@ -67,8 +68,9 @@ export function BannerForm({ action, banner }: BannerFormProps) {
           name="image_url_mobile"
           label="모바일 배너 이미지 (선택)"
           aspect={9 / 16}
+          allowFreeRatio
           maxWidth={800}
-          hintText="권장 비율 9:16 · 미등록 시 PC 이미지가 모바일에서도 사용됩니다"
+          hintText="권장 비율 9:16 · 원본 비율도 사용 가능 · 미등록 시 PC 이미지 사용"
           initialKey={banner?.image_url_mobile ?? ""}
           initialUrl={banner?.image_url_mobile ? imageUrl(banner.image_url_mobile) : ""}
         />
