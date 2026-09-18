@@ -13,6 +13,10 @@ const SETTINGS_KEYS = [
   "sms_number",
   "address",
   "business_hours",
+  "sns_instagram",
+  "sns_youtube",
+  "sns_blog",
+  "sns_kakao_channel",
   "terms",
   "privacy_policy",
 ];
@@ -84,6 +88,32 @@ export default async function SettingsPage({
           <div className="space-y-1.5">
             <label htmlFor="business_hours" className={s.label}>영업시간</label>
             <input id="business_hours" name="business_hours" defaultValue={settings.business_hours ?? "평일 09:00 ~ 18:00"} className={s.input} />
+          </div>
+        </fieldset>
+
+        {/* SNS 링크 */}
+        <fieldset className="space-y-4 rounded-lg border border-[#E5E7EA] bg-white p-5">
+          <legend className="text-sm font-bold text-[#231F20]">SNS 링크</legend>
+          <p className="text-xs text-[#9E9F9C]">각 항목에 전체 URL을 입력하세요. 비워두면 해당 링크가 사이트에서 숨겨집니다.</p>
+
+          <div className="space-y-1.5">
+            <label htmlFor="sns_kakao_channel" className={s.label}>카카오톡 오픈채팅</label>
+            <input id="sns_kakao_channel" name="sns_kakao_channel" defaultValue={settings.sns_kakao_channel ?? ""} className={s.input} placeholder="https://open.kakao.com/o/..." />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="sns_instagram" className={s.label}>인스타그램</label>
+            <input id="sns_instagram" name="sns_instagram" defaultValue={settings.sns_instagram ?? ""} className={s.input} placeholder="https://www.instagram.com/..." />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="sns_youtube" className={s.label}>유튜브</label>
+            <input id="sns_youtube" name="sns_youtube" defaultValue={settings.sns_youtube ?? ""} className={s.input} placeholder="https://www.youtube.com/..." />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="sns_blog" className={s.label}>블로그</label>
+            <input id="sns_blog" name="sns_blog" defaultValue={settings.sns_blog ?? ""} className={s.input} placeholder="https://blog.naver.com/..." />
           </div>
         </fieldset>
 

@@ -42,6 +42,26 @@ function resolveUrl(key: string | null): string {
 
 // ── 개별 Export 함수 ──
 
+export function exportSite(): void {
+  const db = getDb();
+  const get = (k: string, fallback: string = "") => {
+    const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(k) as { value: string | null } | undefined;
+    return row?.value || fallback;
+  };
+  writeJson("site.json", {
+    phone: get("phone", "010-4708-6091"),
+    sms: get("sms_number", "010-4708-6091"),
+    address: get("address", "서울시 종로구 종로 191, 2층"),
+    hours: get("business_hours", "평일 09:00 ~ 18:00"),
+    sns: {
+      kakao: get("sns_kakao_channel"),
+      instagram: get("sns_instagram"),
+      youtube: get("sns_youtube"),
+      blog: get("sns_blog"),
+    },
+  });
+}
+
 export function exportBanners(): void {
   const db = getDb();
   const now = new Date().toISOString().slice(0, 10);
@@ -294,6 +314,7 @@ export function exportSupport(): void {
 }
 
 export function exportAll(): void {
+  try { exportSite(); } catch (e) { console.error("[json-export] site:", e); }
   try { exportBanners(); } catch (e) { console.error("[json-export] banners:", e); }
   try { exportStores(); } catch (e) { console.error("[json-export] stores:", e); }
   try { exportGallery(); } catch (e) { console.error("[json-export] gallery:", e); }
