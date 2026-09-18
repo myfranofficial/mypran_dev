@@ -12,7 +12,12 @@ const SETTINGS_KEYS = [
   "kakao_id",
   "sms_number",
   "address",
+  "address_detail",
   "business_hours",
+  "slogan",
+  "slogan_sub",
+  "slogan_en",
+  "copyright",
   "sns_instagram",
   "sns_youtube",
   "sns_blog",
@@ -82,12 +87,43 @@ export default async function SettingsPage({
 
           <div className="space-y-1.5">
             <label htmlFor="address" className={s.label}>주소</label>
-            <input id="address" name="address" defaultValue={settings.address ?? ""} className={s.input} />
+            <input id="address" name="address" defaultValue={settings.address ?? "서울시 종로구 종로 191, 2층"} className={s.input} />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="address_detail" className={s.label}>주소 부가정보</label>
+            <input id="address_detail" name="address_detail" defaultValue={settings.address_detail ?? "(종로5가역 12번출구)"} className={s.input} placeholder="(종로5가역 12번출구)" />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="business_hours" className={s.label}>영업시간</label>
             <input id="business_hours" name="business_hours" defaultValue={settings.business_hours ?? "평일 09:00 ~ 18:00"} className={s.input} />
+          </div>
+        </fieldset>
+
+        {/* 브랜드 텍스트 */}
+        <fieldset className="space-y-4 rounded-lg border border-[#E5E7EA] bg-white p-5">
+          <legend className="text-sm font-bold text-[#231F20]">브랜드 텍스트</legend>
+          <p className="text-xs text-[#9E9F9C]">사이트 전체 푸터·공통 영역에 표시되는 슬로건과 저작권 문구입니다.</p>
+
+          <div className="space-y-1.5">
+            <label htmlFor="slogan" className={s.label}>슬로건 (1줄)</label>
+            <input id="slogan" name="slogan" defaultValue={settings.slogan ?? "당구, 그 이상의 가치!"} className={s.input} />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="slogan_sub" className={s.label}>서브 슬로건 (2줄)</label>
+            <input id="slogan_sub" name="slogan_sub" defaultValue={settings.slogan_sub ?? "함께 만드는 성공 스토리"} className={s.input} />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="slogan_en" className={s.label}>영문 슬로건</label>
+            <input id="slogan_en" name="slogan_en" defaultValue={settings.slogan_en ?? "Premium Billiards Life"} className={s.input} />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="copyright" className={s.label}>저작권 문구</label>
+            <input id="copyright" name="copyright" defaultValue={settings.copyright ?? "© 2025 HI Q BILLIARDS. All rights reserved."} className={s.input} />
           </div>
         </fieldset>
 

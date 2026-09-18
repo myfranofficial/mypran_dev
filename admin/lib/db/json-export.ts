@@ -52,7 +52,12 @@ export function exportSite(): void {
     phone: get("phone", "010-4708-6091"),
     sms: get("sms_number", "010-4708-6091"),
     address: get("address", "서울시 종로구 종로 191, 2층"),
+    addressDetail: get("address_detail", "(종로5가역 12번출구)"),
     hours: get("business_hours", "평일 09:00 ~ 18:00"),
+    slogan: get("slogan", "당구, 그 이상의 가치!"),
+    sloganSub: get("slogan_sub", "함께 만드는 성공 스토리"),
+    sloganEn: get("slogan_en", "Premium Billiards Life"),
+    copyright: get("copyright", "© 2025 HI Q BILLIARDS. All rights reserved."),
     sns: {
       kakao: get("sns_kakao_channel"),
       instagram: get("sns_instagram"),
