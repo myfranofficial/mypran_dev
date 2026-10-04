@@ -25,10 +25,9 @@ const PAGE_IMAGE_GROUPS: PageImageGroup[] = [
     page: "index",
     label: "메인페이지",
     slots: [
-      { key: "space_1", label: "공간 갤러리 1 (플레이 존)", guide: "가로형 사진 (권장 800×600)", aspect: 4 / 3 },
-      { key: "space_2", label: "공간 갤러리 2 (라운지)", guide: "가로형 사진 (권장 800×600)", aspect: 4 / 3 },
-      { key: "space_3", label: "공간 갤러리 3 (당구 공간)", guide: "가로형 사진 (권장 800×600)", aspect: 4 / 3 },
-      { key: "franchise_cta", label: "창업 CTA 이미지", guide: "우측 세로형 사진 (권장 760×640)", aspect: 19 / 16 },
+      { key: "space_1", label: "공간 갤러리 1 (플레이 존)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
+      { key: "space_2", label: "공간 갤러리 2 (라운지)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
+      { key: "space_3", label: "공간 갤러리 3 (상담 공간)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
     ],
   },
   {
