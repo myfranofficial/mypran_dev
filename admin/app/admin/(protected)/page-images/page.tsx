@@ -25,6 +25,7 @@ const PAGE_IMAGE_GROUPS: PageImageGroup[] = [
     page: "index",
     label: "메인페이지",
     slots: [
+      { key: "brand_photo", label: "브랜드 소개 사진", guide: "좌측 2열 사진 (권장 800×600, 4:3)", aspect: 4 / 3 },
       { key: "space_1", label: "공간 갤러리 1 (플레이 존)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
       { key: "space_2", label: "공간 갤러리 2 (라운지)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
       { key: "space_3", label: "공간 갤러리 3 (상담 공간)", guide: "가로형 사진 (권장 1280×720, 16:9)", aspect: 16 / 9 },
