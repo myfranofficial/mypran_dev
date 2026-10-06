@@ -323,6 +323,7 @@ export default function HomePage() {
               padding: "24px",
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: 24,
             }}
           >
@@ -402,6 +403,7 @@ export default function HomePage() {
                 padding: "18px 16px",
                 borderRight: i % 2 === 0 ? "1px solid var(--line)" : "none",
                 borderBottom: i < 2 ? "1px solid var(--line)" : "none",
+                textAlign: "center",
               }}
             >
               <b
@@ -435,10 +437,10 @@ export default function HomePage() {
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                gap: 12,
-                paddingBottom: 12,
-                borderBottom: "2px solid var(--ink)",
+                gap: 8,
+                paddingBottom: 16,
               }}
             >
               <h2
@@ -459,9 +461,6 @@ export default function HomePage() {
               <p
                 style={{
                   margin: 0,
-                  flexGrow: 1,
-                  paddingLeft: 12,
-                  borderLeft: "1px solid var(--line)",
                   font: "400 14px/20px var(--font-sans)",
                   color: "var(--ink-muted)",
                 }}
@@ -475,6 +474,7 @@ export default function HomePage() {
                   alignItems: "center",
                   height: 36,
                   padding: "0 12px",
+                  marginTop: 4,
                   background: "var(--surface)",
                   color: "var(--ink)",
                   border: "1px solid var(--line-control)",
@@ -533,45 +533,43 @@ export default function HomePage() {
             <div
               style={{
                 display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "space-between",
-                paddingBottom: 10,
-                borderBottom: "2px solid var(--ink)",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                paddingBottom: 12,
               }}
             >
-              <div>
-                <h2
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    margin: 0,
-                    font: "900 22px/30px var(--font-sans)",
-                  }}
-                >
-                  <CrownIcon size={24} fill="var(--red-500)" />
-                  <span>
-                    <span style={{ color: "var(--red-500)" }}>베스트</span>{" "}
-                    브랜드
-                  </span>
-                </h2>
-                <p
-                  style={{
-                    margin: "2px 0 0",
-                    font: "400 13px/18px var(--font-sans)",
-                    color: "var(--ink-muted)",
-                  }}
-                >
-                  업종별 대표 프랜차이즈 브랜드입니다.
-                </p>
-              </div>
+              <h2
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  margin: 0,
+                  font: "900 22px/30px var(--font-sans)",
+                }}
+              >
+                <CrownIcon size={24} fill="var(--red-500)" />
+                <span>
+                  <span style={{ color: "var(--red-500)" }}>베스트</span>{" "}
+                  브랜드
+                </span>
+              </h2>
+              <p
+                style={{
+                  margin: 0,
+                  font: "400 13px/18px var(--font-sans)",
+                  color: "var(--ink-muted)",
+                }}
+              >
+                업종별 대표 프랜차이즈 브랜드입니다.
+              </p>
               <Link
                 href="/brands"
                 style={{
                   font: "500 13px/18px var(--font-sans)",
                   color: "var(--ink)",
                   textDecoration: "none",
-                  padding: "12px 0 2px",
+                  marginTop: 4,
                 }}
               >
                 전체보기 ›
@@ -1128,10 +1126,10 @@ export default function HomePage() {
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                gap: 12,
-                paddingBottom: 12,
-                borderBottom: "2px solid var(--ink)",
+                gap: 8,
+                paddingBottom: 16,
               }}
             >
               <h2
@@ -1152,9 +1150,6 @@ export default function HomePage() {
               <p
                 style={{
                   margin: 0,
-                  flexGrow: 1,
-                  paddingLeft: 12,
-                  borderLeft: "1px solid var(--line)",
                   font: "400 14px/20px var(--font-sans)",
                   color: "var(--ink-muted)",
                 }}
@@ -1232,14 +1227,14 @@ export default function HomePage() {
             <div
               style={{
                 paddingRight: 16,
-                paddingBottom: 10,
-                borderBottom: "2px solid var(--ink)",
+                paddingBottom: 12,
                 marginRight: 16,
+                textAlign: "center",
               }}
             >
               <h2
                 style={{
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
                   gap: 6,
                   margin: 0,
