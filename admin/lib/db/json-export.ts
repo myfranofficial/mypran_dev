@@ -115,20 +115,32 @@ export function exportStores(): void {
     points: [],
   };
 
+  // store_photos 조인
+  const photosStmt = db.prepare(
+    "SELECT image_url, title, is_representative FROM store_photos WHERE store_id = ? ORDER BY sort_order ASC, id ASC"
+  );
+
   writeJson("stores.json", {
     hero,
     intro,
-    stores: stores.map((s) => ({
-      name: s.name,
-      address: s.address || "",
-      size: s.size || "",
-      tables: s.tables_count || 0,
-      phone: s.phone || "",
-      hours: s.hours || "",
-      features: s.features ? JSON.parse(s.features) : [],
-      image: resolveUrl(s.image_url),
-      isNew: !!s.is_new,
-    })),
+    stores: stores.map((s) => {
+      const photos = photosStmt.all(s.id) as { image_url: string; title: string | null; is_representative: number }[];
+      const photoUrls = photos.map((p) => resolveUrl(p.image_url));
+      const repPhoto = photos.find((p) => p.is_representative);
+      const image = repPhoto ? resolveUrl(repPhoto.image_url) : (photoUrls[0] || resolveUrl(s.image_url));
+      return {
+        name: s.name,
+        address: s.address || "",
+        size: s.size || "",
+        tables: s.tables_count || 0,
+        phone: s.phone || "",
+        hours: s.hours || "",
+        features: s.features ? JSON.parse(s.features) : [],
+        image,
+        photos: photoUrls.length > 0 ? photoUrls : [resolveUrl(s.image_url)],
+        isNew: !!s.is_new,
+      };
+    }),
     interior,
     contact,
   });
@@ -136,8 +148,6 @@ export function exportStores(): void {
 
 export function exportGallery(): void {
   const db = getDb();
-  const images = db.prepare("SELECT * FROM gallery_images ORDER BY sort_order ASC, id DESC").all() as any[];
-  const categories = ["전체", ...new Set(images.map((i: any) => i.category).filter(Boolean))];
 
   const heroRow = db.prepare("SELECT content_json FROM page_content WHERE page_slug = 'gallery' AND section = 'hero'").get() as { content_json: string | null } | undefined;
   const hero = heroRow?.content_json ? JSON.parse(heroRow.content_json) : {
@@ -146,15 +156,40 @@ export function exportGallery(): void {
     desc: "프리미엄 공간을 직접 확인하세요",
   };
 
-  writeJson("gallery.json", {
-    hero,
-    categories,
-    images: images.map((i) => ({
+  // store_photos를 매장별로 그룹핑하여 gallery.json 생성
+  const rows = db.prepare(
+    `SELECT sp.image_url, sp.title, sp.is_representative, s.name AS branch
+     FROM store_photos sp
+     JOIN stores s ON sp.store_id = s.id
+     WHERE s.is_active = 1
+     ORDER BY s.sort_order ASC, s.id ASC, sp.is_representative DESC, sp.sort_order ASC, sp.id ASC`
+  ).all() as { image_url: string; title: string | null; is_representative: number; branch: string }[];
+
+  // store_photos가 비어 있으면 기존 gallery_images 테이블에서 fallback
+  let images: { title: string; branch: string; src: string }[];
+  let branches: string[];
+
+  if (rows.length > 0) {
+    branches = [...new Set(rows.map((r) => r.branch))];
+    images = rows.map((r) => ({
+      title: r.title || `${r.branch} 사진`,
+      branch: r.branch,
+      src: resolveUrl(r.image_url),
+    }));
+  } else {
+    const legacyImages = db.prepare("SELECT * FROM gallery_images ORDER BY sort_order ASC, id DESC").all() as any[];
+    branches = [...new Set(legacyImages.map((i: any) => i.branch).filter(Boolean))] as string[];
+    images = legacyImages.map((i: any) => ({
       title: i.title || "",
-      category: i.category || "",
       branch: i.branch || "",
       src: resolveUrl(i.image_url),
-    })),
+    }));
+  }
+
+  writeJson("gallery.json", {
+    hero,
+    categories: ["전체", ...branches],
+    images,
   });
 }
 
@@ -318,6 +353,26 @@ export function exportSupport(): void {
   }
 }
 
+export function exportPageImages(): void {
+  const db = getDb();
+  const rows = db.prepare(
+    "SELECT section, content_json FROM page_content WHERE page_slug = '_images'"
+  ).all() as { section: string; content_json: string | null }[];
+
+  const images: Record<string, string> = {};
+  for (const row of rows) {
+    if (!row.content_json) continue;
+    try {
+      const data = JSON.parse(row.content_json) as Record<string, string>;
+      for (const [key, val] of Object.entries(data)) {
+        if (val) images[`${row.section}.${key}`] = resolveUrl(val);
+      }
+    } catch { /* skip malformed */ }
+  }
+
+  writeJson("page-images.json", images);
+}
+
 export function exportAll(): void {
   try { exportSite(); } catch (e) { console.error("[json-export] site:", e); }
   try { exportBanners(); } catch (e) { console.error("[json-export] banners:", e); }
@@ -331,4 +386,5 @@ export function exportAll(): void {
   try { exportBenefits(); } catch (e) { console.error("[json-export] benefits:", e); }
   try { exportFranchise(); } catch (e) { console.error("[json-export] franchise:", e); }
   try { exportSupport(); } catch (e) { console.error("[json-export] support:", e); }
+  try { exportPageImages(); } catch (e) { console.error("[json-export] page-images:", e); }
 }

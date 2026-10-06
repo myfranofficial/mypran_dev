@@ -46,6 +46,10 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     label: "매장 관리",
     icon: "stores",
     paths: ["/admin/stores"],
+    tabs: [
+      { href: "/admin/stores", label: "매장 목록" },
+      { href: "/admin/stores/photos", label: "사진 관리" },
+    ],
   },
   {
     href: "/admin/events",
@@ -62,10 +66,11 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     href: "/admin/pages",
     label: "페이지 편집",
     icon: "pages",
-    paths: ["/admin/pages", "/admin/homepage"],
+    paths: ["/admin/pages", "/admin/homepage", "/admin/page-images"],
     tabs: [
       { href: "/admin/pages", label: "서브페이지" },
       { href: "/admin/homepage", label: "메인페이지" },
+      { href: "/admin/page-images", label: "페이지 이미지" },
     ],
   },
   {

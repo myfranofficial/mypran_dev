@@ -139,6 +139,18 @@ CREATE TABLE IF NOT EXISTS homepage_sections (
   updated_at TEXT DEFAULT (datetime('now','localtime'))
 );
 
+-- 매장 사진
+CREATE TABLE IF NOT EXISTS store_photos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  store_id INTEGER NOT NULL,
+  image_url TEXT NOT NULL,
+  title TEXT,
+  is_representative INTEGER DEFAULT 0,
+  sort_order INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now','localtime')),
+  FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE
+);
+
 -- 상담 문의
 CREATE TABLE IF NOT EXISTS consultations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -158,5 +170,6 @@ CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery_images(category);
 CREATE INDEX IF NOT EXISTS idx_videos_category ON videos(category);
 CREATE INDEX IF NOT EXISTS idx_faq_category ON faq_items(category);
 CREATE INDEX IF NOT EXISTS idx_consultations_read ON consultations(is_read);
+CREATE INDEX IF NOT EXISTS idx_store_photos_store ON store_photos(store_id);
 CREATE INDEX IF NOT EXISTS idx_page_content_slug ON page_content(page_slug);
 `;
