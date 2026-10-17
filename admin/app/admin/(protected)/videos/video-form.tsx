@@ -8,6 +8,25 @@ import * as s from "../ui/styles";
 
 const CATEGORIES = ["매장소개", "이벤트", "교육", "기타"];
 
+const DEFAULT_THUMBNAILS = [
+  "/static/images/vid-1.jpg",
+  "/static/images/vid-2.jpg",
+  "/static/images/vid-3.jpg",
+  "/static/images/vid-4.jpg",
+  "/static/images/vid-5.jpg",
+  "/static/images/vid-6.jpg",
+  "/static/images/vid-7.jpg",
+  "/static/images/vid-8.jpg",
+];
+
+type ThumbMode = "auto" | "default" | "upload";
+
+function detectInitialMode(thumbnailUrl: string | null | undefined): ThumbMode {
+  if (!thumbnailUrl) return "auto";
+  if (DEFAULT_THUMBNAILS.includes(thumbnailUrl)) return "default";
+  return "upload";
+}
+
 interface VideoFormProps {
   action: (prev: any, formData: FormData) => Promise<any>;
   video?: {
@@ -22,7 +41,6 @@ interface VideoFormProps {
 
 function extractYoutubeId(url: string): string | null {
   if (!url) return null;
-  // Already an ID (11 chars, no slashes)
   if (/^[\w-]{11}$/.test(url)) return url;
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([^&?#]+)/);
   return m?.[1] || null;
@@ -31,11 +49,19 @@ function extractYoutubeId(url: string): string | null {
 export function VideoForm({ action, video }: VideoFormProps) {
   const [state, formAction, pending] = useActionState(action, {});
   const [youtubeId, setYoutubeId] = useState(video?.youtube_id ?? "");
+  const initMode = detectInitialMode(video?.thumbnail_url);
+  const [thumbMode, setThumbMode] = useState<ThumbMode>(initMode);
+  const [selectedDefault, setSelectedDefault] = useState<string>(
+    initMode === "default" ? video!.thumbnail_url! : ""
+  );
 
   const handleUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const id = extractYoutubeId(e.target.value);
     setYoutubeId(id ?? "");
   }, []);
+
+  // thumbnail_url 값: auto→빈값, default→선택경로, upload→ImageUploadField가 처리
+  const thumbHiddenValue = thumbMode === "auto" ? "" : thumbMode === "default" ? selectedDefault : undefined;
 
   return (
     <form action={formAction} className="space-y-6">
@@ -94,15 +120,83 @@ export function VideoForm({ action, video }: VideoFormProps) {
           <textarea id="description" name="description" rows={3} defaultValue={video?.description ?? ""} className={s.textarea} />
         </div>
 
-        <ImageUploadField
-          name="thumbnail_url"
-          label="커스텀 썸네일 (선택)"
-          aspect={16 / 9}
-          maxWidth={640}
-          hintText="미등록 시 YouTube 기본 썸네일 사용"
-          initialKey={video?.thumbnail_url ?? ""}
-          initialUrl={video?.thumbnail_url ? imageUrl(video.thumbnail_url) : ""}
-        />
+        {/* 썸네일 선택 */}
+        <div className="space-y-3">
+          <p className={s.label}>썸네일 이미지</p>
+          <div className="flex flex-wrap gap-2">
+            {(["auto", "default", "upload"] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => { setThumbMode(mode); if (mode !== "default") setSelectedDefault(""); }}
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  thumbMode === mode
+                    ? "bg-[#2A2520] text-white"
+                    : "bg-white border border-[#E5E7EA] text-[#6B7280] hover:bg-[#F9FAFB]"
+                }`}
+              >
+                {mode === "auto" && "YouTube 자동"}
+                {mode === "default" && "기본 이미지 선택"}
+                {mode === "upload" && "직접 업로드"}
+              </button>
+            ))}
+          </div>
+
+          {/* auto: hidden input으로 빈 값 전달 */}
+          {thumbMode === "auto" && (
+            <>
+              <input type="hidden" name="thumbnail_url" value="" />
+              <p className="text-sm text-[#9E9F9C]">
+                YouTube 영상의 기본 썸네일이 자동 적용됩니다.
+              </p>
+            </>
+          )}
+
+          {/* default: 기본 이미지 그리드 */}
+          {thumbMode === "default" && (
+            <>
+              <input type="hidden" name="thumbnail_url" value={selectedDefault} />
+              <div className="grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-8">
+                {DEFAULT_THUMBNAILS.map((src) => (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setSelectedDefault(src)}
+                    className={`relative aspect-video overflow-hidden rounded-lg border-2 transition-all ${
+                      selectedDefault === src
+                        ? "border-[#EF4023] ring-2 ring-[#EF4023]/30"
+                        : "border-[#E5E7EA] hover:border-[#9E9F9C]"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt="" className="h-full w-full object-cover" />
+                    {selectedDefault === src && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/30 text-white text-lg font-bold">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              {!selectedDefault && (
+                <p className="text-sm text-amber-600">이미지를 선택해주세요.</p>
+              )}
+            </>
+          )}
+
+          {/* upload: 기존 ImageUploadField */}
+          {thumbMode === "upload" && (
+            <ImageUploadField
+              name="thumbnail_url"
+              label="커스텀 썸네일"
+              aspect={16 / 9}
+              maxWidth={1280}
+              hintText="권장 1280x720px (16:9)"
+              initialKey={initMode === "upload" ? (video?.thumbnail_url ?? "") : ""}
+              initialUrl={initMode === "upload" && video?.thumbnail_url ? imageUrl(video.thumbnail_url) : ""}
+            />
+          )}
+        </div>
       </div>
 
       <div className="flex justify-end gap-3">
