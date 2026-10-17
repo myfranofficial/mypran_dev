@@ -22,6 +22,16 @@ interface StoreFormProps {
   };
 }
 
+/** DB에 JSON 배열로 저장된 features를 콤마 구분 텍스트로 변환 */
+function featuresToText(raw: string | null): string {
+  if (!raw) return "";
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) return arr.join(", ");
+  } catch { /* not JSON */ }
+  return raw;
+}
+
 export function StoreForm({ action, store }: StoreFormProps) {
   const [state, formAction, pending] = useActionState(action, {});
 
@@ -64,8 +74,8 @@ export function StoreForm({ action, store }: StoreFormProps) {
 
         <div className="space-y-1.5">
           <label htmlFor="features" className={s.label}>특징 (쉼표 구분)</label>
-          <input id="features" name="features" defaultValue={store?.features ?? ""} className={s.input} placeholder="예: 프리미엄 테이블, 주차 가능, 단체석" />
-          <p className="text-xs text-[#9E9F9C]">쉼표(,)로 구분하여 입력</p>
+          <input id="features" name="features" defaultValue={featuresToText(store?.features ?? null)} className={s.input} placeholder="예: VIP 라운지, 주차 가능, 프로샵" />
+          <p className="text-xs text-[#9E9F9C]">쉼표(,)로 구분하여 입력하세요. 예: VIP 라운지, 푸드존, 프로샵</p>
         </div>
 
         <ImageUploadField

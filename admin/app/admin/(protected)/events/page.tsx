@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
-import { listEvents, deleteEvent } from "@/lib/db/events";
+import { listEvents, setEventActive, deleteEvent } from "@/lib/db/events";
 import { exportEvents } from "@/lib/db/json-export";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
@@ -24,6 +24,16 @@ export default async function EventsPage({
   await requireWrite();
   const sp = await searchParams;
   const events = listEvents({ q: sp.q });
+
+  async function toggleAction(formData: FormData) {
+    "use server";
+    await requireWrite();
+    const id = Number(formData.get("id"));
+    const active = Number(formData.get("active"));
+    setEventActive(id, active);
+    exportEvents();
+    revalidatePath("/admin/events");
+  }
 
   async function deleteAction(formData: FormData) {
     "use server";
@@ -57,6 +67,11 @@ export default async function EventsPage({
     ],
     actions: (
       <div className="space-y-1">
+        <form action={toggleAction}>
+          <input type="hidden" name="id" value={ev.id} />
+          <input type="hidden" name="active" value={ev.is_active ? 0 : 1} />
+          <button type="submit" className={s.menuItem}>{ev.is_active ? "비활성화" : "활성화"}</button>
+        </form>
         <form action={deleteAction}>
           <input type="hidden" name="id" value={ev.id} />
           <button type="submit" className={s.menuItemDanger}>삭제</button>

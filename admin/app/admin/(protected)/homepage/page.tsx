@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
 import { getHomepageSection, setHomepageSection } from "@/lib/db/homepage";
+import { exportAll } from "@/lib/db/json-export";
 import { PreviewLink } from "../ui/preview-link";
 import { SavePreview } from "../ui/save-preview";
 import * as s from "../ui/styles";
@@ -84,6 +85,7 @@ export default async function HomepageEditorPage({
       setHomepageSection(sec.key, JSON.stringify(data));
     }
 
+    exportAll();
     revalidatePath("/admin/homepage");
     redirect("/admin/homepage?msg=saved");
   }

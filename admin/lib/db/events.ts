@@ -58,6 +58,10 @@ export function updateEvent(id: number, d: EventInput): void {
     .run(d.title, d.description, d.image_url, d.start_date, d.end_date, d.status, d.is_active, id);
 }
 
+export function setEventActive(id: number, active: number): void {
+  getDb().prepare("UPDATE events SET is_active = ? WHERE id = ?").run(active, id);
+}
+
 export function deleteEvent(id: number): void {
   getDb().prepare("DELETE FROM events WHERE id = ?").run(id);
 }

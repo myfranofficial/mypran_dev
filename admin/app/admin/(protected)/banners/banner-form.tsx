@@ -65,10 +65,10 @@ export function BannerForm({ action, banner }: BannerFormProps) {
           name="image_url"
           label="PC 배너 이미지"
           required
-          aspect={16 / 9}
+          aspect={7 / 2}
           allowFreeRatio
           maxWidth={1920}
-          hintText="권장 비율 16:9, 최대 1920px · 원본 비율도 사용 가능"
+          hintText="권장 1920×548px (7:2 비율) · 프론트에서 7:2로 표시 · 원본 비율도 사용 가능"
           initialKey={banner?.image_url ?? ""}
           initialUrl={banner?.image_url ? imageUrl(banner.image_url) : ""}
         />

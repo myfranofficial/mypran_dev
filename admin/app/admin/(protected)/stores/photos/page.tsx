@@ -5,6 +5,7 @@ import { listStores } from "@/lib/db/stores";
 import { listStorePhotos, createStorePhoto, deleteStorePhoto, setRepresentative } from "@/lib/db/store-photos";
 import { exportStores, exportGallery } from "@/lib/db/json-export";
 import { imageUrl } from "@/lib/storage/url";
+import { StorePhotoAddForm } from "./add-form";
 import * as s from "../../ui/styles";
 
 export default async function StorePhotosPage({
@@ -146,33 +147,8 @@ export default async function StorePhotosPage({
             )}
           </div>
 
-          {/* 사진 추가 폼 */}
-          <div className="rounded-lg border border-[#E5E7EA] bg-white p-5 space-y-4">
-            <h2 className="text-lg font-semibold text-[#111827]">사진 추가</h2>
-            <form action={addPhotoAction} className="space-y-4">
-              <input type="hidden" name="store_id" value={selectedStoreId} />
-
-              <div className="space-y-1.5">
-                <label htmlFor="title" className={s.label}>제목 (선택)</label>
-                <input id="title" name="title" className={s.input} placeholder="예: 외관 사진" />
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="image_url" className={s.label}>이미지 URL</label>
-                <input id="image_url" name="image_url" className={s.input} required placeholder="/static/images/stores/example.jpg" />
-                <p className="text-xs text-[#6B7280]">이미지 경로를 직접 입력하세요. (향후 업로드 기능 추가 예정)</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input type="checkbox" id="is_representative" name="is_representative" value="1" className="rounded" />
-                <label htmlFor="is_representative" className="text-sm text-[#374151]">대표사진으로 설정</label>
-              </div>
-
-              <div className="flex justify-end">
-                <button type="submit" className={s.btnPrimary}>추가</button>
-              </div>
-            </form>
-          </div>
+          {/* 사진 추가 폼 (클라이언트 컴포넌트) */}
+          <StorePhotoAddForm storeId={selectedStoreId} action={addPhotoAction} />
         </>
       )}
     </div>

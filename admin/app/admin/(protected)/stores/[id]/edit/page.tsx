@@ -20,7 +20,11 @@ async function updateAction(id: number, _prev: any, formData: FormData) {
     tables_count: tc ? Number(tc) : null,
     phone: String(formData.get("phone") ?? "").trim() || null,
     hours: String(formData.get("hours") ?? "").trim() || null,
-    features: String(formData.get("features") ?? "").trim() || null,
+    features: (() => {
+      const raw = String(formData.get("features") ?? "").trim();
+      if (!raw) return null;
+      return JSON.stringify(raw.split(",").map((s: string) => s.trim()).filter(Boolean));
+    })(),
     image_url: String(formData.get("image_url") ?? "").trim() || null,
     is_new: formData.get("is_new") ? 1 : 0,
     is_active: formData.get("is_active") ? 1 : 0,

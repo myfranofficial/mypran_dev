@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { requireWrite } from "@/lib/auth/user";
 import { listVideos, deleteVideo } from "@/lib/db/videos";
 import { exportVideos } from "@/lib/db/json-export";
+import { imageUrl } from "@/lib/storage";
 import { CreateButton } from "../ui/create-button";
 import { SearchBar } from "../ui/search-bar";
 import { DataTable, type Column, type RowVM } from "../ui/data-table";
@@ -38,7 +39,7 @@ export default async function VideosPage({
 
   const rows: RowVM[] = videos.map((v) => {
     const thumb = v.thumbnail_url
-      ? `/uploads/${v.thumbnail_url}`
+      ? imageUrl(v.thumbnail_url)
       : v.youtube_id
         ? `https://img.youtube.com/vi/${v.youtube_id}/mqdefault.jpg`
         : null;
