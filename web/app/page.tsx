@@ -30,6 +30,7 @@ import {
   categories,
   budgetRanges,
   dummyBrands,
+  type DummyBrand,
 } from "@/data/dummy-brands";
 
 /* ── Icon lookup helper ── */
@@ -48,6 +49,13 @@ const ICON_MAP: Record<string, typeof PeopleIcon> = {
 function StatIcon({ name, ...props }: { name: string } & { size?: number; fill?: string }) {
   const Icon = ICON_MAP[name] ?? ShieldIcon;
   return <Icon {...props} />;
+}
+
+/* bestBrands 이름 → dummyBrands id 매칭 */
+const brandByName = new Map<string, DummyBrand>(dummyBrands.map((b) => [b.name, b]));
+function brandHref(name: string) {
+  const match = brandByName.get(name);
+  return match ? `/brands/${match.id}` : "/brands";
 }
 
 export default function HomePage() {
@@ -496,7 +504,7 @@ export default function HomePage() {
             {bestBrands.map((b) => (
               <Link
                 key={b.id}
-                href="/brands"
+                href={brandHref(b.name)}
                 style={{
                   display: "block",
                   textDecoration: "none",
@@ -584,7 +592,7 @@ export default function HomePage() {
             {bestBrands.slice(0, 6).map((b) => (
               <Link
                 key={b.id}
-                href="/brands"
+                href={brandHref(b.name)}
                 style={{
                   display: "block",
                   textDecoration: "none",
@@ -1333,7 +1341,7 @@ export default function HomePage() {
             {ownedBrands.map((ob) => (
               <Link
                 key={ob.no}
-                href="#"
+                href={brandHref(ob.name)}
                 style={{
                   display: "flex",
                   flexDirection: "column",

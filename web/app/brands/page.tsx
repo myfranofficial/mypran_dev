@@ -19,9 +19,11 @@ export default function BrandsPage() {
 function BrandsContent() {
   const searchParams = useSearchParams();
   const initialQ = searchParams.get("q") ?? "";
+  const initialCat = searchParams.get("cat") ?? "all";
+  const initialBudget = searchParams.get("budget") ?? "all";
 
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [activeBudget, setActiveBudget] = useState("all");
+  const [activeCategory, setActiveCategory] = useState(initialCat);
+  const [activeBudget, setActiveBudget] = useState(initialBudget);
   const [activeStoreType, setActiveStoreType] = useState("all");
   const [searchQuery, setSearchQuery] = useState(initialQ);
 
