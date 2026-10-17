@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+/* ── Design tokens from tokens.json ── */
+:root {
+  /* Color */
+  --red-500: #db0014;
+  --red-600: #c4001a;
+  --red-700: #a50014;
+  --red-900: #7a000f;
+  --red-50: #fdeef0;
+  --black: #0b0b0b;
+  --black-soft: #1c1c1c;
+  --line-dark: #2e2e2e;
+  --smoke: #a3a3a3;
+  --red-on-dark: #ff3347;
+  --ink: #111111;
+  --ink-muted: #6b6b6b;
+  --surface: #ffffff;
+  --surface-muted: #f7f7f7;
+  --night: #0a1220;
+  --night-muted: #c9cdd4;
+  --line: #e5e5e5;
+  --line-control: #8f8f8f;
+  --focus: #111111;
+  --on-brand: #ffffff;
+
+  /* Typography */
+  --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
+    sans-serif;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --container: 1200px;
+
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
+
+  /* Shadow */
+  --shadow-card: 0 2px 8px rgba(17, 17, 17, 0.08);
+  --shadow-lift: 0 18px 40px rgba(11, 11, 11, 0.18);
+}
+
+/* ── Tailwind v4 theme extension ── */
+@theme {
+  /* Colors */
+  --color-red-500: var(--red-500);
+  --color-red-600: var(--red-600);
+  --color-red-700: var(--red-700);
+  --color-red-900: var(--red-900);
+  --color-red-50: var(--red-50);
+  --color-black: var(--black);
+  --color-black-soft: var(--black-soft);
+  --color-line-dark: var(--line-dark);
+  --color-smoke: var(--smoke);
+  --color-red-on-dark: var(--red-on-dark);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-night: var(--night);
+  --color-night-muted: var(--night-muted);
+  --color-line: var(--line);
+  --color-line-control: var(--line-control);
+  --color-focus: var(--focus);
+  --color-on-brand: var(--on-brand);
+
+  /* Spacing */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-none: var(--radius-none);
+  --radius-pill: var(--radius-pill);
+
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
+
+  /* Container */
+  --breakpoint-sm: 390px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1440px;
+}
+
+/* ── Base ── */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--ink);
+}
+a:hover {
+  color: var(--red-500);
+}
+
+/* ── Focus ring ── */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ── Utility classes ── */
+.container-mf {
+  max-width: calc(var(--container) + 48px);
+  margin: 0 auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+@media (max-width: 767px) {
+  .container-mf {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}
+
+/* ── Chip (radio/checkbox toggle) ── */
+.chip {
+  position: relative;
+  display: inline-flex;
+}
+.chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line-control);
+  border-radius: var(--radius-md);
+  font: 500 15px/20px var(--font-sans);
+  color: var(--ink);
+  background: var(--surface);
+  cursor: pointer;
+}
+.chip input:checked + span {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 700;
+}
+.chip input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ── Underline input ── */
+.uline {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  background: transparent;
+  font: 500 16px/24px var(--font-sans);
+  color: var(--ink);
+  padding: 0 2px;
+  border-radius: 0;
+}
+.uline:focus {
+  outline: none;
+  border-bottom-color: var(--red-500);
+}
+.uline::placeholder {
+  color: var(--ink-muted);
+}
+
+/* ── Horizontal scroll (no scrollbar) ── */
+.hscroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hscroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Mobile-first typography scale ── */
+.typo-hero    { font: 900 34px/42px var(--font-sans); }
+.typo-h1      { font: 900 26px/34px var(--font-sans); }
+.typo-h2      { font: 700 22px/30px var(--font-sans); }
+.typo-h3      { font: 700 18px/26px var(--font-sans); }
+.typo-body    { font: 400 15px/24px var(--font-sans); }
+.typo-caption { font: 400 13px/18px var(--font-sans); }
+
+@media (min-width: 768px) {
+  .typo-hero    { font: 900 56px/68px var(--font-sans); }
+  .typo-h1      { font: 900 40px/52px var(--font-sans); }
+  .typo-h2      { font: 700 28px/38px var(--font-sans); }
+  .typo-h3      { font: 700 20px/28px var(--font-sans); }
+  .typo-body    { font: 400 16px/26px var(--font-sans); }
+  .typo-caption { font: 400 14px/20px var(--font-sans); }
+}
+
+/* ── Section spacing (mobile → PC) ── */
+.section-py   { padding-top: 48px; padding-bottom: 48px; }
+@media (min-width: 768px) {
+  .section-py { padding-top: 80px; padding-bottom: 80px; }
+}
+
+/* ── Touch targets: 최소 44px ── */
+.touch-target { min-height: 44px; min-width: 44px; }
+
+/* ── CTA 버튼 (빨강) ── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 24px;
+  background: var(--red-500); color: var(--on-brand);
+  border-radius: var(--radius-md); border: 1px solid transparent;
+  font: 700 15px/1 var(--font-sans); text-decoration: none;
+  cursor: pointer; white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .btn-primary { height: 52px; padding: 0 32px; font-size: 16px; }
+}
+
+/* ── 보조 버튼 (아웃라인) ── */
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 24px;
+  background: transparent; color: var(--ink);
+  border-radius: var(--radius-md); border: 1px solid var(--ink);
+  font: 700 15px/1 var(--font-sans); text-decoration: none;
+  cursor: pointer; white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .btn-outline { height: 52px; padding: 0 28px; font-size: 16px; }
+}
+
+/* ── 반응형 그리드 ── */
+.grid-brands {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .grid-brands { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+}
+@media (min-width: 1200px) {
+  .grid-brands { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

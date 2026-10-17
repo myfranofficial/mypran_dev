@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*.local
+.claude/
+dev_mifriend/
+admin/data/
+admin/.next/
+admin/node_modules/
+web/.next/
+web/node_modules/
