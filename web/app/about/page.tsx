@@ -126,6 +126,48 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ═══════ 비전 ═══════ */}
+      <section
+        className="section-py"
+        style={{ background: "var(--night)", color: "var(--on-brand)" }}
+      >
+        <div className="container-mf" style={{ textAlign: "center" }}>
+          <span
+            className="about-eyebrow"
+            style={{ color: "var(--night-muted)" }}
+          >
+            OUR VISION
+          </span>
+          <h2
+            className="typo-hero"
+            style={{
+              margin: "12px 0 0",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            마이프랜의 비전
+          </h2>
+          <p
+            style={{
+              margin: "16px 0 0",
+              font: "700 20px/30px var(--font-sans)",
+              color: "var(--red-500)",
+            }}
+          >
+            대한민국 대표
+            <br className="md:hidden" />{" "}
+            프랜차이즈 창업 플랫폼
+          </p>
+          <p
+            className="typo-body"
+            style={{ margin: "16px auto 0", maxWidth: 560, color: "var(--night-muted)" }}
+          >
+            좋은 브랜드와 좋은 사람을 연결하여, 모든 예비 창업자가 신뢰할 수 있는 창업 정보를 만나는
+            플랫폼을 만들어 갑니다.
+          </p>
+        </div>
+      </section>
+
       {/* ═══════ 사업분야 ═══════ */}
       <section
         className="section-py"
@@ -205,48 +247,6 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ═══════ 비전 ═══════ */}
-      <section
-        className="section-py"
-        style={{ background: "var(--night)", color: "var(--on-brand)" }}
-      >
-        <div className="container-mf" style={{ textAlign: "center" }}>
-          <span
-            className="about-eyebrow"
-            style={{ color: "var(--night-muted)" }}
-          >
-            OUR VISION
-          </span>
-          <h2
-            className="typo-hero"
-            style={{
-              margin: "12px 0 0",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            마이프랜의 비전
-          </h2>
-          <p
-            style={{
-              margin: "16px 0 0",
-              font: "700 20px/30px var(--font-sans)",
-              color: "var(--red-500)",
-            }}
-          >
-            대한민국 대표
-            <br className="md:hidden" />{" "}
-            프랜차이즈 창업 플랫폼
-          </p>
-          <p
-            className="typo-body"
-            style={{ margin: "16px auto 0", maxWidth: 560, color: "var(--night-muted)" }}
-          >
-            좋은 브랜드와 좋은 사람을 연결하여, 모든 예비 창업자가 신뢰할 수 있는 창업 정보를 만나는
-            플랫폼을 만들어 갑니다.
-          </p>
         </div>
       </section>
 
