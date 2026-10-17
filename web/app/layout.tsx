@@ -12,15 +12,50 @@ const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto",
 });
 
+const SITE_URL = "https://xn--lj2b54b90v2gn.com";
+const SITE_NAME = "마이프랜";
+
 export const metadata: Metadata = {
-  title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+    template: "%s | 마이프랜",
+  },
   description:
-    "좋은 브랜드와 좋은 사람을 연결하는 프랜차이즈 창업 컨설팅 그룹. 업종별 대표 프랜차이즈 브랜드를 비교하고, 무료 창업 상담을 신청하세요.",
+    "100+ 프랜차이즈 브랜드를 한눈에 비교! 업종별·예산별 브랜드 찾기, 창업비용 비교, 무료 창업 상담까지. 마이프랜 온라인 창업박람회.",
+  keywords: [
+    "프랜차이즈", "창업", "가맹점", "브랜드비교", "창업상담",
+    "마이프랜", "온라인창업박람회", "프랜차이즈비교",
+    "소자본창업", "창업비용", "프랜차이즈추천",
+  ],
   openGraph: {
     title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
-    description:
-      "좋은 브랜드와 좋은 사람을 연결하는 프랜차이즈 창업 컨설팅 그룹",
+    description: "100+ 프랜차이즈 브랜드를 한눈에 비교하고, 무료 창업 상담을 신청하세요.",
     type: "website",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    locale: "ko_KR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+    description: "100+ 프랜차이즈 브랜드를 한눈에 비교하고, 무료 창업 상담을 신청하세요.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
+  verification: {
+    // Naver/Google verification codes — replace with actual values after registration
+    // google: "GOOGLE_VERIFICATION_CODE",
+    // other: { "naver-site-verification": "NAVER_VERIFICATION_CODE" },
   },
 };
 

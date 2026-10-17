@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
+
+export const metadata: Metadata = {
+  title: "이용약관",
+  description: "마이프랜 서비스 이용약관입니다.",
+};
 
 export default function TermsPage() {
   return (

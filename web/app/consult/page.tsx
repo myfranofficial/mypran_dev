@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import PhotoSlot from "@/components/PhotoSlot";
 import ConsultForm from "@/components/ConsultForm";
+
+export const metadata: Metadata = {
+  title: "무료 창업 상담 신청",
+  description: "프랜차이즈 창업 전문 컨설턴트가 1:1 무료 상담을 제공합니다. 업종 선정부터 상권 분석, 브랜드 비교까지 창업의 모든 과정을 도와드립니다.",
+};
 
 export default function ConsultPage() {
   return (

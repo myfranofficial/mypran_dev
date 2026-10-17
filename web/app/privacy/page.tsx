@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
+
+export const metadata: Metadata = {
+  title: "개인정보처리방침",
+  description: "마이프랜 개인정보처리방침입니다.",
+};
 
 export default function PrivacyPage() {
   return (

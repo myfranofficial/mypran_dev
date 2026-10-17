@@ -26,6 +26,11 @@ import {
   plans,
   heroServices,
 } from "@/data/brands";
+import {
+  categories,
+  budgetRanges,
+  dummyBrands,
+} from "@/data/dummy-brands";
 
 /* ── Icon lookup helper ── */
 const ICON_MAP: Record<string, typeof PeopleIcon> = {
@@ -131,10 +136,9 @@ export default function HomePage() {
               letterSpacing: "-0.02em",
             }}
           >
-            당신의 성공 창업
+            프랜차이즈 비교는
             <br />
-            <span style={{ color: "var(--red-500)" }}>마이프랜</span>이
-            함께합니다
+            <span style={{ color: "var(--red-500)" }}>필수</span>입니다
           </h1>
           <p
             style={{
@@ -143,9 +147,9 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            좋은 브랜드와 좋은 사람을 연결하는
+            100+ 브랜드를 한눈에 비교하고
             <br />
-            프랜차이즈 창업 컨설팅 그룹
+            나에게 맞는 프랜차이즈를 찾으세요
           </p>
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
             <Link
@@ -242,11 +246,9 @@ export default function HomePage() {
               letterSpacing: "-0.02em",
             }}
           >
-            당신의 성공 창업
+            프랜차이즈 비교는
             <br />
-            <span style={{ color: "var(--red-500)" }}>마이프랜</span>이
-            <br />
-            함께합니다
+            <span style={{ color: "var(--red-500)" }}>필수</span>입니다
           </h1>
           <p
             style={{
@@ -255,9 +257,9 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            좋은 브랜드와 좋은 사람을 연결하는
+            100+ 브랜드를 한눈에 비교하고
             <br />
-            프랜차이즈 창업 컨설팅 그룹
+            나에게 맞는 프랜차이즈를 찾으세요
           </p>
           <div
             style={{
@@ -609,6 +611,173 @@ export default function HomePage() {
                 </span>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════ CATEGORY BRANDS (업종별 브랜드 찾기) ════ */}
+      <section style={{ background: "var(--surface-muted)" }}>
+        <div className="container-mf section-py">
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h2 className="typo-h2" style={{ margin: 0 }}>
+              <span style={{ color: "var(--red-500)" }}>업종별</span> 브랜드 찾기
+            </h2>
+            <p className="typo-caption" style={{ margin: "8px 0 0", color: "var(--ink-muted)" }}>
+              관심있는 업종의 프랜차이즈 브랜드를 확인하세요
+            </p>
+          </div>
+          <div className="category-chips-grid" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10 }}>
+            {categories.filter((c) => c.id !== "all").map((cat) => {
+              const count = dummyBrands.filter((b) => b.categoryId === cat.id).length;
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/brands?cat=${cat.id}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 120,
+                    height: 80,
+                    background: "var(--surface)",
+                    border: "1px solid var(--line)",
+                    borderRadius: "var(--radius-md)",
+                    textDecoration: "none",
+                    color: "var(--ink)",
+                    gap: 4,
+                  }}
+                >
+                  <strong style={{ font: "700 15px/20px var(--font-sans)" }}>{cat.name}</strong>
+                  <span style={{ font: "400 12px/16px var(--font-sans)", color: "var(--ink-muted)" }}>
+                    {count}개 브랜드
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ════ BUDGET BRANDS (예산별 브랜드 찾기) ════ */}
+      <section>
+        <div className="container-mf section-py">
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h2 className="typo-h2" style={{ margin: 0 }}>
+              <span style={{ color: "var(--red-500)" }}>예산별</span> 브랜드 찾기
+            </h2>
+            <p className="typo-caption" style={{ margin: "8px 0 0", color: "var(--ink-muted)" }}>
+              나의 투자 예산에 맞는 브랜드를 찾아보세요
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+            {budgetRanges.map((range) => {
+              const brands = dummyBrands.filter(
+                (b) => b.foundingCostMin >= range.min && b.foundingCostMin < range.max
+              );
+              return (
+                <Link
+                  key={range.id}
+                  href={`/brands?budget=${range.id}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "24px",
+                    background: "var(--surface-muted)",
+                    borderRadius: "var(--radius-md)",
+                    textDecoration: "none",
+                    color: "var(--ink)",
+                    border: "1px solid var(--line)",
+                  }}
+                >
+                  <strong style={{ font: "700 18px/24px var(--font-sans)", color: "var(--red-500)" }}>
+                    {range.label}
+                  </strong>
+                  <span style={{ font: "400 13px/18px var(--font-sans)", color: "var(--ink-muted)", marginTop: 4 }}>
+                    {brands.length}개 브랜드
+                  </span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 12 }}>
+                    {brands.slice(0, 3).map((b) => (
+                      <span
+                        key={b.id}
+                        style={{
+                          padding: "3px 10px",
+                          background: "var(--surface)",
+                          borderRadius: "var(--radius-sm)",
+                          font: "500 12px/16px var(--font-sans)",
+                        }}
+                      >
+                        {b.name}
+                      </span>
+                    ))}
+                    {brands.length > 3 && (
+                      <span style={{ font: "400 12px/16px var(--font-sans)", color: "var(--ink-muted)", alignSelf: "center" }}>
+                        +{brands.length - 3}개
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ════ ALL BRANDS (전체 입점 브랜드) ════ */}
+      <section style={{ background: "var(--night)", color: "var(--surface)" }}>
+        <div className="container-mf section-py">
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h2 style={{ margin: 0, font: "900 28px/36px var(--font-sans)" }}>
+              전체 <span style={{ color: "var(--red-500)" }}>입점 브랜드</span>
+            </h2>
+            <p style={{ margin: "8px 0 0", font: "400 14px/20px var(--font-sans)", color: "var(--night-muted)" }}>
+              마이프랜에 입점한 {dummyBrands.length}개의 프랜차이즈 브랜드
+            </p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          >
+            {dummyBrands.map((b) => (
+              <Link
+                key={b.id}
+                href={`/brands/${b.id}`}
+                style={{
+                  padding: "8px 18px",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "var(--radius-md)",
+                  font: "500 13px/1 var(--font-sans)",
+                  color: "var(--surface)",
+                  textDecoration: "none",
+                }}
+              >
+                {b.name}
+              </Link>
+            ))}
+          </div>
+          <div style={{ textAlign: "center", marginTop: 24 }}>
+            <Link
+              href="/brands"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                height: 44,
+                padding: "0 24px",
+                border: "1px solid rgba(255,255,255,0.4)",
+                borderRadius: "var(--radius-md)",
+                font: "700 14px/1 var(--font-sans)",
+                color: "var(--surface)",
+                textDecoration: "none",
+              }}
+            >
+              전체 브랜드 보기 <ChevronRight size={14} />
+            </Link>
           </div>
         </div>
       </section>

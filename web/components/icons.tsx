@@ -140,3 +140,30 @@ export function MailIcon(p: IconProps) {
     { fillRule: true }
   );
 }
+
+export function SearchIcon(p: IconProps) {
+  return svg(
+    p,
+    "M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+  );
+}
+
+export function CloseIcon(p: IconProps) {
+  return svg(p, "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z");
+}
+
+export function CompareIcon(p: IconProps) {
+  return svg(p, "M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v6l-5-6v14h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z");
+}
+
+export function DownloadIcon(p: IconProps) {
+  return svg(p, "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z");
+}
+
+export function ClockIcon(p: IconProps) {
+  return svg(p, "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z");
+}
+
+export function CheckCircleIcon(p: IconProps) {
+  return svg(p, "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z");
+}

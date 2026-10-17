@@ -3,8 +3,10 @@
 import { useState, type FormEvent } from "react";
 
 const REGIONS = ["서울", "경기", "인천", "부산", "대구", "대전", "광주", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
-const CATEGORIES = ["카페·디저트", "치킨·피자", "외식·한식", "주점·술집", "편의·리테일", "서비스·교육"];
+const CATEGORIES = ["한식", "고기·곱창", "치킨", "분식", "카페", "주점", "밀키트", "당구장", "편의점", "기타"];
 const STARTUP_TYPES = ["신규 창업", "업종 전환", "브랜드 입점 문의", "투자·기타"];
+const BUDGETS = ["3천만원 이하", "3천~5천만원", "5천만~1억원", "1억~2억원", "2억원 이상", "미정"];
+const TIMEFRAMES = ["즉시", "1개월 이내", "3개월 이내", "6개월 이내", "1년 이내", "미정"];
 
 export default function ConsultForm({
   brandId,
@@ -27,6 +29,11 @@ export default function ConsultForm({
       region: fd.get("region"),
       category: fd.get("category"),
       startup_type: fd.get("startup_type"),
+      budget: fd.get("budget"),
+      has_store: fd.get("has_store"),
+      store_size: fd.get("store_size"),
+      timeframe: fd.get("timeframe"),
+      message: fd.get("message"),
       brand_id: brandId ?? null,
       brand_name: brandName ?? null,
     };
@@ -98,12 +105,15 @@ export default function ConsultForm({
         </div>
       )}
 
+      {/* 기본 정보 */}
       <div className="consult-grid">
         <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
-          성함 <input className="uline" type="text" name="name" placeholder="홍길동" required />
+          성함 <span style={{ color: "var(--red-500)", fontSize: 12 }}>*</span>
+          <input className="uline" type="text" name="name" placeholder="홍길동" required />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
-          연락처 <input className="uline" type="tel" name="phone" placeholder="010-0000-0000" required />
+          연락처 <span style={{ color: "var(--red-500)", fontSize: 12 }}>*</span>
+          <input className="uline" type="tel" name="phone" placeholder="010-0000-0000" required />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
           창업 희망지역
@@ -119,8 +129,39 @@ export default function ConsultForm({
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
           </select>
         </label>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
+          창업 예산
+          <select className="uline" name="budget">
+            <option value="">예산 선택</option>
+            {BUDGETS.map((b) => <option key={b}>{b}</option>)}
+          </select>
+        </label>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
+          창업 희망 시기
+          <select className="uline" name="timeframe">
+            <option value="">시기 선택</option>
+            {TIMEFRAMES.map((t) => <option key={t}>{t}</option>)}
+          </select>
+        </label>
       </div>
 
+      {/* 보유 매장 */}
+      <div className="consult-grid">
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
+          보유 매장 유무
+          <select className="uline" name="has_store">
+            <option value="">선택</option>
+            <option value="yes">있음</option>
+            <option value="no">없음</option>
+          </select>
+        </label>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
+          보유 매장 평수
+          <input className="uline" type="text" name="store_size" placeholder="예: 20평" />
+        </label>
+      </div>
+
+      {/* 창업 형태 */}
       <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
         <legend style={{ padding: 0, marginBottom: 10, font: "700 15px/21px var(--font-sans)" }}>
           창업 형태
@@ -134,6 +175,22 @@ export default function ConsultForm({
           ))}
         </div>
       </fieldset>
+
+      {/* 문의 내용 */}
+      <label style={{ display: "flex", flexDirection: "column", gap: 4, font: "700 15px/21px var(--font-sans)" }}>
+        문의 내용
+        <textarea
+          name="message"
+          className="uline"
+          rows={4}
+          placeholder="추가로 궁금한 점이나 상담 희망 내용을 적어주세요"
+          style={{
+            resize: "vertical",
+            font: "400 15px/24px var(--font-sans)",
+            color: "var(--ink)",
+          }}
+        />
+      </label>
 
       <label
         style={{
