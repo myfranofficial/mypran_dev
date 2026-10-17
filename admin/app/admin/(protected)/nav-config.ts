@@ -23,12 +23,13 @@ export const ADMIN_GROUPS: AdminGroup[] = [
   },
   {
     href: "/admin/banners",
-    label: "배너·공지",
+    label: "배너·공지·팝업",
     icon: "banners",
-    paths: ["/admin/banners", "/admin/notices"],
+    paths: ["/admin/banners", "/admin/notices", "/admin/popups"],
     tabs: [
       { href: "/admin/banners", label: "배너" },
       { href: "/admin/notices", label: "공지" },
+      { href: "/admin/popups", label: "팝업" },
     ],
   },
   {

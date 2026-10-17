@@ -353,6 +353,28 @@ export function exportSupport(): void {
   }
 }
 
+export function exportPopups(): void {
+  const db = getDb();
+  const now = new Date().toISOString().slice(0, 10);
+  const popups = db.prepare(
+    `SELECT * FROM popups WHERE is_active = 1
+     AND (start_at IS NULL OR start_at <= ?)
+     AND (end_at IS NULL OR end_at >= ?)
+     ORDER BY sort_order ASC, id ASC`
+  ).all(now, now) as any[];
+
+  writeJson("popups.json", {
+    popups: popups.map((p) => ({
+      id: p.id,
+      title: p.title || "",
+      image: resolveUrl(p.image_url),
+      link: p.link_url || "",
+      linkText: p.link_text || "자세히 보기",
+      position: p.position || "center",
+    })),
+  });
+}
+
 export function exportPageImages(): void {
   const db = getDb();
   const rows = db.prepare(
@@ -386,5 +408,6 @@ export function exportAll(): void {
   try { exportBenefits(); } catch (e) { console.error("[json-export] benefits:", e); }
   try { exportFranchise(); } catch (e) { console.error("[json-export] franchise:", e); }
   try { exportSupport(); } catch (e) { console.error("[json-export] support:", e); }
+  try { exportPopups(); } catch (e) { console.error("[json-export] popups:", e); }
   try { exportPageImages(); } catch (e) { console.error("[json-export] page-images:", e); }
 }

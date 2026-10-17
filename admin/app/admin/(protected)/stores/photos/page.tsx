@@ -61,11 +61,11 @@ export default async function StorePhotosPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className={s.pageTitle}>매장 사진 관리</h1>
+        <h1 className="text-xl font-bold text-[#231F20]">매장 사진 관리</h1>
       </div>
 
       {sp.msg && (
-        <div className={sp.msg === "error" ? s.errorBox : s.successBox}>
+        <div className={sp.msg === "error" ? s.errorBox : s.okBox}>
           {sp.msg === "added" && "사진이 추가되었습니다."}
           {sp.msg === "deleted" && "사진이 삭제되었습니다."}
           {sp.msg === "representative" && "대표사진이 변경되었습니다."}

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { ImageUploadField } from "../ui/image-upload-field";
+import { ImageSpecGuide } from "../ui/image-spec-guide";
 import { imageUrl } from "@/lib/storage/url";
 import * as s from "../ui/styles";
 
@@ -30,6 +31,8 @@ export function EventForm({ action, event }: EventFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       {state?.error && <div className={s.errorBox}>{state.error}</div>}
+
+      <ImageSpecGuide specs={[{ label: "이벤트 이미지", size: "1200 x 900px", ratio: "4:3", note: "이벤트 카드에 표시" }]} />
 
       <div className="space-y-4 rounded-lg border border-[#E5E7EA] bg-white p-5">
         <div className="space-y-1.5">

@@ -164,6 +164,21 @@ CREATE TABLE IF NOT EXISTS consultations (
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
 
+-- 팝업
+CREATE TABLE IF NOT EXISTS popups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  image_url TEXT NOT NULL,
+  link_url TEXT,
+  link_text TEXT DEFAULT '자세히 보기',
+  position TEXT DEFAULT 'center',
+  start_at TEXT,
+  end_at TEXT,
+  sort_order INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
+  created_at TEXT DEFAULT (datetime('now','localtime'))
+);
+
 -- 인덱스
 CREATE INDEX IF NOT EXISTS idx_notices_category ON notices(category);
 CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery_images(category);

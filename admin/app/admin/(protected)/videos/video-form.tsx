@@ -2,6 +2,7 @@
 
 import { useActionState, useState, useCallback } from "react";
 import { ImageUploadField } from "../ui/image-upload-field";
+import { ImageSpecGuide } from "../ui/image-spec-guide";
 import { imageUrl } from "@/lib/storage/url";
 import * as s from "../ui/styles";
 
@@ -39,6 +40,8 @@ export function VideoForm({ action, video }: VideoFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       {state?.error && <div className={s.errorBox}>{state.error}</div>}
+
+      <ImageSpecGuide specs={[{ label: "영상 썸네일", size: "1280 x 720px", ratio: "16:9", note: "미등록 시 YouTube 자동 썸네일 사용" }]} />
 
       <div className="space-y-4 rounded-lg border border-[#E5E7EA] bg-white p-5">
         <div className="space-y-1.5">

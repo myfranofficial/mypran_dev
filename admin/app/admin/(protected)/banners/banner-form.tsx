@@ -33,6 +33,15 @@ export function BannerForm({ action, banner }: BannerFormProps) {
         <br />PC와 모바일에서 각각 다른 이미지를 보여줄 수 있으며, 활성화된 배너만 노출됩니다.
       </div>
 
+      {/* 이미지 규격 안내 */}
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm">
+        <p className="font-bold text-amber-800 mb-2">이미지 규격 안내</p>
+        <ul className="space-y-1 text-amber-900">
+          <li><span className="font-medium">PC 배너:</span> 1920 x 548px (7:2 비율) · 프론트에서 7:2로 잘림 · 원본 비율도 사용 가능</li>
+          <li><span className="font-medium">모바일 배너:</span> 800 x 1422px (9:16 비율) · 미등록 시 PC 이미지 사용</li>
+        </ul>
+      </div>
+
       <div className="space-y-4 rounded-lg border border-[#E5E7EA] bg-white p-5">
         <div className="space-y-1.5">
           <label htmlFor="title" className={s.label}>제목</label>
