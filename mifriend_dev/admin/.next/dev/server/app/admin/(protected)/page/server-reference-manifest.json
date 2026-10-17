@@ -1,0 +1,17 @@
+{
+  "node": {
+    "00e79f1db9d20964729ac501ca762eb839ccd6a3e8": {
+      "workers": {
+        "app/admin/(protected)/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/(protected)/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/(protected)/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "logoutAction",
+          "filename": "app/admin/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "app/admin/(protected)/actions.ts"
+    }
+  },
+  "edge": {}
+}

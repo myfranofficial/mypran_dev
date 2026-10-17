@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>마이프랜 홈 PC</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/myfran/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+:root{--red-500:#db0014;--red-600:#c4001a;--red-700:#a50014;--red-900:#7a000f;--red-50:#fdeef0;--black:#0b0b0b;--black-soft:#1c1c1c;--line-dark:#2e2e2e;--smoke:#a3a3a3;--red-on-dark:#ff3347;--ink:#111111;--ink-muted:#6b6b6b;--surface:#ffffff;--surface-muted:#f7f7f7;--night:#0a1220;--night-muted:#c9cdd4;--line:#e5e5e5;--line-control:#8f8f8f;--focus:#111111;--on-brand:#ffffff;--font-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;--space-16:64px;--radius-sm:2px;--radius-md:4px;--radius-lg:8px;--radius-none:0px;--radius-pill:9999px;--shadow-card:0 2px 8px rgba(17,17,17,0.08);--shadow-lift:0 18px 40px rgba(11,11,11,0.18)}
+body{margin:0;font-family:var(--font-sans);color:var(--ink)}
+a{color:#111111}a:hover{color:#db0014}
+.ph{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--surface-muted);outline:1px dashed var(--line-control);outline-offset:-6px;color:var(--ink-muted);text-align:center;overflow:hidden}
+.ph-id{font:700 11px/14px var(--font-sans);letter-spacing:.12em;color:var(--ink)}
+.ph-size{font:500 11px/14px var(--font-sans)}
+.ph-dark{background:var(--black-soft);outline-color:#5a5a5a;color:var(--smoke)}
+.ph-dark .ph-id{color:var(--surface)}
+.navlink{display:flex;align-items:center;height:56px;font:500 16px/20px var(--font-sans);color:var(--ink);text-decoration:none;border-bottom:3px solid transparent;box-sizing:border-box}
+.navlink:hover{color:var(--red-500)}
+.navlink[aria-current]{color:var(--red-500);font-weight:700;border-bottom-color:var(--red-500)}
+.tile:hover .ph{outline:2px solid var(--red-500);outline-offset:0;box-shadow:var(--shadow-card)}
+.chip{position:relative;display:inline-flex}
+.chip input{position:absolute;opacity:0;width:1px;height:1px}
+.chip span{display:inline-flex;align-items:center;height:44px;padding:0 16px;border:1px solid var(--line-control);border-radius:var(--radius-md);font:500 15px/20px var(--font-sans);color:var(--ink);background:var(--surface);cursor:pointer}
+.chip input:checked + span{border-color:var(--ink);background:var(--ink);color:var(--surface);font-weight:700}
+.chip input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
+.uline{width:100%;height:48px;border:0;border-bottom:2px solid var(--ink);background:transparent;font:500 16px/24px var(--font-sans);color:var(--ink);padding:0 2px;border-radius:0;box-sizing:border-box}
+.uline:focus{outline:none;border-bottom-color:var(--red-500)}
+.uline::placeholder{color:var(--ink-muted)}
+</style>
+</helmet>
+<div class="mf" style="width: 1440px; background: var(--surface); color: var(--ink); font-family: var(--font-sans)">
+
+<header style="background: var(--surface); border-bottom: 1px solid var(--line)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 0 24px; height: 80px; display: flex; align-items: center; gap: 24px">
+    <a href="Main.dc.html" aria-label="마이프랜 홈" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink)">
+      <svg width="40" height="44" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 0l20 11v22L20 44 0 33V11z" fill="#111111"></path><text x="20" y="28" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-weight="900" font-size="15" fill="#db0014">MF</text></svg>
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font: 900 22px/24px var(--font-sans); letter-spacing: -0.02em">마이<span style="color: var(--red-500)">프랜</span></span><span style="font: 400 11px/14px var(--font-sans); color: var(--ink-muted)">프랜차이즈 창업 컨설팅 그룹</span></span>
+    </a>
+    <div style="flex-grow: 1"></div>
+    <a href="tel:01047086091" style="display: flex; align-items: center; gap: 8px; font: 700 16px/20px var(--font-sans); color: var(--ink); text-decoration: none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"></path></svg>
+      010-4708-6091
+    </a>
+    <a class="mf-btn mf-btn-primary" href="Consult-PC.dc.html" style="height: 48px; padding: 0 28px; font-size: 16px">무료 상담신청</a>
+  </div>
+  <nav aria-label="주 메뉴" style="max-width: 1248px; margin: 0 auto; padding: 0 24px; display: flex; gap: 48px">
+    <a class="navlink" href="Brands-PC.dc.html">브랜드</a>
+    <a class="navlink" href="#">창업 컨설팅</a>
+    <a class="navlink" href="#">입점 안내</a>
+    <a class="navlink" href="#">성공 사례</a>
+    <a class="navlink" href="#">회사소개</a>
+    <a class="navlink" href="Consult-PC.dc.html">상담 신청</a>
+  </nav>
+</header>
+
+<section style="position: relative; height: 640px; background: var(--night); overflow: hidden">
+  <div class="ph ph-dark" style="position: absolute; inset: 0; align-items: flex-end; justify-content: flex-end; padding: 28px 32px">
+    <span class="ph-id">P1 · 메인 히어로 (PC)</span>
+    <span class="ph-size">9:4 · 표시 1440×640 · 원본 2880×1280</span>
+    <span class="ph-size">도심 야경 · 오피스 타워 / 피사체는 오른쪽 50%</span>
+  </div>
+  <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,18,32,0.94) 0%, rgba(10,18,32,0.78) 42%, rgba(10,18,32,0.05) 75%)"></div>
+  <div style="position: relative; max-width: 1248px; height: 100%; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; justify-content: center; color: var(--surface)">
+    <span style="font: 700 12px/16px var(--font-sans); letter-spacing: 0.18em; color: var(--night-muted)">FRANCHISE CONSULTING GROUP</span>
+    <h1 style="margin: 16px 0 0; font: 900 56px/68px var(--font-sans); letter-spacing: -0.02em">당신의 성공 창업<br><span style="color: var(--red-500)">마이프랜</span>이 함께합니다</h1>
+    <p style="margin: 20px 0 0; font: 500 18px/28px var(--font-sans); color: var(--night-muted)">좋은 브랜드와 좋은 사람을 연결하는<br>프랜차이즈 창업 컨설팅 그룹</p>
+    <div style="display: flex; gap: 12px; margin-top: 32px">
+      <a class="mf-btn mf-btn-primary" href="Consult-PC.dc.html" style="height: 52px; padding: 0 32px; font-size: 16px">무료 창업 상담 신청</a>
+      <a class="mf-btn" href="Brands-PC.dc.html" style="height: 52px; padding: 0 28px; font-size: 16px; color: var(--surface); border-color: rgba(255,255,255,0.6)">입점 브랜드 보기</a>
+    </div>
+    <ul style="display: flex; gap: 40px; margin: 56px 0 0; padding: 24px 0 0; list-style: none; border-top: 1px solid rgba(255,255,255,0.2); width: 600px">
+      <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 13px/18px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm7 0a3 3 0 100-6 3 3 0 000 6zM2 19c0-3.3 3.1-6 7-6s7 2.7 7 6v1H2zm15.5-6c2.8.3 4.5 2.4 4.5 5v2h-4v-1c0-2.4-.9-4.4-2.5-5.6z"></path></svg>가맹영업대행</li>
+      <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 13px/18px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M4 20h16v2H4zM5 13h3v6H5zm5-4h3v10h-3zm5-5h3v15h-3z"></path></svg>상권분석</li>
+      <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 13px/18px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13h-6v-6h-4v6z"></path></svg>가맹본부 구축</li>
+      <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 13px/18px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path fill-rule="evenodd" d="M3 4h18v12H3V4zm2 2v8h14V6H5zM9 18h6v2H9z"></path></svg>온라인 창업박람회</li>
+      <li style="display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 13px/18px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path fill-rule="evenodd" d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1.2 13.2l5.7-5.7-1.4-1.4-4.3 4.3-2.1-2.1-1.4 1.4 3.5 3.5z"></path></svg>투자대행</li>
+    </ul>
+  </div>
+</section>
+
+<section style="border-bottom: 1px solid var(--line)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 24px; display: flex; align-items: center; gap: 24px">
+    <div style="display: flex; align-items: center; gap: 12px; padding-right: 24px; border-right: 1px solid var(--line)">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path fill-rule="evenodd" d="M7 3h10v2h3v3a4 4 0 01-4 4h-.3A5 5 0 0113 14.9V18h3v3H8v-3h3v-3.1A5 5 0 018.3 12H8a4 4 0 01-4-4V5h3V3zm0 4H6v1a2 2 0 001 1.7V7zm10 0v2.7A2 2 0 0018 8V7h-1z"></path></svg>
+      <div><b style="display: block; font: 900 32px/36px var(--font-sans); letter-spacing: -0.02em">100+</b><span style="font: 500 13px/18px var(--font-sans); color: var(--ink-muted)">입점 브랜드</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding-right: 24px; border-right: 1px solid var(--line)">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm7 0a3 3 0 100-6 3 3 0 000 6zM2 19c0-3.3 3.1-6 7-6s7 2.7 7 6v1H2zm15.5-6c2.8.3 4.5 2.4 4.5 5v2h-4v-1c0-2.4-.9-4.4-2.5-5.6z"></path></svg>
+      <div><b style="display: block; font: 900 32px/36px var(--font-sans); letter-spacing: -0.02em">1,000+</b><span style="font: 500 13px/18px var(--font-sans); color: var(--ink-muted)">가맹 상담 진행</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding-right: 24px; border-right: 1px solid var(--line)">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M4 20h16v2H4zM5 13h3v6H5zm5-4h3v10h-3zm5-5h3v15h-3z"></path></svg>
+      <div><b style="display: block; font: 900 32px/36px var(--font-sans); letter-spacing: -0.02em">500+</b><span style="font: 500 13px/18px var(--font-sans); color: var(--ink-muted)">성공 창업 사례</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path fill-rule="evenodd" d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1.2 13.2l5.7-5.7-1.4-1.4-4.3 4.3-2.1-2.1-1.4 1.4 3.5 3.5z"></path></svg>
+      <div><b style="display: block; font: 900 32px/36px var(--font-sans); letter-spacing: -0.02em">98%</b><span style="font: 500 13px/18px var(--font-sans); color: var(--ink-muted)">고객 만족도</span></div>
+    </div>
+    <a href="Consult-PC.dc.html" style="margin-left: auto; display: flex; align-items: center; gap: 12px; background: var(--red-500); color: var(--on-brand); border-radius: var(--radius-lg); padding: 14px 24px; font: 700 15px/21px var(--font-sans); text-decoration: none">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M4 4h16v12H8l-4 4z"></path></svg>
+      <span>지금 바로<br>입점 상담을 받아보세요</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+  </div>
+</section>
+
+<section style="max-width: 1248px; margin: 0 auto; padding: 64px 24px 0">
+  <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink)">
+    <h2 style="display: flex; align-items: center; gap: 8px; margin: 0; font: 900 28px/36px var(--font-sans)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"></path></svg><span><span style="color: var(--red-500)">베스트</span> 브랜드</span></h2>
+    <p style="margin: 0; flex-grow: 1; padding-left: 12px; border-left: 1px solid var(--line); font: 400 14px/20px var(--font-sans); color: var(--ink-muted)">업종별 대표 프랜차이즈 브랜드입니다.</p>
+    <a class="mf-btn mf-btn-outline" href="Brands-PC.dc.html" style="height: 36px">전체 브랜드 보기 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px 12px; margin-top: 32px">
+    <sc-for list="{{tiles}}" as="t" hint-placeholder-count="12">
+      <a class="tile" href="Brands-PC.dc.html" style="display: block; text-decoration: none; color: var(--ink)">
+        <div class="ph" style="aspect-ratio: 4 / 3; border-radius: var(--radius-sm)"><span class="ph-id">P3 · 매장 외관</span><span class="ph-size">4:3 · 1200×900</span></div>
+        <span style="display: block; margin-top: 8px; text-align: center; font: 500 14px/20px var(--font-sans)">{{t.name}}</span>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<section style="max-width: 1248px; margin: 0 auto; padding: 96px 24px 64px">
+  <h2 style="margin: 0; text-align: center; font: 900 40px/48px var(--font-sans); letter-spacing: -0.02em">프랜차이즈 <span style="color: var(--red-500)">브랜드 입점 안내</span></h2>
+  <p style="margin: 12px 0 0; text-align: center; font: 500 18px/28px var(--font-sans); color: var(--ink-muted)">브랜드를 알리고, 창업 고객과 연결하세요</p>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 40px; border: 1px solid var(--ink)">
+    <article style="position: relative; display: flex; flex-direction: column; padding: 32px; background: var(--black); color: var(--surface); border-top: 4px solid var(--red-500)">
+      <div style="display: flex; justify-content: space-between; font: 700 12px/16px var(--font-sans); letter-spacing: 0.18em; color: var(--smoke)"><span style="color: var(--red-on-dark)">RECOMMENDED</span><span>01</span></div>
+      <h3 style="margin: 24px 0 4px; font: 700 26px/34px var(--font-sans); letter-spacing: -0.02em">베스트 브랜드</h3>
+      <p style="margin: 0; font: 400 14px/22px var(--font-sans); color: var(--smoke)">메인 최상단 노출, 가장 먼저 보이는 자리</p>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin: 32px 0 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line-dark)"><b style="font: 700 64px/64px var(--font-sans); letter-spacing: -0.04em; font-variant-numeric: tabular-nums">1,000</b><span style="font: 500 20px/28px var(--font-sans)">만원</span><span style="font: 400 16px/28px var(--font-sans); color: var(--smoke)">/ 월</span></div>
+      <ul style="list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 12px; font: 400 14px/20px var(--font-sans)">
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--smoke)">노출 위치</span><b>메인 1단</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--smoke)">브랜드관 카드</span><b>포함</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--smoke)">추천 브랜드 노출</span><b>포함</b></li>
+      </ul>
+      <a class="mf-btn mf-btn-primary" href="Consult-PC.dc.html" style="margin-top: auto">입점 문의</a>
+    </article>
+    <article style="display: flex; flex-direction: column; padding: 32px; background: var(--surface); border-left: 1px solid var(--ink); border-top: 4px solid var(--ink)">
+      <div style="display: flex; justify-content: space-between; font: 700 12px/16px var(--font-sans); letter-spacing: 0.18em; color: var(--ink-muted)"><span>PREMIUM</span><span>02</span></div>
+      <h3 style="margin: 24px 0 4px; font: 700 26px/34px var(--font-sans); letter-spacing: -0.02em">프리미엄 브랜드</h3>
+      <p style="margin: 0; font: 400 14px/22px var(--font-sans); color: var(--ink-muted)">검증된 업종별 브랜드 영역 노출</p>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin: 32px 0 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)"><b style="font: 700 64px/64px var(--font-sans); letter-spacing: -0.04em; font-variant-numeric: tabular-nums">700</b><span style="font: 500 20px/28px var(--font-sans)">만원</span><span style="font: 400 16px/28px var(--font-sans); color: var(--ink-muted)">/ 월</span></div>
+      <ul style="list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 12px; font: 400 14px/20px var(--font-sans)">
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">노출 위치</span><b>메인 2단</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">브랜드관 카드</span><b>포함</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">추천 브랜드 노출</span><b>—</b></li>
+      </ul>
+      <a class="mf-btn mf-btn-line" href="Consult-PC.dc.html" style="margin-top: auto">입점 문의</a>
+    </article>
+    <article style="display: flex; flex-direction: column; padding: 32px; background: var(--surface); border-left: 1px solid var(--ink); border-top: 4px solid var(--ink)">
+      <div style="display: flex; justify-content: space-between; font: 700 12px/16px var(--font-sans); letter-spacing: 0.18em; color: var(--ink-muted)"><span>SPECIAL</span><span>03</span></div>
+      <h3 style="margin: 24px 0 4px; font: 700 26px/34px var(--font-sans); letter-spacing: -0.02em">스페셜 브랜드</h3>
+      <p style="margin: 0; font: 400 14px/22px var(--font-sans); color: var(--ink-muted)">성장 가능성이 높은 생활밀착형 브랜드</p>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin: 32px 0 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)"><b style="font: 700 64px/64px var(--font-sans); letter-spacing: -0.04em; font-variant-numeric: tabular-nums">500</b><span style="font: 500 20px/28px var(--font-sans)">만원</span><span style="font: 400 16px/28px var(--font-sans); color: var(--ink-muted)">/ 월</span></div>
+      <ul style="list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 12px; font: 400 14px/20px var(--font-sans)">
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">노출 위치</span><b>메인 3단</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">브랜드관 카드</span><b>포함</b></li>
+        <li style="display: flex; justify-content: space-between"><span style="color: var(--ink-muted)">추천 브랜드 노출</span><b>—</b></li>
+      </ul>
+      <a class="mf-btn mf-btn-line" href="Consult-PC.dc.html" style="margin-top: auto">입점 문의</a>
+    </article>
+  </div>
+</section>
+
+<section style="background: var(--red-700); color: var(--on-brand)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 48px 24px">
+    <h2 style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 0 24px; font: 700 26px/34px var(--font-sans)"><span style="width: 120px; height: 1px; background: rgba(255,255,255,0.6)"></span>입점 브랜드 혜택<span style="width: 120px; height: 1px; background: rgba(255,255,255,0.6)"></span></h2>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M3 10v4h3l6 4V6l-6 4H3zm13 2a4 4 0 00-2-3.46v6.92A4 4 0 0016 12zm-2-8v2.06a6 6 0 010 11.88V20a8 8 0 000-16z"></path></svg><span>자사 홈페이지 광고비<br><span style="color: var(--red-500)">매월 1억원 집행</span></span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M4 4h7a2 2 0 012 2v14a2 2 0 00-2-2H4zm16 0h-5a2 2 0 00-2 2v14a2 2 0 012-2h5z"></path></svg><span>창업매거진 전국 배포<br><span style="color: var(--red-500)">무료 게재</span></span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path fill-rule="evenodd" d="M3 4h18v12H3V4zm2 2v8h14V6H5zM9 18h6v2H9z"></path></svg><span>신생 브랜드<br>홈페이지 제작</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path fill-rule="evenodd" d="M6 2h8l5 5v15H6V2zm2 10v2h8v-2H8zm0 4v2h8v-2H8z"></path></svg><span>카탈로그 제작</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M4 20h16v2H4zM5 13h3v6H5zm5-4h3v10h-3zm5-5h3v15h-3z"></path></svg><span>마케팅비 지원</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 140px; padding: 16px 8px; background: var(--surface); color: var(--ink); border-radius: var(--radius-md); text-align: center; font: 700 15px/21px var(--font-sans)"><svg width="36" height="36" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm7 0a3 3 0 100-6 3 3 0 000 6zM2 19c0-3.3 3.1-6 7-6s7 2.7 7 6v1H2zm15.5-6c2.8.3 4.5 2.4 4.5 5v2h-4v-1c0-2.4-.9-4.4-2.5-5.6z"></path></svg><span>창업박람회<br>입점 대행</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width: 1248px; margin: 0 auto; padding: 64px 24px">
+  <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink)">
+    <h2 style="display: flex; align-items: center; gap: 8px; margin: 0; font: 900 28px/36px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#db0014" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg><span>마이프랜 <span style="color: var(--red-500)">보유</span> 브랜드</span></h2>
+    <p style="margin: 0; flex-grow: 1; padding-left: 12px; border-left: 1px solid var(--line); font: 400 14px/20px var(--font-sans); color: var(--ink-muted)">마이프랜이 직접 운영하며 함께 성장하는 브랜드입니다.</p>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 32px">
+    <sc-for list="{{owned}}" as="o" hint-placeholder-count="4">
+      <a href="#" style="display: flex; flex-direction: column; background: var(--black); color: var(--surface); text-decoration: none">
+        <div class="ph ph-dark" style="aspect-ratio: 16 / 9"><span class="ph-id">P6 · 매장 인테리어</span><span class="ph-size">16:9 · 1600×900</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px">
+          <span><small style="display: block; font: 700 11px/14px var(--font-sans); letter-spacing: 0.18em; color: var(--smoke)">OWNED {{o.no}}</small><strong style="display: block; margin-top: 4px; font: 700 18px/24px var(--font-sans)">{{o.name}}</strong></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<section style="background: var(--surface-muted)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 480px minmax(0, 1fr); gap: 64px; align-items: center">
+    <div class="ph" style="width: 480px; height: 600px; background: #ececec"><span class="ph-id">P7 · 상담 장면</span><span class="ph-size">4:5 · 표시 480×600 · 원본 1200×1500</span><span class="ph-size">실제 컨설턴트 상담 장면 (초상권 동의)</span></div>
+    <form style="display: flex; flex-direction: column; gap: 24px">
+      <div>
+        <span style="font: 700 12px/16px var(--font-sans); letter-spacing: 0.18em; color: var(--ink-muted)">FREE CONSULTING</span>
+        <h2 style="margin: 8px 0 0; font: 900 40px/48px var(--font-sans); letter-spacing: -0.02em">창업, <span style="color: var(--red-500)">무료 상담</span>부터<br>시작하세요</h2>
+        <p style="margin: 12px 0 0; font: 400 15px/24px var(--font-sans); color: var(--ink-muted)">담당 컨설턴트가 영업일 기준 24시간 안에 연락드립니다.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px">
+        <label style="display: flex; flex-direction: column; gap: 4px; font: 700 15px/21px var(--font-sans)">성함 <input class="uline" type="text" placeholder="홍길동"></label>
+        <label style="display: flex; flex-direction: column; gap: 4px; font: 700 15px/21px var(--font-sans)">연락처 <input class="uline" type="tel" placeholder="010-0000-0000"></label>
+        <label style="display: flex; flex-direction: column; gap: 4px; font: 700 15px/21px var(--font-sans)">창업 희망지역 <select class="uline"><option>시/도 선택</option><option>서울</option><option>경기</option><option>인천</option><option>부산</option></select></label>
+        <label style="display: flex; flex-direction: column; gap: 4px; font: 700 15px/21px var(--font-sans)">관심 업종 <select class="uline"><option>업종 선택</option><option>카페·디저트</option><option>치킨·피자</option><option>외식</option><option>주점</option><option>편의·리테일</option></select></label>
+      </div>
+      <fieldset style="border: 0; margin: 0; padding: 0">
+        <legend style="padding: 0; margin-bottom: 10px; font: 700 15px/21px var(--font-sans)">창업 형태</legend>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <label class="chip"><input type="radio" name="htype" checked=""><span>신규 창업</span></label>
+          <label class="chip"><input type="radio" name="htype"><span>업종 전환</span></label>
+          <label class="chip"><input type="radio" name="htype"><span>브랜드 입점 문의</span></label>
+          <label class="chip"><input type="radio" name="htype"><span>투자·기타</span></label>
+        </div>
+      </fieldset>
+      <label style="display: flex; align-items: center; gap: 8px; font: 400 14px/20px var(--font-sans); color: var(--ink-muted)"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #111111"> 개인정보 수집·이용에 동의합니다 <a href="#" style="color: var(--ink)">[보기]</a></label>
+      <button type="button" class="mf-btn mf-btn-primary" style="height: 56px; font-size: 17px; width: 100%">무료 상담 신청하기</button>
+    </form>
+  </div>
+</section>
+
+<section style="background: var(--red-700); color: var(--on-brand)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; justify-content: center; gap: 64px">
+    <div style="display: flex; align-items: center; gap: 12px; font: 500 18px/24px var(--font-sans)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"></path></svg>입점 상담문의 <strong style="font: 900 26px/32px var(--font-sans)">010-4708-6091</strong></div>
+    <div style="display: flex; align-items: center; gap: 12px; font: 500 18px/24px var(--font-sans)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path fill-rule="evenodd" d="M2 5h20v14H2V5zm2.4 2L12 12l7.6-5H4.4z"></path></svg>이메일 상담 <strong style="font: 700 18px/24px var(--font-sans)">myfriend2026@naver.com</strong></div>
+  </div>
+</section>
+
+<footer style="background: var(--surface); border-top: 1px solid var(--line)">
+  <div style="max-width: 1248px; margin: 0 auto; padding: 28px 24px; display: flex; align-items: center; gap: 40px">
+    <span style="display: flex; align-items: center; gap: 10px"><svg width="34" height="38" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 0l20 11v22L20 44 0 33V11z" fill="#111111"></path><text x="20" y="28" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-weight="900" font-size="15" fill="#db0014">MF</text></svg><span style="font: 900 20px/24px var(--font-sans)">마이<span style="color: var(--red-500)">프랜</span></span></span>
+    <nav aria-label="하단 메뉴" style="display: flex; flex-grow: 1; font: 500 13px/18px var(--font-sans)">
+      <a href="#" style="padding: 0 16px; color: var(--ink); text-decoration: none">회사소개</a>
+      <a href="#" style="padding: 0 16px; border-left: 1px solid var(--line); color: var(--ink); text-decoration: none">이용약관</a>
+      <a href="#" style="padding: 0 16px; border-left: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 700">개인정보처리방침</a>
+      <a href="#" style="padding: 0 16px; border-left: 1px solid var(--line); color: var(--ink); text-decoration: none">입점안내</a>
+      <a href="#" style="padding: 0 16px; border-left: 1px solid var(--line); color: var(--ink); text-decoration: none">광고문의</a>
+    </nav>
+  </div>
+  <div style="background: var(--surface-muted)">
+    <div style="max-width: 1248px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; gap: 24px; font: 400 12px/18px var(--font-sans); color: var(--ink-muted)">
+      <span>마이프랜 | 대표 [대표자명] | 사업자등록번호 [000-00-00000] | 가맹거래사 [등록번호]<br>서울특별시 마포구 동교로22길 19, 청송빌딩 4층 | E-mail. myfriend2026@naver.com</span>
+      <span>Copyright © MYFRAN. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3880}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var tiles = [];
+    for (var i = 1; i <= 12; i++) tiles.push({ name: '브랜드명 ' + (i < 10 ? '0' + i : i) });
+    var owned = [1, 2, 3, 4].map(function (n) { return { no: '0' + n, name: '[보유 브랜드 ' + n + ']' }; });
+    return { tiles: tiles, owned: owned };
+  }
+}
+</script>
+</body>
+</html>

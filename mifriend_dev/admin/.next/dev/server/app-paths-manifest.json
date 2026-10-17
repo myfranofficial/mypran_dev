@@ -1,0 +1,9 @@
+{
+  "/admin/(protected)/banners/page": "app/admin/(protected)/banners/page.js",
+  "/admin/(protected)/brands/page": "app/admin/(protected)/brands/page.js",
+  "/admin/(protected)/consultations/page": "app/admin/(protected)/consultations/page.js",
+  "/admin/(protected)/faq/page": "app/admin/(protected)/faq/page.js",
+  "/admin/(protected)/page": "app/admin/(protected)/page.js",
+  "/admin/(protected)/settings/page": "app/admin/(protected)/settings/page.js",
+  "/admin/login/page": "app/admin/login/page.js"
+}

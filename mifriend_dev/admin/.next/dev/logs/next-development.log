@@ -1,0 +1,4 @@
+{"timestamp":"00:00:21.517","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:27.474","source":"Server","level":"LOG","message":"○ Compiling /admin ..."}
+{"timestamp":"00:00:33.730","source":"Server","level":"LOG","message":"[db] 슈퍼 어드민 계정 생성됨: admin@myfran.com"}
+{"timestamp":"00:00:48.127","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}

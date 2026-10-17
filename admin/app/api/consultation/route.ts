@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createConsultation } from "@/lib/db/consultations";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { notifyNewConsultation } from "@/lib/sms";
 
 export const runtime = "nodejs";
 
@@ -35,6 +36,10 @@ export async function POST(req: NextRequest) {
       location: location || null,
       message: message || null,
     });
+
+    // 관리자 SMS 알림 (실패해도 상담 등록은 유지)
+    notifyNewConsultation({ name: name || null, phone: phone || null, location: location || null })
+      .catch(() => {});
 
     return NextResponse.json({ ok: true, id });
   } catch {

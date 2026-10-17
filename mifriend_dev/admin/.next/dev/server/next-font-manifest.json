@@ -1,0 +1,28 @@
+{
+  "app": {
+    "[project]/app/admin/(protected)/banners/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/(protected)/brands/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/(protected)/consultations/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/(protected)/faq/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/(protected)/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/(protected)/settings/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ],
+    "[project]/app/admin/login/page": [
+      "static/media/fca78c2ee6cec166-s.p.1sn26-iqxrgtp.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
