@@ -19,20 +19,33 @@ export type OwnedBrand = {
   interior?: string;
 };
 
-/** Best brands shown on homepage (12 tiles) */
-export const bestBrands: Brand[] = Array.from({ length: 12 }, (_, i) => ({
-  id: `brand-${String(i + 1).padStart(2, "0")}`,
-  name: `브랜드명 ${String(i + 1).padStart(2, "0")}`,
-  tier: "best" as BrandTier,
-  category: "외식",
-}));
+/** Best brands shown on homepage (12 tiles) — 상하좌우 이미지 겹치지 않게 배치 */
+/*
+  6열(PC) 배치:
+  Row 0: 메가커피 | 교촌치킨 | GS25    | 브레드마루  | 롯데리아   | 빽다방
+  Row 1: 치맥피플 | 파리바게뜨 | 강여사불백집 | CU       | 더헤어    | 보울스토리
+*/
+export const bestBrands: Brand[] = [
+  { id: "b-01", name: "메가커피",       tier: "best", category: "카페·디저트", storefront: "/brands/mega-coffee.png" },
+  { id: "b-02", name: "교촌치킨",       tier: "best", category: "치킨·피자",   storefront: "/brands/kyochon.png" },
+  { id: "b-03", name: "GS25",          tier: "best", category: "편의·리테일", storefront: "/brands/gs25.png" },
+  { id: "b-04", name: "브레드마루",     tier: "best", category: "카페·디저트", storefront: "/brands/bread-maru.png" },
+  { id: "b-05", name: "롯데리아",       tier: "best", category: "외식·한식",   storefront: "/brands/lotteria.png" },
+  { id: "b-06", name: "빽다방",         tier: "best", category: "카페·디저트", storefront: "/brands/paik-coffee.png" },
+  { id: "b-07", name: "치맥피플",       tier: "best", category: "주점·술집",   storefront: "/brands/chimac-people.png" },
+  { id: "b-08", name: "파리바게뜨",     tier: "best", category: "카페·디저트", storefront: "/brands/paris-baguette.png" },
+  { id: "b-09", name: "강여사의 불백집", tier: "best", category: "외식·한식",  storefront: "/brands/bulbaek.png" },
+  { id: "b-10", name: "CU",            tier: "best", category: "편의·리테일", storefront: "/brands/cu.png" },
+  { id: "b-11", name: "더헤어",         tier: "best", category: "서비스·교육", storefront: "/brands/the-hair.png" },
+  { id: "b-12", name: "보울스토리",     tier: "best", category: "외식·한식",   storefront: "/brands/bowl-story.jpg" },
+];
 
 /** Owned brands shown on homepage (4 cards) */
 export const ownedBrands: OwnedBrand[] = [
-  { no: "01", name: "[보유 브랜드 1]" },
-  { no: "02", name: "[보유 브랜드 2]" },
-  { no: "03", name: "[보유 브랜드 3]" },
-  { no: "04", name: "[보유 브랜드 4]" },
+  { no: "01", name: "HiQ 빌리어드", interior: "/brands/hiq-billiards.jpg" },
+  { no: "02", name: "메가커피 프리미엄", interior: "/brands/mega-coffee-premium.png" },
+  { no: "03", name: "오늘토스트", interior: "/brands/today-toast.jpg" },
+  { no: "04", name: "비어플래닛", interior: "/brands/beer-planet.jpg" },
 ];
 
 /** Stats for the stat bar */
