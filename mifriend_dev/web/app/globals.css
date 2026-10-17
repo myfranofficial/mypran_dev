@@ -210,3 +210,68 @@ a:hover {
 .hscroll::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Mobile-first typography scale ── */
+.typo-hero    { font: 900 34px/42px var(--font-sans); }
+.typo-h1      { font: 900 26px/34px var(--font-sans); }
+.typo-h2      { font: 700 22px/30px var(--font-sans); }
+.typo-h3      { font: 700 18px/26px var(--font-sans); }
+.typo-body    { font: 400 15px/24px var(--font-sans); }
+.typo-caption { font: 400 13px/18px var(--font-sans); }
+
+@media (min-width: 768px) {
+  .typo-hero    { font: 900 56px/68px var(--font-sans); }
+  .typo-h1      { font: 900 40px/52px var(--font-sans); }
+  .typo-h2      { font: 700 28px/38px var(--font-sans); }
+  .typo-h3      { font: 700 20px/28px var(--font-sans); }
+  .typo-body    { font: 400 16px/26px var(--font-sans); }
+  .typo-caption { font: 400 14px/20px var(--font-sans); }
+}
+
+/* ── Section spacing (mobile → PC) ── */
+.section-py   { padding-top: 48px; padding-bottom: 48px; }
+@media (min-width: 768px) {
+  .section-py { padding-top: 80px; padding-bottom: 80px; }
+}
+
+/* ── Touch targets: 최소 44px ── */
+.touch-target { min-height: 44px; min-width: 44px; }
+
+/* ── CTA 버튼 (빨강) ── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 24px;
+  background: var(--red-500); color: var(--on-brand);
+  border-radius: var(--radius-md); border: 1px solid transparent;
+  font: 700 15px/1 var(--font-sans); text-decoration: none;
+  cursor: pointer; white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .btn-primary { height: 52px; padding: 0 32px; font-size: 16px; }
+}
+
+/* ── 보조 버튼 (아웃라인) ── */
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 24px;
+  background: transparent; color: var(--ink);
+  border-radius: var(--radius-md); border: 1px solid var(--ink);
+  font: 700 15px/1 var(--font-sans); text-decoration: none;
+  cursor: pointer; white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .btn-outline { height: 52px; padding: 0 28px; font-size: 16px; }
+}
+
+/* ── 반응형 그리드 ── */
+.grid-brands {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .grid-brands { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+}
+@media (min-width: 1200px) {
+  .grid-brands { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
