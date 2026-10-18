@@ -31,6 +31,9 @@ temp/
 teddyshop/
 teddyshop.zip
 
+# 마이프랜 프로젝트 (별도 레포: mifriend-dev)
+mifriend_dev/
+
 # Admin build artifacts
 admin/.next/
 admin/data/

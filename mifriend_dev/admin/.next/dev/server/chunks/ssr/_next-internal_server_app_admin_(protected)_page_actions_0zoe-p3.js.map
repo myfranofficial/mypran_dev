@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///D:/projectname%20hiq/mifriend_dev/admin/.next-internal/server/app/admin/%28protected%29/page/actions.js%20%28server%20actions%20loader%29"],"sourcesContent":["export {logoutAction as '00e79f1db9d20964729ac501ca762eb839ccd6a3e8'} from 'ACTIONS_MODULE0'\nexport {logoutAction as '00e79f1db9d20964729ac501ca762eb839ccd6a3e8'} from 'ACTIONS_MODULE0'\n"],"names":[],"mappings":";AAAA"}}]
-}
