@@ -53,6 +53,7 @@ export default async function NoticesPage({
     { key: "category", label: "카테고리" },
     { key: "title", label: "제목" },
     { key: "date", label: "날짜" },
+    { key: "views", label: "조회수" },
     { key: "status", label: "상태" },
   ];
 
@@ -66,8 +67,10 @@ export default async function NoticesPage({
       <span key="t">
         {n.is_pinned ? <span className="mr-1 text-[#EF4023]">📌</span> : null}
         {n.title}
+        {n.attachment_name ? <span className="ml-1 text-xs text-[#9E9F9C]">📎</span> : null}
       </span>,
       n.date || "—",
+      <span key="v" className="text-[#9E9F9C]">{n.view_count || 0}</span>,
       n.is_active ? <span className={s.badgeGreen}>활성</span> : <span className={s.badgeGray}>비활성</span>,
     ],
     actions: (

@@ -28,6 +28,20 @@ export async function saveImage(buffer: Buffer, ext: string): Promise<string> {
   return key;
 }
 
+export async function saveFile(buffer: Buffer, originalName: string): Promise<string> {
+  const now = new Date();
+  const yyyy = String(now.getFullYear());
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const ext = path.extname(originalName).replace(/^\./, "") || "bin";
+  const name = `${randomBytes(12).toString("hex")}.${ext}`;
+  const key = `${yyyy}/${mm}/${name}`;
+
+  const dest = path.join(UPLOAD_DIR, key);
+  await fs.mkdir(path.dirname(dest), { recursive: true });
+  await fs.writeFile(dest, buffer);
+  return key;
+}
+
 export async function deleteImage(key: string | null | undefined): Promise<void> {
   if (!isLocalKey(key)) return;
   const target = path.join(UPLOAD_DIR, key);

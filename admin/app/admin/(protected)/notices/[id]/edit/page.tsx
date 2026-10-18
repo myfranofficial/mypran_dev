@@ -18,6 +18,8 @@ async function updateAction(id: number, _prev: any, formData: FormData) {
     date: String(formData.get("date") ?? "").trim() || null,
     is_pinned: formData.get("is_pinned") ? 1 : 0,
     is_active: formData.get("is_active") ? 1 : 0,
+    attachment_url: String(formData.get("attachment_url") ?? "").trim() || null,
+    attachment_name: String(formData.get("attachment_name") ?? "").trim() || null,
   });
 
   exportNews();

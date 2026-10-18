@@ -179,6 +179,17 @@ CREATE TABLE IF NOT EXISTS popups (
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
 
+-- 리뷰/후기
+CREATE TABLE IF NOT EXISTS reviews (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author TEXT NOT NULL,
+  rating INTEGER NOT NULL DEFAULT 5,
+  content TEXT,
+  source TEXT DEFAULT 'admin',
+  is_active INTEGER DEFAULT 1,
+  created_at TEXT DEFAULT (datetime('now','localtime'))
+);
+
 -- 인덱스
 CREATE INDEX IF NOT EXISTS idx_notices_category ON notices(category);
 CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery_images(category);

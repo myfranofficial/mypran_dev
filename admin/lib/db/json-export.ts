@@ -245,8 +245,13 @@ export function exportNews(): void {
       content: n.content || "",
       date: n.date || n.created_at?.split(" ")[0]?.replace(/-/g, ".") || "",
       isPinned: !!n.is_pinned,
+      viewCount: n.view_count || 0,
+      attachment: n.attachment_url ? {
+        url: resolveUrl(n.attachment_url),
+        name: n.attachment_name || "첨부파일",
+      } : null,
     })),
-    reviews: [],
+    reviews: exportReviewsData(),
     contact,
   });
 }
@@ -318,6 +323,7 @@ export function exportDownloads(): void {
       title: f.title,
       desc: f.description || "",
       filename: f.filename || "",
+      fileUrl: f.file_url ? resolveUrl(f.file_url) : "",
       size: f.file_size || "",
       date: f.created_at?.split(" ")[0]?.replace(/-/g, ".") || "",
       downloads: f.download_count || 0,
@@ -395,6 +401,21 @@ export function exportPageImages(): void {
   writeJson("page-images.json", images);
 }
 
+function exportReviewsData(): { author: string; rating: number; content: string; date: string }[] {
+  const db = getDb();
+  const reviews = db.prepare("SELECT * FROM reviews WHERE is_active = 1 ORDER BY created_at DESC, id DESC").all() as any[];
+  return reviews.map((r) => ({
+    author: r.author || "",
+    rating: r.rating || 5,
+    content: r.content || "",
+    date: r.created_at?.split(" ")[0]?.replace(/-/g, ".") || "",
+  }));
+}
+
+export function exportReviews(): void {
+  writeJson("reviews.json", { reviews: exportReviewsData() });
+}
+
 export function exportAll(): void {
   try { exportSite(); } catch (e) { console.error("[json-export] site:", e); }
   try { exportBanners(); } catch (e) { console.error("[json-export] banners:", e); }
@@ -410,4 +431,5 @@ export function exportAll(): void {
   try { exportSupport(); } catch (e) { console.error("[json-export] support:", e); }
   try { exportPopups(); } catch (e) { console.error("[json-export] popups:", e); }
   try { exportPageImages(); } catch (e) { console.error("[json-export] page-images:", e); }
+  try { exportReviews(); } catch (e) { console.error("[json-export] reviews:", e); }
 }

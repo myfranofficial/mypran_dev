@@ -75,6 +75,12 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     ],
   },
   {
+    href: "/admin/reviews",
+    label: "리뷰/후기",
+    icon: "reviews",
+    paths: ["/admin/reviews"],
+  },
+  {
     href: "/admin/consultations",
     label: "상담 문의",
     icon: "consultations",

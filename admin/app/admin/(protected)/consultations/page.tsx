@@ -91,7 +91,15 @@ export default async function ConsultationsPage({
 
   return (
     <div className="mx-auto max-w-[1280px]">
-      <h1 className="text-xl font-bold text-[#231F20]">상담 문의</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-[#231F20]">상담 문의</h1>
+        <a
+          href={`/api/admin/consultations/export${sp.status ? `?status=${sp.status}` : ""}`}
+          className={s.btnGhost}
+        >
+          CSV 내보내기
+        </a>
+      </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
 
