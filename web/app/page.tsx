@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
+
+export const metadata: Metadata = {
+  title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+  description:
+    "100+ 프랜차이즈 브랜드를 한눈에 비교! 업종별·예산별 브랜드 찾기, 창업비용 비교, 무료 창업 상담까지. 마이프랜 온라인 창업박람회.",
+  openGraph: {
+    title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+    description:
+      "100+ 프랜차이즈 브랜드를 한눈에 비교하고, 무료 창업 상담을 신청하세요.",
+    type: "website",
+  },
+};
 import ConsultForm from "@/components/ConsultForm";
 import {
   PhoneIcon,
@@ -18,6 +31,7 @@ import {
   FileIcon,
   MailIcon,
 } from "@/components/icons";
+import { AnimatedStatBar } from "@/components/AnimatedStatBar";
 import {
   bestBrands,
   ownedBrands,
@@ -317,121 +331,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ════ STAT BAR ════ */}
-      {/* PC: horizontal row */}
-      <section
-        className="hidden md:block"
-        style={{ borderBottom: "1px solid var(--line)" }}
-      >
-        <div
-          className="container-mf"
-          style={{
-            padding: "24px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 24,
-          }}
-        >
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                paddingRight: i < stats.length - 1 ? 24 : 0,
-                borderRight:
-                  i < stats.length - 1 ? "1px solid var(--line)" : "none",
-              }}
-            >
-              <StatIcon name={s.icon} size={36} fill="var(--red-500)" />
-              <div>
-                <b
-                  style={{
-                    display: "block",
-                    font: "900 32px/36px var(--font-sans)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {s.value}
-                </b>
-                <span
-                  style={{
-                    font: "500 13px/18px var(--font-sans)",
-                    color: "var(--ink-muted)",
-                  }}
-                >
-                  {s.label}
-                </span>
-              </div>
-            </div>
-          ))}
-          <Link
-            href="/consult"
-            style={{
-              marginLeft: "auto",
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              background: "var(--red-500)",
-              color: "var(--on-brand)",
-              borderRadius: "var(--radius-lg)",
-              padding: "14px 24px",
-              font: "700 15px/21px var(--font-sans)",
-              textDecoration: "none",
-            }}
-          >
-            <ChatIcon size={30} fill="#ffffff" />
-            <span>
-              지금 바로
-              <br />
-              입점 상담을 받아보세요
-            </span>
-            <ChevronRight size={16} />
-          </Link>
-        </div>
-      </section>
-
-      {/* Mobile: 2×2 grid */}
-      <section
-        className="md:hidden"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-          borderBottom: "1px solid var(--line)",
-        }}
-      >
-        {stats.map((s, i) => (
-          <div
-            key={s.label}
-            style={{
-              padding: "18px 16px",
-              borderRight: i % 2 === 0 ? "1px solid var(--line)" : "none",
-              borderBottom: i < 2 ? "1px solid var(--line)" : "none",
-              textAlign: "center",
-            }}
-          >
-            <b
-              style={{
-                display: "block",
-                font: "900 26px/30px var(--font-sans)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              {s.value}
-            </b>
-            <span
-              style={{
-                font: "500 13px/18px var(--font-sans)",
-                color: "var(--ink-muted)",
-              }}
-            >
-              {s.label}
-            </span>
-          </div>
-        ))}
-      </section>
+      {/* ════ STAT BAR (animated) ════ */}
+      <AnimatedStatBar stats={stats} />
 
       {/* ════ BEST BRANDS ════ */}
       <section>
