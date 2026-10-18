@@ -17,5 +17,18 @@ export function openDb(dbPath = resolveDbPath()): Database.Database {
   db.pragma("foreign_keys = ON");
   db.exec(SCHEMA_SQL);
 
+  // 마이그레이션: notices 테이블에 첨부파일 + 조회수 컬럼 추가
+  const noticeColumns = db.pragma("table_info(notices)") as { name: string }[];
+  const noticeColNames = new Set(noticeColumns.map((c) => c.name));
+  if (!noticeColNames.has("attachment_url")) {
+    db.exec("ALTER TABLE notices ADD COLUMN attachment_url TEXT");
+  }
+  if (!noticeColNames.has("attachment_name")) {
+    db.exec("ALTER TABLE notices ADD COLUMN attachment_name TEXT");
+  }
+  if (!noticeColNames.has("view_count")) {
+    db.exec("ALTER TABLE notices ADD COLUMN view_count INTEGER DEFAULT 0");
+  }
+
   return db;
 }

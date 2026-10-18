@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState, useActionState, useRef } from "react";
 import * as s from "../ui/styles";
 
 const CATEGORIES = ["공지", "이벤트", "안내", "기타"];
@@ -14,11 +14,54 @@ interface NoticeFormProps {
     date: string | null;
     is_pinned: number;
     is_active: number;
+    attachment_url: string | null;
+    attachment_name: string | null;
   };
 }
 
 export function NoticeForm({ action, notice }: NoticeFormProps) {
   const [state, formAction, pending] = useActionState(action, {});
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const attachUrlRef = useRef<HTMLInputElement>(null);
+  const attachNameRef = useRef<HTMLInputElement>(null);
+
+  async function handleAttachUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError("");
+    setUploading(true);
+
+    try {
+      const form = new FormData();
+      form.append("file", file);
+
+      const res = await fetch("/api/admin/upload", { method: "POST", body: form });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setUploadError(data.error || "업로드에 실패했습니다.");
+        return;
+      }
+
+      if (attachUrlRef.current) {
+        attachUrlRef.current.value = data.url || data.key;
+      }
+      if (attachNameRef.current) {
+        attachNameRef.current.value = data.filename || file.name;
+      }
+    } catch {
+      setUploadError("업로드 중 오류가 발생했습니다.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function clearAttachment() {
+    if (attachUrlRef.current) attachUrlRef.current.value = "";
+    if (attachNameRef.current) attachNameRef.current.value = "";
+  }
 
   return (
     <form action={formAction} className="space-y-6">
@@ -51,6 +94,36 @@ export function NoticeForm({ action, notice }: NoticeFormProps) {
           <textarea id="content" name="content" rows={10} defaultValue={notice?.content ?? ""} className={s.textarea} />
         </div>
 
+        {/* 첨부파일 */}
+        <div className="space-y-1.5">
+          <label className={s.label}>첨부파일</label>
+          <input
+            type="file"
+            accept=".pdf,.zip,.docx,.doc,.hwp,.xlsx,.xls,.pptx,.ppt,.txt,.csv,.jpg,.jpeg,.png,.webp"
+            onChange={handleAttachUpload}
+            disabled={uploading}
+            className="block w-full text-sm text-[#585958] file:mr-3 file:rounded file:border-0 file:bg-[#F5F5F5] file:px-3 file:py-2 file:text-sm file:font-medium file:text-[#585958] hover:file:bg-[#E5E7EA]"
+          />
+          {uploading && <p className="text-xs text-[#EF4023]">업로드 중...</p>}
+          {uploadError && <p className="text-xs text-[#E03A1E]">{uploadError}</p>}
+          <div className="grid grid-cols-2 gap-4 mt-2">
+            <div className="space-y-1">
+              <label htmlFor="attachment_name" className="text-xs text-[#9E9F9C]">첨부파일명</label>
+              <input ref={attachNameRef} id="attachment_name" name="attachment_name" defaultValue={notice?.attachment_name ?? ""} className={s.input} placeholder="예: 공지_첨부.pdf" />
+            </div>
+            <div className="space-y-1">
+              <label htmlFor="attachment_url" className="text-xs text-[#9E9F9C]">첨부파일 URL</label>
+              <input ref={attachUrlRef} id="attachment_url" name="attachment_url" defaultValue={notice?.attachment_url ?? ""} className={s.input} placeholder="업로드 시 자동 입력" />
+            </div>
+          </div>
+          {notice?.attachment_name && (
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-xs text-[#585958]">현재 첨부: {notice.attachment_name}</span>
+              <button type="button" onClick={clearAttachment} className="text-xs text-[#E03A1E] hover:underline">삭제</button>
+            </div>
+          )}
+        </div>
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <input
@@ -79,7 +152,7 @@ export function NoticeForm({ action, notice }: NoticeFormProps) {
 
       <div className="flex justify-end gap-3">
         <a href="/admin/notices" className={s.btnGhost}>취소</a>
-        <button type="submit" disabled={pending} className={s.btnPrimary}>
+        <button type="submit" disabled={pending || uploading} className={s.btnPrimary}>
           {pending ? "저장 중…" : "저장"}
         </button>
       </div>

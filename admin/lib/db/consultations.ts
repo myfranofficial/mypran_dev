@@ -6,9 +6,7 @@ export interface Consultation {
   name: string | null;
   phone: string | null;
   email: string | null;
-  region: string | null;       // 창업 희망 지역
-  brand_id: number | null;
-  brand_name: string | null;
+  location: string | null;
   message: string | null;
   is_read: number;
   is_handled: number;
@@ -19,19 +17,17 @@ export interface ConsultationInput {
   name: string | null;
   phone: string | null;
   email: string | null;
-  region: string | null;
-  brand_id: number | null;
-  brand_name: string | null;
+  location: string | null;
   message: string | null;
 }
 
 export function listConsultations(filter: { q?: string; status?: string } = {}): Consultation[] {
   const where: string[] = [];
-  const params: (string | number)[] = [];
+  const params: string[] = [];
   if (filter.q) {
     const like = `%${filter.q}%`;
-    where.push("(name LIKE ? OR phone LIKE ? OR brand_name LIKE ? OR message LIKE ?)");
-    params.push(like, like, like, like);
+    where.push("(name LIKE ? OR phone LIKE ? OR message LIKE ?)");
+    params.push(like, like, like);
   }
   if (filter.status === "unread") {
     where.push("is_read = 0");
@@ -52,8 +48,8 @@ export function getConsultation(id: number): Consultation | undefined {
 
 export function createConsultation(d: ConsultationInput): number {
   const info = getDb()
-    .prepare("INSERT INTO consultations (name, phone, email, region, brand_id, brand_name, message) VALUES (?, ?, ?, ?, ?, ?, ?)")
-    .run(d.name, d.phone, d.email, d.region, d.brand_id, d.brand_name, d.message);
+    .prepare("INSERT INTO consultations (name, phone, email, location, message) VALUES (?, ?, ?, ?, ?)")
+    .run(d.name, d.phone, d.email, d.location, d.message);
   return Number(info.lastInsertRowid);
 }
 

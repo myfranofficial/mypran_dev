@@ -59,6 +59,10 @@ export const IconSettings = (p: IconProps) => (
   <Svg {...p}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 2.6 7a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H7a1.6 1.6 0 0 0 1-1.5V1a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V7a1.6 1.6 0 0 0 1.5 1H23a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" /></Svg>
 );
 
+export const IconStar = (p: IconProps) => (
+  <Svg {...p}><path d="M12 2l3.1 6.3L22 9.2l-5 4.9L18.2 21 12 17.7 5.8 21 7 14.1l-5-4.9 6.9-1L12 2z" /></Svg>
+);
+
 /* ── 케밥 액션 ── */
 export const IconEdit = (p: IconProps) => (
   <Svg {...p}><path d="M4 20h4L18.5 9.5a2 2 0 0 0-2.83-2.83L5 17.2z" /><path d="M14 8.5 16 10.5" /></Svg>
@@ -107,6 +111,7 @@ export const NAV_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
   downloads: IconDownload,
   pages: IconPage,
   homepage: IconHome,
+  reviews: IconStar,
   consultations: IconInbox,
   settings: IconSettings,
 };

@@ -70,15 +70,8 @@ export default async function ConsultationDetailPage({
             {c.email ? <a href={`mailto:${c.email}`} className="text-[#EF4023] underline">{c.email}</a> : "—"}
           </dd>
 
-          <dt className="font-medium text-[#585958]">관심 브랜드</dt>
-          <dd className="text-[#231F20]">
-            {c.brand_name ? (
-              <span className="rounded bg-red-100 px-2 py-0.5 text-sm text-red-700">{c.brand_name}</span>
-            ) : "—"}
-          </dd>
-
           <dt className="font-medium text-[#585958]">희망 지역</dt>
-          <dd className="text-[#231F20]">{c.region || "—"}</dd>
+          <dd className="text-[#231F20]">{c.location || "—"}</dd>
         </dl>
 
         <div className="border-t border-[#E5E7EA] pt-4">

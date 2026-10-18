@@ -40,8 +40,7 @@ export default async function ConsultationsPage({
   const columns: Column[] = [
     { key: "name", label: "이름" },
     { key: "phone", label: "연락처" },
-    { key: "brand", label: "관심 브랜드" },
-    { key: "region", label: "희망 지역" },
+    { key: "location", label: "희망 지역" },
     { key: "date", label: "접수일" },
     { key: "status", label: "상태" },
   ];
@@ -56,10 +55,7 @@ export default async function ConsultationsPage({
         {c.name || "이름 없음"}
       </span>,
       c.phone || "—",
-      c.brand_name ? (
-        <span key="b" className="rounded bg-red-100 px-1.5 py-0.5 text-xs text-red-700">{c.brand_name}</span>
-      ) : "—",
-      c.region || "—",
+      c.location || "—",
       c.created_at?.split("T")[0] || c.created_at?.split(" ")[0] || "—",
       c.is_handled ? (
         <span className={s.badgeGray}>처리완료</span>
@@ -95,7 +91,15 @@ export default async function ConsultationsPage({
 
   return (
     <div className="mx-auto max-w-[1280px]">
-      <h1 className="text-xl font-bold text-[#231F20]">상담 문의</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-[#231F20]">상담 문의</h1>
+        <a
+          href={`/api/admin/consultations/export${sp.status ? `?status=${sp.status}` : ""}`}
+          className={s.btnGhost}
+        >
+          CSV 내보내기
+        </a>
+      </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
 

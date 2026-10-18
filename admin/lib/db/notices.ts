@@ -9,6 +9,9 @@ export interface Notice {
   date: string | null;
   is_pinned: number;
   is_active: number;
+  attachment_url: string | null;
+  attachment_name: string | null;
+  view_count: number;
   created_at: string;
 }
 
@@ -19,6 +22,8 @@ export interface NoticeInput {
   date: string | null;
   is_pinned: number;
   is_active: number;
+  attachment_url: string | null;
+  attachment_name: string | null;
 }
 
 export interface NoticeFilter {
@@ -62,18 +67,18 @@ export function getNotice(id: number): Notice | undefined {
 export function createNotice(d: NoticeInput): number {
   const info = getDb()
     .prepare(
-      "INSERT INTO notices (category, title, content, date, is_pinned, is_active) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO notices (category, title, content, date, is_pinned, is_active, attachment_url, attachment_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     )
-    .run(d.category, d.title, d.content, d.date, d.is_pinned, d.is_active);
+    .run(d.category, d.title, d.content, d.date, d.is_pinned, d.is_active, d.attachment_url, d.attachment_name);
   return Number(info.lastInsertRowid);
 }
 
 export function updateNotice(id: number, d: NoticeInput): void {
   getDb()
     .prepare(
-      "UPDATE notices SET category = ?, title = ?, content = ?, date = ?, is_pinned = ?, is_active = ? WHERE id = ?"
+      "UPDATE notices SET category = ?, title = ?, content = ?, date = ?, is_pinned = ?, is_active = ?, attachment_url = ?, attachment_name = ? WHERE id = ?"
     )
-    .run(d.category, d.title, d.content, d.date, d.is_pinned, d.is_active, id);
+    .run(d.category, d.title, d.content, d.date, d.is_pinned, d.is_active, d.attachment_url, d.attachment_name, id);
 }
 
 export function setNoticeActive(id: number, active: number): void {
@@ -82,6 +87,10 @@ export function setNoticeActive(id: number, active: number): void {
 
 export function setNoticePinned(id: number, pinned: number): void {
   getDb().prepare("UPDATE notices SET is_pinned = ? WHERE id = ?").run(pinned, id);
+}
+
+export function incrementViewCount(id: number): void {
+  getDb().prepare("UPDATE notices SET view_count = COALESCE(view_count, 0) + 1 WHERE id = ?").run(id);
 }
 
 export function deleteNotice(id: number): void {

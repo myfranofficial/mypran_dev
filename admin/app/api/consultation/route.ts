@@ -22,9 +22,7 @@ export async function POST(req: NextRequest) {
     const name = String(body.name ?? "").trim();
     const phone = String(body.phone ?? "").trim();
     const email = String(body.email ?? "").trim();
-    const region = String(body.region ?? body.location ?? "").trim();
-    const brandId = body.brand_id ? Number(body.brand_id) : null;
-    const brandName = String(body.brand_name ?? "").trim();
+    const location = String(body.location ?? "").trim();
     const message = String(body.message ?? "").trim();
 
     if (!name && !phone && !message) {
@@ -35,14 +33,12 @@ export async function POST(req: NextRequest) {
       name: name || null,
       phone: phone || null,
       email: email || null,
-      region: region || null,
-      brand_id: brandId,
-      brand_name: brandName || null,
+      location: location || null,
       message: message || null,
     });
 
     // 관리자 SMS 알림 (실패해도 상담 등록은 유지)
-    notifyNewConsultation({ name: name || null, phone: phone || null, location: region || brandName || null })
+    notifyNewConsultation({ name: name || null, phone: phone || null, location: location || null })
       .catch(() => {});
 
     return NextResponse.json({ ok: true, id });
