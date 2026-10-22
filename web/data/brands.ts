@@ -19,34 +19,26 @@ export type OwnedBrand = {
   interior?: string;
 };
 
-/** Best brands shown on homepage (12 tiles) — 상하좌우 이미지 겹치지 않게 배치 */
-/*
-  6열(PC) 배치:
-  Row 0: 메가커피 | 교촌치킨 | GS25    | 브레드마루  | 롯데리아   | 빽다방
-  Row 1: 치맥피플 | 파리바게뜨 | 강여사불백집 | CU       | 더헤어    | 보울스토리
-*/
+/** Best brands shown on homepage (14 tiles) */
 export const bestBrands: Brand[] = [
-  { id: "b-01", name: "메가커피",       tier: "best", category: "카페·디저트", storefront: "/brands/mega-coffee.png" },
-  { id: "b-02", name: "교촌치킨",       tier: "best", category: "치킨·피자",   storefront: "/brands/kyochon.png" },
-  { id: "b-03", name: "GS25",          tier: "best", category: "편의·리테일", storefront: "/brands/gs25.png" },
-  { id: "b-04", name: "브레드마루",     tier: "best", category: "카페·디저트", storefront: "/brands/bread-maru.png" },
-  { id: "b-05", name: "롯데리아",       tier: "best", category: "외식·한식",   storefront: "/brands/lotteria.png" },
-  { id: "b-06", name: "빽다방",         tier: "best", category: "카페·디저트", storefront: "/brands/paik-coffee.png" },
-  { id: "b-07", name: "치맥피플",       tier: "best", category: "주점·술집",   storefront: "/brands/chimac-people.png" },
-  { id: "b-08", name: "파리바게뜨",     tier: "best", category: "카페·디저트", storefront: "/brands/paris-baguette.png" },
-  { id: "b-09", name: "강여사의 불백집", tier: "best", category: "외식·한식",  storefront: "/brands/bulbaek.png" },
-  { id: "b-10", name: "CU",            tier: "best", category: "편의·리테일", storefront: "/brands/cu.png" },
-  { id: "b-11", name: "더헤어",         tier: "best", category: "서비스·교육", storefront: "/brands/the-hair.png" },
-  { id: "b-12", name: "보울스토리",     tier: "best", category: "외식·한식",   storefront: "/brands/bowl-story.jpg" },
+  { id: "b-01", name: "핵밥",            tier: "best", category: "외식·한식",   storefront: "/brands/hecbob.jpg" },
+  { id: "b-02", name: "선비꼬마김밥",     tier: "best", category: "분식",       storefront: "/brands/sunbi-kimbap.jpg" },
+  { id: "b-03", name: "요거트월드",       tier: "best", category: "카페·디저트", storefront: "/brands/yogurt-world.jpg" },
+  { id: "b-04", name: "스텔라떡볶이",     tier: "best", category: "분식",       storefront: "/brands/stella-tteokbokki.jpg" },
+  { id: "b-05", name: "프랭크커핀바",     tier: "best", category: "카페·디저트", storefront: "/brands/frank-coffin-bar.jpg" },
+  { id: "b-06", name: "솔삼조",          tier: "best", category: "외식·한식",   storefront: "/brands/solsamjo.jpg" },
+  { id: "b-07", name: "그릭데이",         tier: "best", category: "카페·디저트", storefront: "/brands/greek-day.jpg" },
+  { id: "b-08", name: "제이델링",         tier: "best", category: "카페·디저트", storefront: "/brands/jdeling.jpg" },
+  { id: "b-09", name: "스트릿팬케이크카페", tier: "best", category: "카페·디저트", storefront: "/brands/street-pancake.jpg" },
+  { id: "b-10", name: "천라쿵푸 마라탕",   tier: "best", category: "외식·한식",  storefront: "/brands/chunra-kungfu.jpg" },
+  { id: "b-11", name: "아담만두",         tier: "best", category: "분식",       storefront: "/brands/adam-mandu.jpg" },
+  { id: "b-12", name: "덮밥장사장",       tier: "best", category: "외식·한식",   storefront: "/brands/deopbap-sajang.jpg" },
+  { id: "b-13", name: "덕수파스타",       tier: "best", category: "외식·한식",   storefront: "/brands/deoksu-pasta.jpg" },
+  { id: "b-14", name: "왓더버거",         tier: "best", category: "외식·한식",   storefront: "/brands/what-the-burger.jpg" },
 ];
 
-/** Owned brands shown on homepage (4 cards) */
-export const ownedBrands: OwnedBrand[] = [
-  { no: "01", name: "HiQ 빌리어드", interior: "/brands/hiq-billiards.jpg" },
-  { no: "02", name: "메가커피 프리미엄", interior: "/brands/mega-coffee-premium.png" },
-  { no: "03", name: "오늘토스트", interior: "/brands/today-toast.jpg" },
-  { no: "04", name: "비어플래닛", interior: "/brands/beer-planet.jpg" },
-];
+/** Owned brands shown on homepage (4 cards) — 자사 브랜드 없으면 빈 배열 */
+export const ownedBrands: OwnedBrand[] = [];
 
 /** Stats for the stat bar */
 export const stats = [

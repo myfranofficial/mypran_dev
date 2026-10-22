@@ -115,6 +115,7 @@ export default function AboutPage() {
             <div className="about-intro-image">
               <PhotoSlot
                 id="P8"
+                src="/about-office.png"
                 aspectRatio="4/3"
                 alt="마이프랜 오피스"
                 sizes="(max-width: 767px) 100vw, 480px"
