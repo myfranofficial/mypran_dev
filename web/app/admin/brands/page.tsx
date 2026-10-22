@@ -31,14 +31,25 @@ export default function AdminBrandsPage() {
     }
   }
 
-  const grouped: { tier: BrandTier; brands: Brand[] }[] = (["best", "premium", "special"] as BrandTier[]).map(
-    (tier) => ({ tier, brands: brands.filter((b) => b.tier === tier) })
-  );
+  const grouped: { tier: BrandTier; brands: Brand[] }[] = (
+    ["best", "premium", "special"] as BrandTier[]
+  ).map((tier) => ({ tier, brands: brands.filter((b) => b.tier === tier) }));
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1 style={{ margin: 0, font: "700 24px/32px var(--font-sans)" }}>브랜드 관리</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 24,
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <h1 style={{ margin: 0, font: "700 24px/32px var(--font-sans)" }}>
+          브랜드 관리
+        </h1>
         <Link
           href="/admin/brands/new"
           style={{
@@ -71,7 +82,10 @@ export default function AdminBrandsPage() {
             >
               {TIER_LABELS[group.tier].label} ({group.brands.length}개)
             </h2>
+
+            {/* ── PC: table ── */}
             <div
+              className="hidden md:block"
               style={{
                 background: "var(--surface)",
                 borderRadius: "var(--radius-md)",
@@ -93,40 +107,46 @@ export default function AdminBrandsPage() {
                 </thead>
                 <tbody>
                   {group.brands.map((b, i) => (
-                    <tr key={b.id} style={{ borderTop: i > 0 ? "1px solid var(--line)" : undefined }}>
+                    <tr
+                      key={b.id}
+                      style={{
+                        borderTop:
+                          i > 0 ? "1px solid var(--line)" : undefined,
+                      }}
+                    >
                       <td style={tdStyle}>{b.order}</td>
-                      <td style={{ ...tdStyle, textAlign: "left", fontWeight: 600 }}>{b.name}</td>
+                      <td
+                        style={{
+                          ...tdStyle,
+                          textAlign: "left",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {b.name}
+                      </td>
                       <td style={tdStyle}>{b.categoryName}</td>
-                      <td style={tdStyle}>{b.listingFeePerMonth.toLocaleString()}</td>
+                      <td style={tdStyle}>
+                        {b.listingFeePerMonth.toLocaleString()}
+                      </td>
                       <td style={tdStyle}>{b.foundingCost}</td>
                       <td style={tdStyle}>{b.storeCount}</td>
                       <td style={tdStyle}>
-                        <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: 8,
+                            justifyContent: "center",
+                          }}
+                        >
                           <Link
                             href={`/admin/brands/${b.id}`}
-                            style={{
-                              padding: "4px 12px",
-                              border: "1px solid var(--line-control)",
-                              borderRadius: "var(--radius-sm)",
-                              font: "500 12px/1 var(--font-sans)",
-                              color: "var(--ink)",
-                              textDecoration: "none",
-                              background: "var(--surface)",
-                            }}
+                            style={btnEditStyle}
                           >
                             편집
                           </Link>
                           <button
                             onClick={() => handleDelete(b.id, b.name)}
-                            style={{
-                              padding: "4px 12px",
-                              border: "1px solid var(--red-500)",
-                              borderRadius: "var(--radius-sm)",
-                              font: "500 12px/1 var(--font-sans)",
-                              color: "var(--red-500)",
-                              background: "transparent",
-                              cursor: "pointer",
-                            }}
+                            style={btnDeleteStyle}
                           >
                             삭제
                           </button>
@@ -136,6 +156,104 @@ export default function AdminBrandsPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* ── Mobile: card list ── */}
+            <div
+              className="md:hidden"
+              style={{ display: "flex", flexDirection: "column", gap: 8 }}
+            >
+              {group.brands.map((b) => (
+                <div
+                  key={b.id}
+                  style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--line)",
+                    borderRadius: "var(--radius-md)",
+                    padding: "14px 16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div>
+                      <strong
+                        style={{
+                          font: "700 15px/20px var(--font-sans)",
+                          display: "block",
+                        }}
+                      >
+                        {b.name}
+                      </strong>
+                      <span
+                        style={{
+                          font: "400 12px/16px var(--font-sans)",
+                          color: "var(--ink-muted)",
+                        }}
+                      >
+                        {b.categoryName} · #{b.order}
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        font: "700 13px/1 var(--font-sans)",
+                        color: "var(--red-500)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {b.foundingCost}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      marginTop: 8,
+                      font: "400 12px/16px var(--font-sans)",
+                      color: "var(--ink-muted)",
+                    }}
+                  >
+                    <span>입점비 {b.listingFeePerMonth}만원/월</span>
+                    <span>매장 {b.storeCount}개</span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      marginTop: 12,
+                    }}
+                  >
+                    <Link
+                      href={`/admin/brands/${b.id}`}
+                      style={{
+                        ...btnEditStyle,
+                        flex: 1,
+                        textAlign: "center",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: 36,
+                      }}
+                    >
+                      편집
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(b.id, b.name)}
+                      style={{
+                        ...btnDeleteStyle,
+                        flex: 1,
+                        height: 36,
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         ))
@@ -157,4 +275,24 @@ const tdStyle: React.CSSProperties = {
   font: "400 13px/18px var(--font-sans)",
   textAlign: "center",
   whiteSpace: "nowrap",
+};
+
+const btnEditStyle: React.CSSProperties = {
+  padding: "4px 12px",
+  border: "1px solid var(--line-control)",
+  borderRadius: "var(--radius-sm)",
+  font: "500 12px/1 var(--font-sans)",
+  color: "var(--ink)",
+  textDecoration: "none",
+  background: "var(--surface)",
+};
+
+const btnDeleteStyle: React.CSSProperties = {
+  padding: "4px 12px",
+  border: "1px solid var(--red-500)",
+  borderRadius: "var(--radius-sm)",
+  font: "500 12px/1 var(--font-sans)",
+  color: "var(--red-500)",
+  background: "transparent",
+  cursor: "pointer",
 };

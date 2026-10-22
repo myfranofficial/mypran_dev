@@ -68,10 +68,16 @@ export default function BrandForm({
   isEdit: boolean;
 }) {
   const router = useRouter();
-  const [form, setForm] = useState<FormBrand>(brand ? { ...brand } : defaultBrand());
+  const [form, setForm] = useState<FormBrand>(
+    brand ? { ...brand } : defaultBrand()
+  );
   const [saving, setSaving] = useState(false);
-  const [featuresText, setFeaturesText] = useState((brand?.features ?? []).join("\n"));
-  const [hqText, setHqText] = useState((brand?.headquarters ?? []).join("\n"));
+  const [featuresText, setFeaturesText] = useState(
+    (brand?.features ?? []).join("\n")
+  );
+  const [hqText, setHqText] = useState(
+    (brand?.headquarters ?? []).join("\n")
+  );
   const [uploading, setUploading] = useState(false);
 
   function set<K extends keyof FormBrand>(key: K, value: FormBrand[K]) {
@@ -79,7 +85,6 @@ export default function BrandForm({
   }
 
   function handleTierChange(tier: BrandTier) {
-    const cat = categories.find((c) => c.id === form.categoryId);
     set("tier", tier);
     set("listingFeePerMonth", LISTING_FEES[tier]);
     set("isFeatured", tier === "best");
@@ -109,8 +114,14 @@ export default function BrandForm({
 
     const payload = {
       ...form,
-      features: featuresText.split("\n").map((s) => s.trim()).filter(Boolean),
-      headquarters: hqText.split("\n").map((s) => s.trim()).filter(Boolean),
+      features: featuresText
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      headquarters: hqText
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean),
     };
 
     const url = isEdit ? `/api/brands/${brand!.id}` : "/api/brands";
@@ -144,12 +155,20 @@ export default function BrandForm({
           />
         </Field>
 
-        {/* 티어 + 순서 */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        {/* 티어 + 입점비 + 순서 */}
+        <Row cols={3}>
           <Field label="등급 *">
-            <select value={form.tier} onChange={(e) => handleTierChange(e.target.value as BrandTier)} style={inputStyle}>
+            <select
+              value={form.tier}
+              onChange={(e) =>
+                handleTierChange(e.target.value as BrandTier)
+              }
+              style={inputStyle}
+            >
               {TIERS.map((t) => (
-                <option key={t.value} value={t.value}>{t.label}</option>
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
               ))}
             </select>
           </Field>
@@ -157,7 +176,9 @@ export default function BrandForm({
             <input
               type="number"
               value={form.listingFeePerMonth}
-              onChange={(e) => set("listingFeePerMonth", Number(e.target.value))}
+              onChange={(e) =>
+                set("listingFeePerMonth", Number(e.target.value))
+              }
               style={inputStyle}
             />
           </Field>
@@ -169,20 +190,32 @@ export default function BrandForm({
               style={inputStyle}
             />
           </Field>
-        </div>
+        </Row>
 
         {/* 업종 */}
         <Field label="업종 *">
-          <select value={form.categoryId} onChange={(e) => handleCategoryChange(e.target.value)} style={inputStyle}>
-            {categories.filter((c) => c.id !== "all").map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
+          <select
+            value={form.categoryId}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+            style={inputStyle}
+          >
+            {categories
+              .filter((c) => c.id !== "all")
+              .map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
           </select>
         </Field>
 
         {/* 태그라인 + 설명 */}
         <Field label="태그라인">
-          <input value={form.tagline} onChange={(e) => set("tagline", e.target.value)} style={inputStyle} />
+          <input
+            value={form.tagline}
+            onChange={(e) => set("tagline", e.target.value)}
+            style={inputStyle}
+          />
         </Field>
         <Field label="설명">
           <textarea
@@ -195,8 +228,20 @@ export default function BrandForm({
 
         {/* 이미지 */}
         <Field label="대표 이미지">
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <input value={form.mainImage ?? ""} onChange={(e) => set("mainImage", e.target.value)} placeholder="/brands/xxx.jpg" style={{ ...inputStyle, flex: 1 }} />
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <input
+              value={form.mainImage ?? ""}
+              onChange={(e) => set("mainImage", e.target.value)}
+              placeholder="/brands/xxx.jpg"
+              style={{ ...inputStyle, flex: "1 1 200px" }}
+            />
             <label
               style={{
                 display: "inline-flex",
@@ -208,45 +253,89 @@ export default function BrandForm({
                 font: "500 13px/1 var(--font-sans)",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
+                flexShrink: 0,
               }}
             >
               {uploading ? "업로드 중..." : "파일 선택"}
-              <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                hidden
+              />
             </label>
           </div>
         </Field>
 
         {/* 비용 */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <Row cols={2}>
           <Field label="창업비용 (텍스트)">
-            <input value={form.foundingCost} onChange={(e) => set("foundingCost", e.target.value)} placeholder="3,000만원~5,000만원" style={inputStyle} />
+            <input
+              value={form.foundingCost}
+              onChange={(e) => set("foundingCost", e.target.value)}
+              placeholder="3,000만원~5,000만원"
+              style={inputStyle}
+            />
           </Field>
           <Field label="최소 창업비용 (만원)">
-            <input type="number" value={form.foundingCostMin} onChange={(e) => set("foundingCostMin", Number(e.target.value))} style={inputStyle} />
+            <input
+              type="number"
+              value={form.foundingCostMin}
+              onChange={(e) =>
+                set("foundingCostMin", Number(e.target.value))
+              }
+              style={inputStyle}
+            />
           </Field>
-        </div>
+        </Row>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <Row cols={3}>
           <Field label="가맹비">
-            <input value={form.franchiseFee} onChange={(e) => set("franchiseFee", e.target.value)} style={inputStyle} />
+            <input
+              value={form.franchiseFee}
+              onChange={(e) => set("franchiseFee", e.target.value)}
+              style={inputStyle}
+            />
           </Field>
           <Field label="교육비">
-            <input value={form.educationFee} onChange={(e) => set("educationFee", e.target.value)} style={inputStyle} />
+            <input
+              value={form.educationFee}
+              onChange={(e) => set("educationFee", e.target.value)}
+              style={inputStyle}
+            />
           </Field>
           <Field label="로열티">
-            <input value={form.royalty} onChange={(e) => set("royalty", e.target.value)} style={inputStyle} />
+            <input
+              value={form.royalty}
+              onChange={(e) => set("royalty", e.target.value)}
+              style={inputStyle}
+            />
           </Field>
-        </div>
+        </Row>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <Row cols={3}>
           <Field label="기준면적">
-            <input value={form.standardArea} onChange={(e) => set("standardArea", e.target.value)} placeholder="10~15평" style={inputStyle} />
+            <input
+              value={form.standardArea}
+              onChange={(e) => set("standardArea", e.target.value)}
+              placeholder="10~15평"
+              style={inputStyle}
+            />
           </Field>
           <Field label="매장수">
-            <input type="number" value={form.storeCount} onChange={(e) => set("storeCount", Number(e.target.value))} style={inputStyle} />
+            <input
+              type="number"
+              value={form.storeCount}
+              onChange={(e) => set("storeCount", Number(e.target.value))}
+              style={inputStyle}
+            />
           </Field>
           <Field label="매장형태">
-            <select value={form.storeType} onChange={(e) => set("storeType", e.target.value)} style={inputStyle}>
+            <select
+              value={form.storeType}
+              onChange={(e) => set("storeType", e.target.value)}
+              style={inputStyle}
+            >
               <option value="hall">홀 매장</option>
               <option value="delivery">배달 전문</option>
               <option value="unmanned">무인 매장</option>
@@ -254,9 +343,9 @@ export default function BrandForm({
               <option value="convert">업종 변경</option>
             </select>
           </Field>
-        </div>
+        </Row>
 
-        {/* 특징 (한 줄에 하나씩) */}
+        {/* 특징 */}
         <Field label="특징 (줄바꿈 구분)">
           <textarea
             value={featuresText}
@@ -267,7 +356,7 @@ export default function BrandForm({
           />
         </Field>
 
-        {/* 본사지원 (한 줄에 하나씩) */}
+        {/* 본사지원 */}
         <Field label="본사 지원 (줄바꿈 구분)">
           <textarea
             value={hqText}
@@ -280,7 +369,11 @@ export default function BrandForm({
 
         {/* 전화번호 */}
         <Field label="전화번호">
-          <input value={form.phone} onChange={(e) => set("phone", e.target.value)} style={inputStyle} />
+          <input
+            value={form.phone}
+            onChange={(e) => set("phone", e.target.value)}
+            style={inputStyle}
+          />
         </Field>
       </div>
 
@@ -290,7 +383,8 @@ export default function BrandForm({
           type="submit"
           disabled={saving}
           style={{
-            height: 44,
+            flex: 1,
+            height: 48,
             padding: "0 32px",
             background: "var(--red-500)",
             color: "#fff",
@@ -307,7 +401,7 @@ export default function BrandForm({
           type="button"
           onClick={() => router.push("/admin/brands")}
           style={{
-            height: 44,
+            height: 48,
             padding: "0 24px",
             background: "transparent",
             color: "var(--ink)",
@@ -320,14 +414,47 @@ export default function BrandForm({
           취소
         </button>
       </div>
+
+      {/* Responsive grid styles */}
+      <style>{`
+        .admin-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .admin-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 767px) {
+          .admin-row-2 { grid-template-columns: 1fr; }
+          .admin-row-3 { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </form>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Row({
+  cols,
+  children,
+}: {
+  cols: 2 | 3;
+  children: React.ReactNode;
+}) {
+  return <div className={`admin-row-${cols}`}>{children}</div>;
+}
+
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-      <span style={{ font: "600 13px/18px var(--font-sans)", color: "var(--ink-muted)" }}>{label}</span>
+      <span
+        style={{
+          font: "600 13px/18px var(--font-sans)",
+          color: "var(--ink-muted)",
+        }}
+      >
+        {label}
+      </span>
       {children}
     </label>
   );
@@ -342,4 +469,5 @@ const inputStyle: React.CSSProperties = {
   color: "var(--ink)",
   background: "var(--surface)",
   width: "100%",
+  boxSizing: "border-box",
 };

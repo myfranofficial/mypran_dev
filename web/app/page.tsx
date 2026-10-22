@@ -82,10 +82,10 @@ export default function HomePage() {
           overflow: "hidden",
         }}
       >
-        {/* PC: 640px, Mobile: 520px */}
+        {/* PC: 480px, Mobile: 400px */}
         <div
           className="hidden md:block"
-          style={{ height: 640 }}
+          style={{ height: 480 }}
         >
           <PhotoSlot
             id="P1"
@@ -98,7 +98,7 @@ export default function HomePage() {
         </div>
         <div
           className="md:hidden"
-          style={{ height: 520 }}
+          style={{ height: 400 }}
         >
           <PhotoSlot
             id="P1-M"
@@ -152,8 +152,8 @@ export default function HomePage() {
           </span>
           <h1
             style={{
-              margin: "16px 0 0",
-              font: "900 56px/68px var(--font-sans)",
+              margin: "12px 0 0",
+              font: "900 48px/58px var(--font-sans)",
               letterSpacing: "-0.02em",
             }}
           >
@@ -172,14 +172,14 @@ export default function HomePage() {
             <br />
             나에게 맞는 프랜차이즈를 찾으세요
           </p>
-          <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
+          <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
             <Link
               href="/consult"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                height: 52,
+                height: 48,
                 padding: "0 32px",
                 background: "var(--red-500)",
                 color: "var(--on-brand)",
@@ -197,7 +197,7 @@ export default function HomePage() {
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                height: 52,
+                height: 48,
                 padding: "0 28px",
                 background: "transparent",
                 color: "var(--surface)",
@@ -215,8 +215,8 @@ export default function HomePage() {
             style={{
               display: "flex",
               gap: 40,
-              margin: "56px 0 0",
-              padding: "24px 0 0",
+              margin: "32px 0 0",
+              padding: "20px 0 0",
               listStyle: "none",
               borderTop: "1px solid rgba(255,255,255,0.2)",
               width: 600,
