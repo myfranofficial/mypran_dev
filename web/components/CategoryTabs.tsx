@@ -1,6 +1,6 @@
 "use client";
 
-import type { BrandCategory } from "@/data/dummy-brands";
+import type { BrandCategory } from "@/data/static-data";
 
 export default function CategoryTabs({
   categories,

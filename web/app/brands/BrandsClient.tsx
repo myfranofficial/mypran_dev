@@ -6,17 +6,18 @@ import PageHero from "@/components/PageHero";
 import CategoryTabs from "@/components/CategoryTabs";
 import BrandCard from "@/components/BrandCard";
 import { SearchIcon } from "@/components/icons";
-import { categories, budgetRanges, storeTypes, dummyBrands } from "@/data/dummy-brands";
+import { categories, budgetRanges, storeTypes } from "@/data/static-data";
+import type { Brand } from "@/lib/brand-types";
 
-export default function BrandsClient() {
+export default function BrandsClient({ initialBrands }: { initialBrands: Brand[] }) {
   return (
     <Suspense>
-      <BrandsContent />
+      <BrandsContent allBrands={initialBrands} />
     </Suspense>
   );
 }
 
-function BrandsContent() {
+function BrandsContent({ allBrands }: { allBrands: Brand[] }) {
   const searchParams = useSearchParams();
   const initialQ = searchParams.get("q") ?? "";
   const initialCat = searchParams.get("cat") ?? "all";
@@ -28,7 +29,7 @@ function BrandsContent() {
   const [searchQuery, setSearchQuery] = useState(initialQ);
 
   const filtered = useMemo(() => {
-    let result = dummyBrands;
+    let result = allBrands;
 
     if (activeCategory !== "all") {
       result = result.filter((b) => b.categoryId === activeCategory);

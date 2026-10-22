@@ -1,8 +1,8 @@
 import Link from "next/link";
 import PhotoSlot from "./PhotoSlot";
-import type { DummyBrand } from "@/data/dummy-brands";
+import type { Brand } from "@/lib/brand-types";
 
-export default function BrandCard({ brand }: { brand: DummyBrand }) {
+export default function BrandCard({ brand }: { brand: Brand }) {
   return (
     <Link
       href={`/brands/${brand.id}`}

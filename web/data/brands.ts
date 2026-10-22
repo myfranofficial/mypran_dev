@@ -1,41 +1,10 @@
-/** Placeholder brand data — will be replaced by CMS/API later */
-
-export type BrandTier = "best" | "premium" | "special";
-
-export type Brand = {
-  id: string;
-  name: string;
-  tier: BrandTier;
-  category: string;
-  logo?: string;
-  storefront?: string;
-  circle?: string;
-  storeCount?: number;
-};
+/** Static homepage data — brands are now in brands.json */
 
 export type OwnedBrand = {
   no: string;
   name: string;
   interior?: string;
 };
-
-/** Best brands shown on homepage (14 tiles) */
-export const bestBrands: Brand[] = [
-  { id: "b-01", name: "핵밥",            tier: "best", category: "외식·한식",   storefront: "/brands/hecbob.jpg" },
-  { id: "b-02", name: "선비꼬마김밥",     tier: "best", category: "분식",       storefront: "/brands/sunbi-kimbap.jpg" },
-  { id: "b-03", name: "요거트월드",       tier: "best", category: "카페·디저트", storefront: "/brands/yogurt-world.jpg" },
-  { id: "b-04", name: "스텔라떡볶이",     tier: "best", category: "분식",       storefront: "/brands/stella-tteokbokki.jpg" },
-  { id: "b-05", name: "프랭크커핀바",     tier: "best", category: "카페·디저트", storefront: "/brands/frank-coffin-bar.jpg" },
-  { id: "b-06", name: "솔삼조",          tier: "best", category: "외식·한식",   storefront: "/brands/solsamjo.jpg" },
-  { id: "b-07", name: "그릭데이",         tier: "best", category: "카페·디저트", storefront: "/brands/greek-day.jpg" },
-  { id: "b-08", name: "제이델링",         tier: "best", category: "카페·디저트", storefront: "/brands/jdeling.jpg" },
-  { id: "b-09", name: "스트릿팬케이크카페", tier: "best", category: "카페·디저트", storefront: "/brands/street-pancake.jpg" },
-  { id: "b-10", name: "천라쿵푸 마라탕",   tier: "best", category: "외식·한식",  storefront: "/brands/chunra-kungfu.jpg" },
-  { id: "b-11", name: "아담만두",         tier: "best", category: "분식",       storefront: "/brands/adam-mandu.jpg" },
-  { id: "b-12", name: "덮밥장사장",       tier: "best", category: "외식·한식",   storefront: "/brands/deopbap-sajang.jpg" },
-  { id: "b-13", name: "덕수파스타",       tier: "best", category: "외식·한식",   storefront: "/brands/deoksu-pasta.jpg" },
-  { id: "b-14", name: "왓더버거",         tier: "best", category: "외식·한식",   storefront: "/brands/what-the-burger.jpg" },
-];
 
 /** Owned brands shown on homepage (4 cards) — 자사 브랜드 없으면 빈 배열 */
 export const ownedBrands: OwnedBrand[] = [];

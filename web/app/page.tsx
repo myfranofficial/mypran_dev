@@ -33,19 +33,15 @@ import {
 } from "@/components/icons";
 import { AnimatedStatBar } from "@/components/AnimatedStatBar";
 import {
-  bestBrands,
   ownedBrands,
   stats,
   benefits,
   plans,
   heroServices,
 } from "@/data/brands";
-import {
-  categories,
-  budgetRanges,
-  dummyBrands,
-  type DummyBrand,
-} from "@/data/dummy-brands";
+import { categories, budgetRanges } from "@/data/static-data";
+import { readBrands } from "@/lib/brands-store";
+import type { Brand, BrandTier } from "@/lib/brand-types";
 
 /* ── Icon lookup helper ── */
 const ICON_MAP: Record<string, typeof PeopleIcon> = {
@@ -65,14 +61,17 @@ function StatIcon({ name, ...props }: { name: string } & { size?: number; fill?:
   return <Icon {...props} />;
 }
 
-/* bestBrands 이름 → dummyBrands id 매칭 */
-const brandByName = new Map<string, DummyBrand>(dummyBrands.map((b) => [b.name, b]));
-function brandHref(name: string) {
-  const match = brandByName.get(name);
-  return match ? `/brands/${match.id}` : "/brands";
-}
+/* ── Tier section config ── */
+const TIER_CONFIG: { tier: BrandTier; label: string; accent: string; icon: typeof CrownIcon; desc: string }[] = [
+  { tier: "best", label: "베스트", accent: "var(--red-500)", icon: CrownIcon, desc: "업종별 대표 프랜차이즈 브랜드입니다." },
+  { tier: "premium", label: "프리미엄", accent: "#2B6CB0", icon: StarIcon, desc: "검증된 프랜차이즈 브랜드입니다." },
+  { tier: "special", label: "스페셜", accent: "#38A169", icon: StarIcon, desc: "성장 가능성이 높은 브랜드입니다." },
+];
 
 export default function HomePage() {
+  const allBrands = readBrands();
+  const brandsByTier = (tier: BrandTier) => allBrands.filter((b) => b.tier === tier);
+
   return (
     <>
       {/* ════ HERO ════ */}
@@ -334,195 +333,202 @@ export default function HomePage() {
       {/* ════ STAT BAR (animated) ════ */}
       <AnimatedStatBar stats={stats} />
 
-      {/* ════ BEST BRANDS ════ */}
-      <section>
-        {/* PC */}
-        <div
-          className="container-mf hidden md:block"
-          style={{ paddingTop: 64 }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 8,
-              paddingBottom: 16,
-            }}
-          >
-            <h2
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                margin: 0,
-                font: "900 28px/36px var(--font-sans)",
-              }}
+      {/* ════ BRAND TIER SECTIONS (Best → Premium → Special) ════ */}
+      {TIER_CONFIG.map((cfg) => {
+        const tierBrands = brandsByTier(cfg.tier);
+        if (tierBrands.length === 0) return null;
+        const TierIcon = cfg.icon;
+        return (
+          <section key={cfg.tier}>
+            {/* PC */}
+            <div
+              className="container-mf hidden md:block"
+              style={{ paddingTop: 64 }}
             >
-              <CrownIcon size={30} fill="var(--red-500)" />
-              <span>
-                <span style={{ color: "var(--red-500)" }}>베스트</span>{" "}
-                브랜드
-              </span>
-            </h2>
-            <p
-              style={{
-                margin: 0,
-                font: "400 14px/20px var(--font-sans)",
-                color: "var(--ink-muted)",
-              }}
-            >
-              업종별 대표 프랜차이즈 브랜드입니다.
-            </p>
-            <Link
-              href="/brands"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: 36,
-                padding: "0 12px",
-                marginTop: 4,
-                background: "var(--surface)",
-                color: "var(--ink)",
-                border: "1px solid var(--line-control)",
-                borderRadius: "var(--radius-md)",
-                font: "500 13px/1 var(--font-sans)",
-                textDecoration: "none",
-                gap: 4,
-              }}
-            >
-              전체 브랜드 보기 <ChevronRight size={12} />
-            </Link>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
-              gap: "20px 12px",
-              marginTop: 32,
-            }}
-          >
-            {bestBrands.map((b) => (
-              <Link
-                key={b.id}
-                href={brandHref(b.name)}
+              <div
                 style={{
-                  display: "block",
-                  textDecoration: "none",
-                  color: "var(--ink)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 8,
+                  paddingBottom: 16,
                 }}
               >
-                <PhotoSlot
-                  id="P3"
-                  src={b.storefront}
-                  aspectRatio="4/3"
-                  rounded="sm"
-                  alt={`${b.name} 매장`}
-                  sizes="(max-width: 767px) 50vw, 190px"
-                />
-                <span
+                <h2
                   style={{
-                    display: "block",
-                    marginTop: 8,
-                    textAlign: "center",
-                    font: "500 14px/20px var(--font-sans)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    margin: 0,
+                    font: "900 28px/36px var(--font-sans)",
                   }}
                 >
-                  {b.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
+                  <TierIcon size={30} fill={cfg.accent} />
+                  <span>
+                    <span style={{ color: cfg.accent }}>{cfg.label}</span>{" "}
+                    브랜드
+                  </span>
+                </h2>
+                <p
+                  style={{
+                    margin: 0,
+                    font: "400 14px/20px var(--font-sans)",
+                    color: "var(--ink-muted)",
+                  }}
+                >
+                  {cfg.desc}
+                </p>
+                <Link
+                  href="/brands"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    height: 36,
+                    padding: "0 12px",
+                    marginTop: 4,
+                    background: "var(--surface)",
+                    color: "var(--ink)",
+                    border: "1px solid var(--line-control)",
+                    borderRadius: "var(--radius-md)",
+                    font: "500 13px/1 var(--font-sans)",
+                    textDecoration: "none",
+                    gap: 4,
+                  }}
+                >
+                  전체 브랜드 보기 <ChevronRight size={12} />
+                </Link>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
+                  gap: "20px 12px",
+                  marginTop: 32,
+                }}
+              >
+                {tierBrands.map((b) => (
+                  <Link
+                    key={b.id}
+                    href={`/brands/${b.id}`}
+                    style={{
+                      display: "block",
+                      textDecoration: "none",
+                      color: "var(--ink)",
+                    }}
+                  >
+                    <PhotoSlot
+                      id="P3"
+                      src={b.mainImage}
+                      aspectRatio="4/3"
+                      rounded="sm"
+                      alt={`${b.name} 매장`}
+                      sizes="(max-width: 767px) 50vw, 190px"
+                    />
+                    <span
+                      style={{
+                        display: "block",
+                        marginTop: 8,
+                        textAlign: "center",
+                        font: "500 14px/20px var(--font-sans)",
+                      }}
+                    >
+                      {b.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-        {/* Mobile */}
-        <div className="md:hidden" style={{ padding: "40px 16px 0" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 4,
-              paddingBottom: 12,
-            }}
-          >
-            <h2
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                margin: 0,
-                font: "900 22px/30px var(--font-sans)",
-              }}
-            >
-              <CrownIcon size={24} fill="var(--red-500)" />
-              <span>
-                <span style={{ color: "var(--red-500)" }}>베스트</span>{" "}
-                브랜드
-              </span>
-            </h2>
-            <p
-              style={{
-                margin: 0,
-                font: "400 13px/18px var(--font-sans)",
-                color: "var(--ink-muted)",
-              }}
-            >
-              업종별 대표 프랜차이즈 브랜드입니다.
-            </p>
-            <Link
-              href="/brands"
-              style={{
-                font: "500 13px/18px var(--font-sans)",
-                color: "var(--ink)",
-                textDecoration: "none",
-                marginTop: 4,
-              }}
-            >
-              전체보기 ›
-            </Link>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: "16px 12px",
-              marginTop: 20,
-            }}
-          >
-            {bestBrands.slice(0, 6).map((b) => (
-              <Link
-                key={b.id}
-                href={brandHref(b.name)}
+            {/* Mobile */}
+            <div className="md:hidden" style={{ padding: "40px 16px 0" }}>
+              <div
                 style={{
-                  display: "block",
-                  textDecoration: "none",
-                  color: "var(--ink)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 4,
+                  paddingBottom: 12,
                 }}
               >
-                <PhotoSlot
-                  id="P3"
-                  src={b.storefront}
-                  aspectRatio="4/3"
-                  rounded="sm"
-                  alt={`${b.name} 매장`}
-                  sizes="50vw"
-                />
-                <span
+                <h2
                   style={{
-                    display: "block",
-                    marginTop: 8,
-                    textAlign: "center",
-                    font: "500 13px/18px var(--font-sans)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    margin: 0,
+                    font: "900 22px/30px var(--font-sans)",
                   }}
                 >
-                  {b.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+                  <TierIcon size={24} fill={cfg.accent} />
+                  <span>
+                    <span style={{ color: cfg.accent }}>{cfg.label}</span>{" "}
+                    브랜드
+                  </span>
+                </h2>
+                <p
+                  style={{
+                    margin: 0,
+                    font: "400 13px/18px var(--font-sans)",
+                    color: "var(--ink-muted)",
+                  }}
+                >
+                  {cfg.desc}
+                </p>
+                <Link
+                  href="/brands"
+                  style={{
+                    font: "500 13px/18px var(--font-sans)",
+                    color: "var(--ink)",
+                    textDecoration: "none",
+                    marginTop: 4,
+                  }}
+                >
+                  전체보기 ›
+                </Link>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                  gap: "16px 12px",
+                  marginTop: 20,
+                }}
+              >
+                {tierBrands.slice(0, 6).map((b) => (
+                  <Link
+                    key={b.id}
+                    href={`/brands/${b.id}`}
+                    style={{
+                      display: "block",
+                      textDecoration: "none",
+                      color: "var(--ink)",
+                    }}
+                  >
+                    <PhotoSlot
+                      id="P3"
+                      src={b.mainImage}
+                      aspectRatio="4/3"
+                      rounded="sm"
+                      alt={`${b.name} 매장`}
+                      sizes="50vw"
+                    />
+                    <span
+                      style={{
+                        display: "block",
+                        marginTop: 8,
+                        textAlign: "center",
+                        font: "500 13px/18px var(--font-sans)",
+                      }}
+                    >
+                      {b.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       {/* ════ CATEGORY BRANDS (업종별 브랜드 찾기) ════ */}
       <section style={{ background: "var(--surface-muted)" }}>
@@ -537,7 +543,7 @@ export default function HomePage() {
           </div>
           <div className="category-chips-grid" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10 }}>
             {categories.filter((c) => c.id !== "all").map((cat) => {
-              const count = dummyBrands.filter((b) => b.categoryId === cat.id).length;
+              const count = allBrands.filter((b) => b.categoryId === cat.id).length;
               return (
                 <Link
                   key={cat.id}
@@ -581,7 +587,7 @@ export default function HomePage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {budgetRanges.map((range) => {
-              const brands = dummyBrands.filter(
+              const brands = allBrands.filter(
                 (b) => b.foundingCostMin >= range.min && b.foundingCostMin < range.max
               );
               return (
@@ -640,7 +646,7 @@ export default function HomePage() {
               전체 <span style={{ color: "var(--red-500)" }}>입점 브랜드</span>
             </h2>
             <p style={{ margin: "8px 0 0", font: "400 14px/20px var(--font-sans)", color: "var(--night-muted)" }}>
-              마이프랜에 입점한 {dummyBrands.length}개의 프랜차이즈 브랜드
+              마이프랜에 입점한 {allBrands.length}개의 프랜차이즈 브랜드
             </p>
           </div>
           <div
@@ -651,7 +657,7 @@ export default function HomePage() {
               gap: 8,
             }}
           >
-            {dummyBrands.map((b) => (
+            {allBrands.map((b) => (
               <Link
                 key={b.id}
                 href={`/brands/${b.id}`}
@@ -1191,88 +1197,175 @@ export default function HomePage() {
       </section>
 
       {/* ════ OWNED BRANDS ════ */}
-      <section>
-        {/* PC */}
-        <div
-          className="container-mf hidden md:block"
-          style={{ padding: "64px 24px" }}
-        >
+      {ownedBrands.length > 0 && (
+        <section>
+          {/* PC */}
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 8,
-              paddingBottom: 16,
-            }}
+            className="container-mf hidden md:block"
+            style={{ padding: "64px 24px" }}
           >
-            <h2
+            <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 gap: 8,
-                margin: 0,
-                font: "900 28px/36px var(--font-sans)",
+                paddingBottom: 16,
               }}
             >
-              <StarIcon size={28} fill="var(--red-500)" />
-              <span>
-                마이프랜{" "}
-                <span style={{ color: "var(--red-500)" }}>보유</span> 브랜드
-              </span>
-            </h2>
-            <p
-              style={{
-                margin: 0,
-                font: "400 14px/20px var(--font-sans)",
-                color: "var(--ink-muted)",
-              }}
-            >
-              마이프랜이 직접 운영하며 함께 성장하는 브랜드입니다.
-            </p>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-              gap: 16,
-              marginTop: 32,
-            }}
-          >
-            {ownedBrands.map((ob) => (
-              <Link
-                key={ob.no}
-                href={brandHref(ob.name)}
+              <h2
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  background: "var(--black)",
-                  color: "var(--surface)",
-                  textDecoration: "none",
-                  borderRadius: "var(--radius-none)",
+                  alignItems: "center",
+                  gap: 8,
+                  margin: 0,
+                  font: "900 28px/36px var(--font-sans)",
                 }}
               >
-                <PhotoSlot
-                  id="P6"
-                  src={ob.interior}
-                  aspectRatio="16/9"
-                  dark
-                  alt={`${ob.name} 인테리어`}
-                  sizes="288px"
-                />
-                <div
+                <StarIcon size={28} fill="var(--red-500)" />
+                <span>
+                  마이프랜{" "}
+                  <span style={{ color: "var(--red-500)" }}>보유</span> 브랜드
+                </span>
+              </h2>
+              <p
+                style={{
+                  margin: 0,
+                  font: "400 14px/20px var(--font-sans)",
+                  color: "var(--ink-muted)",
+                }}
+              >
+                마이프랜이 직접 운영하며 함께 성장하는 브랜드입니다.
+              </p>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+                gap: 16,
+                marginTop: 32,
+              }}
+            >
+              {ownedBrands.map((ob) => (
+                <Link
+                  key={ob.no}
+                  href="/brands"
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: 16,
+                    flexDirection: "column",
+                    background: "var(--black)",
+                    color: "var(--surface)",
+                    textDecoration: "none",
+                    borderRadius: "var(--radius-none)",
                   }}
                 >
-                  <span>
+                  <PhotoSlot
+                    id="P6"
+                    src={ob.interior}
+                    aspectRatio="16/9"
+                    dark
+                    alt={`${ob.name} 인테리어`}
+                    sizes="288px"
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: 16,
+                    }}
+                  >
+                    <span>
+                      <small
+                        style={{
+                          display: "block",
+                          font: "700 11px/14px var(--font-sans)",
+                          letterSpacing: "0.18em",
+                          color: "var(--smoke)",
+                        }}
+                      >
+                        OWNED {ob.no}
+                      </small>
+                      <strong
+                        style={{
+                          display: "block",
+                          marginTop: 4,
+                          font: "700 18px/24px var(--font-sans)",
+                        }}
+                      >
+                        {ob.name}
+                      </strong>
+                    </span>
+                    <ChevronRight size={16} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile — horizontal scroll */}
+          <div className="md:hidden" style={{ padding: "40px 0 40px 16px" }}>
+            <div
+              style={{
+                paddingRight: 16,
+                paddingBottom: 12,
+                marginRight: 16,
+                textAlign: "center",
+              }}
+            >
+              <h2
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  margin: 0,
+                  font: "900 22px/30px var(--font-sans)",
+                }}
+              >
+                <StarIcon size={22} fill="var(--red-500)" />
+                <span>
+                  마이프랜{" "}
+                  <span style={{ color: "var(--red-500)" }}>보유</span> 브랜드
+                </span>
+              </h2>
+            </div>
+            <div
+              className="hscroll"
+              style={{
+                display: "flex",
+                gap: 12,
+                marginTop: 20,
+                paddingRight: 16,
+              }}
+            >
+              {ownedBrands.map((ob) => (
+                <Link
+                  key={ob.no}
+                  href="#"
+                  style={{
+                    flex: "none",
+                    width: 280,
+                    display: "flex",
+                    flexDirection: "column",
+                    background: "var(--black)",
+                    color: "var(--surface)",
+                    textDecoration: "none",
+                  }}
+                >
+                  <PhotoSlot
+                    id="P6"
+                    src={ob.interior}
+                    dark
+                    width={280}
+                    height={158}
+                    alt={`${ob.name} 인테리어`}
+                    sizes="280px"
+                  />
+                  <div style={{ padding: "14px 16px" }}>
                     <small
                       style={{
                         display: "block",
-                        font: "700 11px/14px var(--font-sans)",
+                        font: "700 10px/14px var(--font-sans)",
                         letterSpacing: "0.18em",
                         color: "var(--smoke)",
                       }}
@@ -1282,104 +1375,19 @@ export default function HomePage() {
                     <strong
                       style={{
                         display: "block",
-                        marginTop: 4,
-                        font: "700 18px/24px var(--font-sans)",
+                        marginTop: 2,
+                        font: "700 17px/24px var(--font-sans)",
                       }}
                     >
                       {ob.name}
                     </strong>
-                  </span>
-                  <ChevronRight size={16} />
-                </div>
-              </Link>
-            ))}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-
-        {/* Mobile — horizontal scroll */}
-        <div className="md:hidden" style={{ padding: "40px 0 40px 16px" }}>
-          <div
-            style={{
-              paddingRight: 16,
-              paddingBottom: 12,
-              marginRight: 16,
-              textAlign: "center",
-            }}
-          >
-            <h2
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                margin: 0,
-                font: "900 22px/30px var(--font-sans)",
-              }}
-            >
-              <StarIcon size={22} fill="var(--red-500)" />
-              <span>
-                마이프랜{" "}
-                <span style={{ color: "var(--red-500)" }}>보유</span> 브랜드
-              </span>
-            </h2>
-          </div>
-          <div
-            className="hscroll"
-            style={{
-              display: "flex",
-              gap: 12,
-              marginTop: 20,
-              paddingRight: 16,
-            }}
-          >
-            {ownedBrands.map((ob) => (
-              <Link
-                key={ob.no}
-                href="#"
-                style={{
-                  flex: "none",
-                  width: 280,
-                  display: "flex",
-                  flexDirection: "column",
-                  background: "var(--black)",
-                  color: "var(--surface)",
-                  textDecoration: "none",
-                }}
-              >
-                <PhotoSlot
-                  id="P6"
-                  src={ob.interior}
-                  dark
-                  width={280}
-                  height={158}
-                  alt={`${ob.name} 인테리어`}
-                  sizes="280px"
-                />
-                <div style={{ padding: "14px 16px" }}>
-                  <small
-                    style={{
-                      display: "block",
-                      font: "700 10px/14px var(--font-sans)",
-                      letterSpacing: "0.18em",
-                      color: "var(--smoke)",
-                    }}
-                  >
-                    OWNED {ob.no}
-                  </small>
-                  <strong
-                    style={{
-                      display: "block",
-                      marginTop: 2,
-                      font: "700 17px/24px var(--font-sans)",
-                    }}
-                  >
-                    {ob.name}
-                  </strong>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ════ CONSULT FORM ════ */}
       <section style={{ background: "var(--surface-muted)" }}>

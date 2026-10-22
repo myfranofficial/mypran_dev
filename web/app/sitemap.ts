@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
-import { dummyBrands } from "@/data/dummy-brands";
+import { readBrands } from "@/lib/brands-store";
 
 const BASE_URL = "https://xn--lj2b54b90v2gn.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();
+  const brands = readBrands();
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
@@ -20,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 
-  const brandPages: MetadataRoute.Sitemap = dummyBrands.map((brand) => ({
+  const brandPages: MetadataRoute.Sitemap = brands.map((brand) => ({
     url: `${BASE_URL}/brands/${brand.id}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
