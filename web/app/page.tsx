@@ -745,8 +745,8 @@ export default function HomePage() {
         </div>
 
         {/* ── Foreground content ── */}
-        <div className="container-mf section-py" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ textAlign: "center", padding: "48px 16px 20px" }}>
             <h2 style={{ margin: 0, font: "900 28px/36px var(--font-sans)" }}>
               전체 <span style={{ color: "var(--red-500)" }}>입점 브랜드</span>
             </h2>
@@ -754,34 +754,90 @@ export default function HomePage() {
               마이프랜에 입점한 {allBrands.length}개의 프랜차이즈 브랜드
             </p>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: 8,
-            }}
-          >
-            {allBrands.map((b) => (
-              <Link
-                key={b.id}
-                href={`/brands/${b.id}`}
-                style={{
-                  padding: "8px 18px",
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "var(--radius-md)",
-                  font: "500 13px/1 var(--font-sans)",
-                  color: "var(--surface)",
-                  textDecoration: "none",
-                  backdropFilter: "blur(4px)",
-                }}
-              >
-                {b.name}
-              </Link>
-            ))}
+
+          {/* PC: wrap grid */}
+          <div className="container-mf hidden md:block" style={{ paddingBottom: 16 }}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: 8,
+              }}
+            >
+              {allBrands.map((b) => (
+                <Link
+                  key={b.id}
+                  href={`/brands/${b.id}`}
+                  style={{
+                    padding: "8px 18px",
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: "var(--radius-md)",
+                    font: "500 13px/1 var(--font-sans)",
+                    color: "var(--surface)",
+                    textDecoration: "none",
+                    backdropFilter: "blur(4px)",
+                  }}
+                >
+                  {b.name}
+                </Link>
+              ))}
+            </div>
           </div>
-          <div style={{ textAlign: "center", marginTop: 24 }}>
+
+          {/* Mobile: scrolling brand name rows */}
+          <div className="md:hidden" style={{ overflow: "hidden", padding: "12px 0" }}>
+            {[0, 1].map((row) => {
+              const half = Math.ceil(allBrands.length / 2);
+              const slice = row === 0 ? allBrands.slice(0, half) : allBrands.slice(half);
+              const isReverse = row === 1;
+              return (
+                <div
+                  key={row}
+                  className={isReverse ? "brand-scroll-row brand-scroll-reverse" : "brand-scroll-row"}
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    marginBottom: row === 0 ? 8 : 0,
+                  }}
+                >
+                  {[0, 1].map((dup) => (
+                    <div
+                      key={dup}
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {slice.map((b, i) => (
+                        <Link
+                          key={`${dup}-${i}`}
+                          href={`/brands/${b.id}`}
+                          style={{
+                            flexShrink: 0,
+                            padding: "7px 14px",
+                            background: "rgba(255,255,255,0.08)",
+                            border: "1px solid rgba(255,255,255,0.15)",
+                            borderRadius: "var(--radius-md)",
+                            font: "500 12px/1 var(--font-sans)",
+                            color: "var(--surface)",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {b.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ textAlign: "center", padding: "16px 16px 48px" }}>
             <Link
               href="/brands"
               style={{
@@ -817,8 +873,23 @@ export default function HomePage() {
           .scroll-row-reverse {
             animation: scrollRight 60s linear infinite;
           }
+          @keyframes brandScrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes brandScrollRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+          }
+          .brand-scroll-row {
+            animation: brandScrollLeft 40s linear infinite;
+          }
+          .brand-scroll-reverse {
+            animation: brandScrollRight 40s linear infinite;
+          }
           @media (prefers-reduced-motion: reduce) {
-            .scroll-row, .scroll-row-reverse {
+            .scroll-row, .scroll-row-reverse,
+            .brand-scroll-row, .brand-scroll-reverse {
               animation: none;
             }
           }

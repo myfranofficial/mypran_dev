@@ -569,11 +569,10 @@ function CompareContent({ allBrands }: { allBrands: Brand[] }) {
                   >
                     <div
                       style={{
-                        padding: "10px 14px 4px",
-                        font: "700 11px/14px var(--font-sans)",
+                        padding: "8px 8px 2px",
+                        font: "700 10px/14px var(--font-sans)",
                         color: "var(--ink-muted)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.04em",
+                        letterSpacing: "0.02em",
                       }}
                     >
                       {row.label}
@@ -582,17 +581,20 @@ function CompareContent({ allBrands }: { allBrands: Brand[] }) {
                       style={{
                         display: "grid",
                         gridTemplateColumns: `repeat(${selected.length}, minmax(0, 1fr))`,
-                        gap: 4,
-                        padding: "2px 14px 10px",
+                        gap: 2,
+                        padding: "2px 8px 10px",
                       }}
                     >
                       {selected.map((b) => (
                         <span
                           key={b.id}
                           style={{
-                            font: "600 13px/18px var(--font-sans)",
+                            font: "600 11px/16px var(--font-sans)",
                             textAlign: "center",
                             color: "var(--ink)",
+                            wordBreak: "keep-all",
+                            overflowWrap: "break-word",
+                            padding: "0 2px",
                           }}
                         >
                           {row.render(b)}
