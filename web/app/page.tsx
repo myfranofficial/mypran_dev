@@ -30,6 +30,7 @@ import {
   BookIcon,
   FileIcon,
   MailIcon,
+  CATEGORY_ICONS,
 } from "@/components/icons";
 import { AnimatedStatBar } from "@/components/AnimatedStatBar";
 import {
@@ -541,29 +542,36 @@ export default function HomePage() {
               관심있는 업종의 프랜차이즈 브랜드를 확인하세요
             </p>
           </div>
-          <div className="category-chips-grid" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10 }}>
+          <div className="cat-icon-grid">
             {categories.filter((c) => c.id !== "all").map((cat) => {
               const count = allBrands.filter((b) => b.categoryId === cat.id).length;
+              const CatIcon = CATEGORY_ICONS[cat.id];
               return (
                 <Link
                   key={cat.id}
                   href={`/brands?cat=${cat.id}`}
+                  className="cat-icon-card"
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: 120,
-                    height: 80,
                     background: "var(--surface)",
                     border: "1px solid var(--line)",
                     borderRadius: "var(--radius-md)",
                     textDecoration: "none",
                     color: "var(--ink)",
-                    gap: 4,
+                    gap: 6,
+                    padding: "20px 8px 16px",
+                    transition: "border-color 0.2s, box-shadow 0.2s",
                   }}
                 >
-                  <strong style={{ font: "700 15px/20px var(--font-sans)" }}>{cat.name}</strong>
+                  {CatIcon && (
+                    <span style={{ color: "var(--red-500)" }}>
+                      <CatIcon size={36} color="var(--red-500)" />
+                    </span>
+                  )}
+                  <strong style={{ font: "700 14px/20px var(--font-sans)" }}>{cat.name}</strong>
                   <span style={{ font: "400 12px/16px var(--font-sans)", color: "var(--ink-muted)" }}>
                     {count}개 브랜드
                   </span>
@@ -572,6 +580,25 @@ export default function HomePage() {
             })}
           </div>
         </div>
+        <style>{`
+          .cat-icon-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+          }
+          @media (max-width: 767px) {
+            .cat-icon-grid {
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: 10px;
+            }
+          }
+          .cat-icon-card:hover {
+            border-color: var(--red-500) !important;
+            box-shadow: 0 2px 12px rgba(229,62,62,0.12);
+          }
+        `}</style>
       </section>
 
       {/* ════ BUDGET BRANDS (예산별 브랜드 찾기) ════ */}
@@ -638,9 +665,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ════ ALL BRANDS (전체 입점 브랜드) ════ */}
-      <section style={{ background: "var(--night)", color: "var(--surface)" }}>
-        <div className="container-mf section-py">
+      {/* ════ ALL BRANDS (전체 입점 브랜드) — scrolling photo BG ════ */}
+      <section
+        style={{
+          position: "relative",
+          background: "var(--night)",
+          color: "var(--surface)",
+          overflow: "hidden",
+        }}
+      >
+        {/* ── Scrolling brand photo rows (background) ── */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.08,
+            pointerEvents: "none",
+          }}
+        >
+          {[0, 1, 2].map((row) => {
+            const offset = row * 15; // stagger starting index
+            const slice = [...allBrands.slice(offset), ...allBrands.slice(0, offset)];
+            const isReverse = row % 2 === 1;
+            return (
+              <div
+                key={row}
+                className={isReverse ? "scroll-row scroll-row-reverse" : "scroll-row"}
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  height: "33.333%",
+                  alignItems: "center",
+                }}
+              >
+                {/* Duplicate for seamless loop */}
+                {[0, 1].map((dup) => (
+                  <div
+                    key={dup}
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {slice.map((b, i) => (
+                      <div
+                        key={`${dup}-${i}`}
+                        style={{
+                          width: 120,
+                          height: 80,
+                          flexShrink: 0,
+                          borderRadius: 6,
+                          overflow: "hidden",
+                          background: "rgba(255,255,255,0.06)",
+                        }}
+                      >
+                        {b.mainImage && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={b.mainImage}
+                            alt=""
+                            loading="lazy"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              display: "block",
+                            }}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Foreground content ── */}
+        <div className="container-mf section-py" style={{ position: "relative", zIndex: 1 }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <h2 style={{ margin: 0, font: "900 28px/36px var(--font-sans)" }}>
               전체 <span style={{ color: "var(--red-500)" }}>입점 브랜드</span>
@@ -669,6 +774,7 @@ export default function HomePage() {
                   font: "500 13px/1 var(--font-sans)",
                   color: "var(--surface)",
                   textDecoration: "none",
+                  backdropFilter: "blur(4px)",
                 }}
               >
                 {b.name}
@@ -695,6 +801,28 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
+
+        <style>{`
+          @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes scrollRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+          }
+          .scroll-row {
+            animation: scrollLeft 60s linear infinite;
+          }
+          .scroll-row-reverse {
+            animation: scrollRight 60s linear infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .scroll-row, .scroll-row-reverse {
+              animation: none;
+            }
+          }
+        `}</style>
       </section>
 
       {/* ════ PRICING PLANS ════ */}

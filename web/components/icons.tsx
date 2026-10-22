@@ -167,3 +167,143 @@ export function ClockIcon(p: IconProps) {
 export function CheckCircleIcon(p: IconProps) {
   return svg(p, "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z");
 }
+
+/* ── Category sketch-line icons (stroke-based) ── */
+
+type StrokeIconProps = { size?: number; color?: string; className?: string };
+
+function strokeSvg(
+  { size = 28, color = "currentColor", className }: StrokeIconProps,
+  children: React.ReactNode,
+) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 28 28"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      {children}
+    </svg>
+  );
+}
+
+/** 한식 — 밥그릇 + 김 */
+export function CatKoreanIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <path d="M5 16c0 3.5 3.13 6 9 6s9-2.5 9-6" />
+    <path d="M5 16c0-1 1.5-2.5 9-2.5s9 1.5 9 2.5" />
+    <path d="M10 13.5V8.5c0-1 1-2 2-1s1 2 0 3" />
+    <path d="M14 13.5V9c0-1 1-2 2-1s1 2 0 3" />
+    <path d="M18 13.5V10c0-1 1-1.5 1.5-.5" />
+  </>);
+}
+
+/** 고기·곱창 — 고기 스테이크 */
+export function CatMeatIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <ellipse cx="14" cy="14" rx="9" ry="7" />
+    <ellipse cx="14" cy="14" rx="5" ry="3.5" />
+    <path d="M11 12.5c1-1.5 4.5-1.5 5.5 0" />
+    <line x1="9" y1="21" x2="5" y2="25" />
+    <line x1="19" y1="21" x2="23" y2="25" />
+  </>);
+}
+
+/** 치킨 — 닭다리 */
+export function CatChickenIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <path d="M10 20l-2 4" />
+    <path d="M18 20l2 4" />
+    <path d="M8 12c-2-3-1-7 3-9 2-1 5-1 7 0 4 2 5 6 3 9" />
+    <path d="M8 12c-1 2 0 5 2 7h8c2-2 3-5 2-7" />
+    <circle cx="12" cy="9" r="0.5" fill="currentColor" stroke="none" />
+  </>);
+}
+
+/** 분식 — 떡볶이 컵 */
+export function CatSnackIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <path d="M7 8h14l-2 14H9L7 8z" />
+    <path d="M6 8h16" />
+    <path d="M11 12v4" />
+    <path d="M15 12v4" />
+    <path d="M13 4v4" />
+    <path d="M10 5l3-1" />
+    <path d="M16 5l-3-1" />
+  </>);
+}
+
+/** 카페 — 커피잔 */
+export function CatCafeIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <path d="M5 10h14v8c0 2-2 4-5 4h-4c-3 0-5-2-5-4v-8z" />
+    <path d="M19 12h2c1.5 0 3 1 3 3s-1.5 3-3 3h-2" />
+    <path d="M9 6c0-2 1.5-2 1.5-4" />
+    <path d="M12 6c0-2 1.5-2 1.5-4" />
+    <path d="M15 6c0-2 1.5-2 1.5-4" />
+  </>);
+}
+
+/** 주점 — 맥주잔 */
+export function CatPubIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <path d="M6 6h12v12c0 2-2 4-4 4h-4c-2 0-4-2-4-4V6z" />
+    <path d="M18 9h2c1.5 0 2.5 1 2.5 2.5S21.5 14 20 14h-2" />
+    <path d="M6 6c0-1 0-2 2-2h8c2 0 2 1 2 2" />
+    <path d="M9 10v3" />
+    <path d="M12 10v3" />
+    <path d="M15 10v3" />
+  </>);
+}
+
+/** 밀키트 — 도시락 박스 */
+export function CatMealkitIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <rect x="4" y="8" width="20" height="14" rx="2" />
+    <path d="M4 12h20" />
+    <path d="M10 8V6c0-1 1-2 4-2s4 1 4 2v2" />
+    <path d="M10 16h3" />
+    <path d="M16 16h2" />
+  </>);
+}
+
+/** 당구장 — 당구공 + 큐 */
+export function CatBilliardIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <circle cx="14" cy="15" r="6" />
+    <circle cx="14" cy="15" r="2.5" />
+    <line x1="3" y1="4" x2="10" y2="11" />
+    <path d="M3 4l2-1" />
+  </>);
+}
+
+/** 기타 — 그리드 점 */
+export function CatEtcIcon(p: StrokeIconProps) {
+  return strokeSvg(p, <>
+    <circle cx="8" cy="8" r="2" />
+    <circle cx="20" cy="8" r="2" />
+    <circle cx="8" cy="20" r="2" />
+    <circle cx="20" cy="20" r="2" />
+    <circle cx="14" cy="14" r="2" />
+  </>);
+}
+
+/** Map: categoryId → icon component */
+export const CATEGORY_ICONS: Record<string, (p: StrokeIconProps) => React.JSX.Element> = {
+  korean: CatKoreanIcon,
+  meat: CatMeatIcon,
+  chicken: CatChickenIcon,
+  snack: CatSnackIcon,
+  cafe: CatCafeIcon,
+  pub: CatPubIcon,
+  mealkit: CatMealkitIcon,
+  billiard: CatBilliardIcon,
+  etc: CatEtcIcon,
+};
