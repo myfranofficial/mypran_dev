@@ -10,10 +10,14 @@ import { imageUrl } from "@/lib/storage";
  * 프론트엔드는 기존 JSON fetch를 그대로 사용.
  */
 
-const EXPORT_DIR =
-  process.env.JSON_EXPORT_DIR
-    ? path.resolve(process.env.JSON_EXPORT_DIR)
-    : path.join(process.cwd(), "..", "src", "static", "data");
+const EXPORT_DIR = (() => {
+  if (process.env.JSON_EXPORT_DIR) return path.resolve(process.env.JSON_EXPORT_DIR);
+  // 서버: cwd = .../admin/current → .../web/current/data
+  const webData = path.join(process.cwd(), "..", "..", "web", "current", "data");
+  if (fs.existsSync(path.dirname(webData))) return webData;
+  // 로컬 개발: cwd = admin/ → web/data/
+  return path.join(process.cwd(), "..", "web", "data");
+})();
 
 function writeJson(filename: string, data: unknown): void {
   fs.mkdirSync(EXPORT_DIR, { recursive: true });
