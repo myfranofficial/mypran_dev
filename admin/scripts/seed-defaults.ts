@@ -10,8 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
 
-const DB_DIR = path.join(__dirname, "..", "data");
-const DB_PATH = path.join(DB_DIR, "myfran.db");
+const DB_PATH = process.argv[2] || path.join(__dirname, "..", "data", "myfran.db");
 
 if (!fs.existsSync(DB_PATH)) {
   console.error(`DB not found: ${DB_PATH}`);
