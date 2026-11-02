@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import PageHero from "@/components/PageHero";
-import { dummyNotices } from "@/data/static-data";
+import type { NoticeItem } from "@/lib/site-data";
 
-export default function NoticesClient() {
+export default function NoticesClient({ notices }: { notices: NoticeItem[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
@@ -27,12 +27,19 @@ export default function NoticesClient() {
           <span style={{ width: 120, textAlign: "right" }}>날짜</span>
         </div>
 
-        {dummyNotices.map((notice) => {
-          const isOpen = openId === notice.id;
+        {notices.length === 0 && (
+          <div style={{ textAlign: "center", padding: "48px 0", color: "var(--ink-muted)" }}>
+            등록된 공지사항이 없습니다.
+          </div>
+        )}
+
+        {notices.map((notice) => {
+          const nid = String(notice.id);
+          const isOpen = openId === nid;
           return (
             <article key={notice.id}>
               <button
-                onClick={() => setOpenId(isOpen ? null : notice.id)}
+                onClick={() => setOpenId(isOpen ? null : nid)}
                 className="touch-target"
                 style={{
                   display: "flex",

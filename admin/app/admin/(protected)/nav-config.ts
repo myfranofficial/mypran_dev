@@ -1,5 +1,5 @@
 /**
- * HiQ 어드민 네비게이션 구성.
+ * 마이프랜 어드민 네비게이션 구성.
  * 사이드바 그룹 + 그룹 내 탭을 한 곳에서 정의.
  */
 
@@ -27,14 +27,14 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     icon: "banners",
     paths: ["/admin/banners", "/admin/notices", "/admin/popups"],
     tabs: [
-      { href: "/admin/banners", label: "배너" },
-      { href: "/admin/notices", label: "공지" },
+      { href: "/admin/banners", label: "히어로 배너" },
+      { href: "/admin/notices", label: "공지사항" },
       { href: "/admin/popups", label: "팝업" },
     ],
   },
   {
     href: "/admin/gallery",
-    label: "갤러리·영상",
+    label: "브랜드 미디어",
     icon: "gallery",
     paths: ["/admin/gallery", "/admin/videos"],
     tabs: [
@@ -43,23 +43,19 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     ],
   },
   {
-    href: "/admin/stores",
-    label: "매장 관리",
+    href: "/admin/brands",
+    label: "브랜드 관리",
     icon: "stores",
-    paths: ["/admin/stores"],
-    tabs: [
-      { href: "/admin/stores", label: "매장 목록" },
-      { href: "/admin/stores/photos", label: "사진 관리" },
-    ],
+    paths: ["/admin/brands"],
   },
   {
     href: "/admin/events",
-    label: "이벤트·FAQ",
+    label: "이벤트·FAQ·자료",
     icon: "events",
     paths: ["/admin/events", "/admin/faq", "/admin/downloads"],
     tabs: [
       { href: "/admin/events", label: "이벤트" },
-      { href: "/admin/faq", label: "FAQ" },
+      { href: "/admin/faq", label: "자주 묻는 질문" },
       { href: "/admin/downloads", label: "자료실" },
     ],
   },
@@ -76,20 +72,20 @@ export const ADMIN_GROUPS: AdminGroup[] = [
   },
   {
     href: "/admin/reviews",
-    label: "리뷰/후기",
+    label: "창업 후기",
     icon: "reviews",
     paths: ["/admin/reviews"],
   },
   {
     href: "/admin/consultations",
-    label: "상담 문의",
+    label: "상담 신청",
     icon: "consultations",
     paths: ["/admin/consultations"],
     badge: true,
   },
   {
     href: "/admin/settings",
-    label: "설정",
+    label: "사이트 설정",
     icon: "settings",
     paths: ["/admin/settings"],
   },

@@ -4,7 +4,7 @@ import { countUnread } from "@/lib/db/consultations";
 import { PreviewLink } from "./ui/preview-link";
 import * as s from "./ui/styles";
 
-const SITE_URL = "https://xn--hy1b74gqvezsj69b22utri.kr";
+const SITE_URL = "https://xn--lj2b54b90v2gn.com";
 
 const MODULE_MAP: {
   label: string;
@@ -13,14 +13,14 @@ const MODULE_MAP: {
   frontPath: string;
   frontLabel: string;
 }[] = [
-  { label: "배너", table: "banners", href: "/admin/banners", frontPath: "/", frontLabel: "메인 페이지" },
-  { label: "공지사항", table: "notices", href: "/admin/notices", frontPath: "/news", frontLabel: "뉴스/소식" },
-  { label: "사진 갤러리", table: "gallery_images", href: "/admin/gallery", frontPath: "/gallery", frontLabel: "갤러리" },
-  { label: "영상", table: "videos", href: "/admin/videos", frontPath: "/videos", frontLabel: "영상" },
-  { label: "매장", table: "stores", href: "/admin/stores", frontPath: "/stores", frontLabel: "매장안내" },
-  { label: "이벤트", table: "events", href: "/admin/events", frontPath: "/events", frontLabel: "이벤트" },
-  { label: "FAQ", table: "faq_items", href: "/admin/faq", frontPath: "/faq", frontLabel: "FAQ" },
-  { label: "자료실", table: "downloads", href: "/admin/downloads", frontPath: "/downloads", frontLabel: "자료실" },
+  { label: "히어로 배너", table: "banners", href: "/admin/banners", frontPath: "/", frontLabel: "메인 페이지" },
+  { label: "공지사항", table: "notices", href: "/admin/notices", frontPath: "/notices", frontLabel: "공지사항" },
+  { label: "사진 갤러리", table: "gallery_images", href: "/admin/gallery", frontPath: "/", frontLabel: "갤러리" },
+  { label: "영상 갤러리", table: "videos", href: "/admin/videos", frontPath: "/", frontLabel: "영상" },
+  { label: "브랜드", table: "brands", href: "/admin/brands", frontPath: "/brands", frontLabel: "브랜드관" },
+  { label: "이벤트", table: "events", href: "/admin/events", frontPath: "/", frontLabel: "이벤트" },
+  { label: "자주 묻는 질문", table: "faq_items", href: "/admin/faq", frontPath: "/", frontLabel: "FAQ" },
+  { label: "자료실", table: "downloads", href: "/admin/downloads", frontPath: "/", frontLabel: "자료실" },
 ];
 
 export default function DashboardPage() {
@@ -39,7 +39,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-[#231F20]">대시보드</h1>
-          <p className="mt-1 text-sm text-[#9E9F9C]">HiQ Billiard 사이트 관리 현황</p>
+          <p className="mt-1 text-sm text-[#9E9F9C]">마이프랜 사이트 관리 현황</p>
         </div>
         <PreviewLink path="/" label="사이트 보기" />
       </div>

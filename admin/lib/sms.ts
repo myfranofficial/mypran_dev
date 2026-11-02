@@ -24,7 +24,7 @@ export async function notifyNewConsultation(data: {
   const locationStr = data.location || "미입력";
 
   const text = [
-    "[하이큐빌리어드] 새 상담 접수",
+    "[마이프랜] 새 상담 접수",
     `이름: ${nameStr}`,
     `연락처: ${phoneStr}`,
     `지역: ${locationStr}`,

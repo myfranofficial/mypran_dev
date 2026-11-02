@@ -5,7 +5,7 @@ import { SCHEMA_SQL } from "./schema";
 
 export function resolveDbPath(): string {
   return (
-    process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "hiq.db")
+    process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "myfran.db")
   );
 }
 

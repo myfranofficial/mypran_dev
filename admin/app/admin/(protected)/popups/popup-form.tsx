@@ -55,7 +55,7 @@ export function PopupForm({ action, popup }: PopupFormProps) {
             required
             defaultValue={popup?.title ?? ""}
             className={s.input}
-            placeholder="예: 제1회 하이큐빌리어드배 대회"
+            placeholder="예: 마이프랜 오픈 이벤트"
           />
           <FieldHint text="팝업 이미지의 대체 텍스트(alt)로도 사용됩니다" />
         </div>

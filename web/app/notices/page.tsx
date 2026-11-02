@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { readNotices } from "@/lib/site-data";
 import NoticesClient from "./NoticesClient";
 
 export const metadata: Metadata = {
@@ -8,5 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function NoticesPage() {
-  return <NoticesClient />;
+  const notices = readNotices();
+  return <NoticesClient notices={notices} />;
 }

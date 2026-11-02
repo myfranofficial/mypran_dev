@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { readBrands, getBrandById } from "@/lib/brands-store";
+import { readSiteData } from "@/lib/site-data";
 import BrandDetailClient from "./BrandDetailClient";
 
 interface Props {
@@ -32,5 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BrandDetailPage({ params }: Props) {
   const { id } = await params;
   const brand = getBrandById(id);
-  return <BrandDetailClient brand={brand ?? null} />;
+  const site = readSiteData();
+  return <BrandDetailClient brand={brand ?? null} phone={site.phone} />;
 }

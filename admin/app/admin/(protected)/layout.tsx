@@ -22,7 +22,7 @@ export default async function AdminProtectedLayout({
         <div className="flex shrink-0 items-center gap-2.5 border-b border-[#E5E7EA] px-5 py-5">
           <span className="flex flex-col leading-none">
             <span className="text-[15px] font-extrabold tracking-[0.06em] text-[#231F20]">
-              HiQ BILLIARD
+              마이프랜
             </span>
             <span className="mt-1 text-[10px] font-semibold tracking-[0.22em] text-[#9E9F9C]">
               ADMIN

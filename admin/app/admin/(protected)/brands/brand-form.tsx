@@ -102,8 +102,8 @@ export function BrandForm({ action, defaultValues: d = {}, categories }: Props) 
       <div className={s.card}>
         <h2 className={s.cardTitle}>이미지</h2>
         <div className="space-y-4">
-          <ImageUploadField name="logo_url" label="로고 이미지" defaultValue={d.logo_url} maxWidth={400} />
-          <ImageUploadField name="main_image_url" label="대표 이미지" defaultValue={d.main_image_url} />
+          <ImageUploadField name="logo_url" label="로고 이미지" initialKey={d.logo_url ?? ""} initialUrl={d.logo_url ?? ""} maxWidth={400} />
+          <ImageUploadField name="main_image_url" label="대표 이미지" initialKey={d.main_image_url ?? ""} initialUrl={d.main_image_url ?? ""} />
           <div>
             <label className={s.label}>추가 매장 사진 URL (줄바꿈으로 구분)</label>
             <textarea name="images_raw" defaultValue={

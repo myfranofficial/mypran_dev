@@ -42,6 +42,7 @@ import {
 } from "@/data/brands";
 import { categories, budgetRanges } from "@/data/static-data";
 import { readBrands } from "@/lib/brands-store";
+import { readSiteData } from "@/lib/site-data";
 import type { Brand, BrandTier } from "@/lib/brand-types";
 
 /* ── Icon lookup helper ── */
@@ -71,6 +72,8 @@ const TIER_CONFIG: { tier: BrandTier; label: string; accent: string; icon: typeo
 
 export default function HomePage() {
   const allBrands = readBrands();
+  const site = readSiteData();
+  const phoneDigits = site.phone.replace(/-/g, "");
   const brandsByTier = (tier: BrandTier) => allBrands.filter((b) => b.tier === tier);
 
   return (
@@ -149,7 +152,7 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            FRANCHISE CONSULTING GROUP
+            {site.sloganEn.toUpperCase()}
           </span>
           <h1
             style={{
@@ -158,9 +161,7 @@ export default function HomePage() {
               letterSpacing: "-0.02em",
             }}
           >
-            프랜차이즈 비교는
-            <br />
-            <span style={{ color: "var(--red-500)" }}>필수</span>입니다
+            {site.slogan}
           </h1>
           <p
             style={{
@@ -169,9 +170,7 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            100+ 브랜드를 한눈에 비교하고
-            <br />
-            나에게 맞는 프랜차이즈를 찾으세요
+            {site.sloganSub}
           </p>
           <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
             <Link
@@ -259,7 +258,7 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            FRANCHISE CONSULTING
+            {site.sloganEn.toUpperCase()}
           </span>
           <h1
             style={{
@@ -268,9 +267,7 @@ export default function HomePage() {
               letterSpacing: "-0.02em",
             }}
           >
-            프랜차이즈 비교는
-            <br />
-            <span style={{ color: "var(--red-500)" }}>필수</span>입니다
+            {site.slogan}
           </h1>
           <p
             style={{
@@ -279,9 +276,7 @@ export default function HomePage() {
               color: "var(--night-muted)",
             }}
           >
-            100+ 브랜드를 한눈에 비교하고
-            <br />
-            나에게 맞는 프랜차이즈를 찾으세요
+            {site.sloganSub}
           </p>
           <div
             style={{
@@ -1647,7 +1642,7 @@ export default function HomePage() {
             <strong
               style={{ font: "900 26px/32px var(--font-sans)" }}
             >
-              010-4708-6091
+              {site.phone}
             </strong>
           </div>
           <div
@@ -1663,7 +1658,7 @@ export default function HomePage() {
             <strong
               style={{ font: "700 18px/24px var(--font-sans)" }}
             >
-              myfriend2026@naver.com
+              {site.email}
             </strong>
           </div>
         </div>
@@ -1679,7 +1674,7 @@ export default function HomePage() {
           }}
         >
           <a
-            href="tel:01047086091"
+            href={`tel:${phoneDigits}`}
             style={{
               display: "flex",
               alignItems: "center",
@@ -1695,7 +1690,7 @@ export default function HomePage() {
             <strong
               style={{ font: "900 22px/28px var(--font-sans)" }}
             >
-              010-4708-6091
+              {site.phone}
             </strong>
           </a>
           <span
@@ -1704,7 +1699,7 @@ export default function HomePage() {
               paddingLeft: 34,
             }}
           >
-            myfriend2026@naver.com
+            {site.email}
           </span>
         </div>
       </section>

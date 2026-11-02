@@ -1,5 +1,5 @@
 /**
- * HiQ Billiard 어드민 DB 스키마.
+ * 마이프랜 어드민 DB 스키마.
  * 모든 DDL은 IF NOT EXISTS — 앱 부팅마다 안전하게 재실행.
  */
 export const SCHEMA_SQL = /* sql */ `

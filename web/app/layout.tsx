@@ -3,6 +3,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileBottomBar from "@/components/MobileBottomBar";
+import { readSiteData } from "@/lib/site-data";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -69,15 +70,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const site = readSiteData();
+
   return (
     <html lang="ko" className={notoSansKR.variable}>
       <body style={{ fontFamily: "var(--font-noto), var(--font-sans)" }}>
-        <Header />
+        <Header phone={site.phone} />
         <main style={{ paddingBottom: 76 }}>
           {children}
         </main>
-        <Footer />
-        <MobileBottomBar />
+        <Footer address={site.address} email={site.email} copyright={site.copyright} />
+        <MobileBottomBar phone={site.phone} />
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-// HiQ 어드민 공용 Tailwind 클래스 상수.
+// 마이프랜 어드민 공용 Tailwind 클래스 상수.
 // 팔레트:
 //   잉크(본문)    #231F20   보조텍스트 #585958   뮤트 #9E9F9C
 //   페이지 배경   #ECECE8   표면 #FFFFFF   표면2 #F7F7F5
@@ -22,6 +22,10 @@ export const rowBtn =
 export const rowBtnDanger =
   "inline-flex h-10 items-center justify-center rounded border border-[#F3C6BD] bg-white px-3 text-sm font-medium text-[#E03A1E] transition-colors hover:bg-[#FCE4DF]";
 export const card = "rounded-lg border border-[#E5E7EA] bg-white p-4";
+export const cardTitle = "mb-4 text-sm font-bold text-[#231F20]";
+export const btnSecondary =
+  "inline-flex min-h-11 items-center justify-center gap-1.5 rounded-md border border-[#DCDCD7] bg-white px-4 font-medium text-[#585958] transition-colors hover:border-[#EF4023] hover:text-[#EF4023]";
+export const errBox = "rounded bg-[#FCE4DF] px-3 py-2 text-sm text-[#E03A1E]";
 export const errorBox = "rounded bg-[#FCE4DF] px-3 py-2 text-sm text-[#E03A1E]";
 export const okBox = "rounded bg-[#E4F4EB] px-3 py-2 text-sm text-[#2E9E5B]";
 export const badgeGreen = "text-xs font-medium text-[#2E9E5B]";

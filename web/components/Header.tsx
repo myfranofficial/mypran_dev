@@ -15,7 +15,8 @@ const NAV_ITEMS = [
   { label: "창업정보", href: "/consulting" },
 ];
 
-export default function Header() {
+export default function Header({ phone = "010-4708-6091" }: { phone?: string }) {
+  const telHref = `tel:${phone.replace(/-/g, "")}`;
   const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -118,7 +119,7 @@ export default function Header() {
 
         {/* Phone — hidden on mobile */}
         <a
-          href="tel:01047086091"
+          href={telHref}
           className="hidden md:flex"
           style={{
             alignItems: "center",
@@ -130,7 +131,7 @@ export default function Header() {
           }}
         >
           <PhoneIcon size={20} fill="var(--red-500)" />
-          010-4708-6091
+          {phone}
         </a>
         {/* Desktop CTA */}
         <Link

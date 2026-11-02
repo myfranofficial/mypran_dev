@@ -9,7 +9,17 @@ const FOOTER_LINKS = [
   { label: "광고문의", href: "/consult" },
 ];
 
-export default function Footer() {
+type FooterProps = {
+  address?: string;
+  email?: string;
+  copyright?: string;
+};
+
+export default function Footer({
+  address = "서울특별시 마포구 동교로22길 19, 청송빌딩 4층",
+  email = "myfriend2026@naver.com",
+  copyright = "Copyright © MYFRAN. All rights reserved.",
+}: FooterProps) {
   return (
     <footer style={{ background: "var(--surface)", borderTop: "1px solid var(--line)" }}>
       {/* Desktop footer top */}
@@ -93,10 +103,9 @@ export default function Footer() {
             마이프랜 | 대표 [대표자명] | 사업자등록번호 [000-00-00000] |
             가맹거래사 [등록번호]
             <br />
-            서울특별시 마포구 동교로22길 19, 청송빌딩 4층 | E-mail.
-            myfriend2026@naver.com
+            {address} | E-mail. {email}
           </span>
-          <span>Copyright &copy; MYFRAN. All rights reserved.</span>
+          <span>{copyright}</span>
         </div>
       </div>
     </footer>

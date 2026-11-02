@@ -39,7 +39,7 @@ export function MobileNav({
       <header className="flex items-center justify-between border-b border-[#E5E7EA] bg-[#FAFAF9] px-4 py-3">
         <span className="flex items-center gap-2">
           <span className="text-[15px] font-extrabold tracking-[0.06em] text-[#231F20]">
-            HiQ BILLIARD{" "}
+            마이프랜{" "}
             <span className="text-[11px] font-semibold tracking-[0.2em] text-[#9E9F9C]">
               ADMIN
             </span>

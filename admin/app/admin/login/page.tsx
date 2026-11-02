@@ -13,7 +13,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <span className="text-2xl font-extrabold tracking-[0.06em] text-[#231F20]">
-            HiQ BILLIARD
+            마이프랜
           </span>
           <div className="mt-2 text-[11px] font-semibold tracking-[0.28em] text-[#9E9F9C]">
             ADMIN

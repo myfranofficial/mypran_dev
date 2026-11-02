@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { readNotices } from "@/lib/site-data";
 import ConsultingClient from "./ConsultingClient";
 
 export const metadata: Metadata = {
@@ -13,5 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function ConsultingPage() {
-  return <ConsultingClient />;
+  const notices = readNotices();
+  return <ConsultingClient notices={notices} />;
 }

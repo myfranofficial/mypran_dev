@@ -9,8 +9,9 @@ import { PhoneIcon, ChevronRight, CheckCircleIcon, ClockIcon, DownloadIcon } fro
 
 const TABS = ["소개", "창업비용", "창업절차", "본사지원", "갤러리"] as const;
 
-export default function BrandDetailClient({ brand }: { brand: Brand | null }) {
+export default function BrandDetailClient({ brand, phone = "010-4708-6091" }: { brand: Brand | null; phone?: string }) {
   const [activeTab, setActiveTab] = useState<(typeof TABS)[number]>("소개");
+  const phoneDigits = phone.replace(/-/g, "");
 
   if (!brand) {
     return (
@@ -115,7 +116,7 @@ export default function BrandDetailClient({ brand }: { brand: Brand | null }) {
                 무료 상담 신청
               </Link>
               <a
-                href="tel:01047086091"
+                href={`tel:${phoneDigits}`}
                 className="btn-outline"
                 style={{ justifyContent: "center", gap: 6 }}
               >

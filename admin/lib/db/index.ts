@@ -5,7 +5,7 @@ import { hashPassword } from "@/lib/auth/password";
 
 type DbInstance = Database.Database;
 
-const globalForDb = globalThis as unknown as { __hiqDb?: DbInstance };
+const globalForDb = globalThis as unknown as { __myfranDb?: DbInstance };
 
 function ensureAdminUser(db: DbInstance): void {
   const email = process.env.ADMIN_EMAIL?.trim();
@@ -25,10 +25,10 @@ function ensureAdminUser(db: DbInstance): void {
 }
 
 export function getDb(): DbInstance {
-  if (!globalForDb.__hiqDb) {
+  if (!globalForDb.__myfranDb) {
     const db = openDb();
     ensureAdminUser(db);
-    globalForDb.__hiqDb = db;
+    globalForDb.__myfranDb = db;
   }
-  return globalForDb.__hiqDb;
+  return globalForDb.__myfranDb;
 }

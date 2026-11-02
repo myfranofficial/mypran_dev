@@ -11,6 +11,7 @@ import {
   PhoneIcon,
   MailIcon,
 } from "@/components/icons";
+import { readSiteData, readHomepageData } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "회사소개 — 마이프랜",
@@ -46,15 +47,21 @@ const BUSINESSES = [
   },
 ];
 
-/* ── 통계 데이터 ── */
-const STATS = [
-  { icon: TrophyIcon, value: "100+", label: "입점 브랜드" },
-  { icon: PeopleIcon, value: "1,000+", label: "상담 진행" },
-  { icon: ShieldIcon, value: "98%", label: "고객 만족도" },
-  { icon: ChartIcon, value: "전국", label: "네트워크" },
-];
+/* ── 아이콘 매핑 ── */
+const ICON_MAP: Record<string, typeof PeopleIcon> = {
+  people: PeopleIcon,
+  chart: ChartIcon,
+  home: HomeIcon,
+  monitor: MonitorIcon,
+  shield: ShieldIcon,
+  trophy: TrophyIcon,
+};
 
 export default function AboutPage() {
+  const site = readSiteData();
+  const hp = readHomepageData();
+  const phoneDigits = site.phone.replace(/-/g, "");
+
   return (
     <>
       {/* ═══════ HERO ═══════ */}
@@ -255,13 +262,16 @@ export default function AboutPage() {
       <section style={{ background: "var(--surface-muted)" }}>
         <div className="container-mf" style={{ padding: "40px 24px" }}>
           <div className="about-stats">
-            {STATS.map((s) => (
-              <div key={s.label} className="about-stat-item">
-                <s.icon size={28} fill="var(--red-500)" />
-                <strong className="about-stat-value">{s.value}</strong>
-                <span className="about-stat-label">{s.label}</span>
-              </div>
-            ))}
+            {hp.stats.map((s) => {
+              const Icon = ICON_MAP[s.icon] ?? ShieldIcon;
+              return (
+                <div key={s.label} className="about-stat-item">
+                  <Icon size={28} fill="var(--red-500)" />
+                  <strong className="about-stat-value">{s.value}</strong>
+                  <span className="about-stat-label">{s.label}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -281,33 +291,21 @@ export default function AboutPage() {
               <dl className="contact-dl">
                 <div className="contact-row">
                   <dt>주소</dt>
-                  <dd>서울특별시 마포구 동교로22길 19, 청송빌딩 4층</dd>
+                  <dd>{site.address}</dd>
                 </div>
                 <div className="contact-row">
                   <dt>대표전화</dt>
                   <dd>
-                    <a href="tel:0226056091" style={{ color: "var(--ink)", textDecoration: "none" }}>
-                      02-2605-6091
+                    <a href={`tel:${phoneDigits}`} style={{ color: "var(--ink)", textDecoration: "none" }}>
+                      {site.phone}
                     </a>
                   </dd>
-                </div>
-                <div className="contact-row">
-                  <dt>휴대전화</dt>
-                  <dd>
-                    <a href="tel:01047086091" style={{ color: "var(--ink)", textDecoration: "none" }}>
-                      010-4708-6091
-                    </a>
-                  </dd>
-                </div>
-                <div className="contact-row">
-                  <dt>팩스</dt>
-                  <dd>02-2605-6092</dd>
                 </div>
                 <div className="contact-row">
                   <dt>이메일</dt>
                   <dd>
-                    <a href="mailto:myfriend2026@naver.com" style={{ color: "var(--ink)", textDecoration: "none" }}>
-                      myfriend2026@naver.com
+                    <a href={`mailto:${site.email}`} style={{ color: "var(--ink)", textDecoration: "none" }}>
+                      {site.email}
                     </a>
                   </dd>
                 </div>
@@ -317,7 +315,7 @@ export default function AboutPage() {
                 <Link href="/consult" className="btn-primary">
                   무료 상담 신청
                 </Link>
-                <a href="tel:01047086091" className="btn-outline" style={{ gap: 6 }}>
+                <a href={`tel:${phoneDigits}`} className="btn-outline" style={{ gap: 6 }}>
                   <PhoneIcon size={18} /> 전화 상담
                 </a>
               </div>
@@ -366,7 +364,7 @@ export default function AboutPage() {
           </p>
           <div style={{ marginTop: 20, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <a
-              href="tel:01047086091"
+              href={`tel:${phoneDigits}`}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -381,10 +379,10 @@ export default function AboutPage() {
                 textDecoration: "none",
               }}
             >
-              <PhoneIcon size={18} fill="#ffffff" /> 010-4708-6091
+              <PhoneIcon size={18} fill="#ffffff" /> {site.phone}
             </a>
             <a
-              href="mailto:myfriend2026@naver.com"
+              href={`mailto:${site.email}`}
               style={{
                 display: "inline-flex",
                 alignItems: "center",

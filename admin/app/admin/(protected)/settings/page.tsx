@@ -9,6 +9,7 @@ import * as s from "../ui/styles";
 
 const SETTINGS_KEYS = [
   "phone",
+  "email",
   "kakao_id",
   "sms_number",
   "address",
@@ -76,6 +77,11 @@ export default async function SettingsPage({
           </div>
 
           <div className="space-y-1.5">
+            <label htmlFor="email" className={s.label}>이메일</label>
+            <input id="email" name="email" defaultValue={settings.email ?? "myfriend2026@naver.com"} className={s.input} placeholder="myfriend2026@naver.com" />
+          </div>
+
+          <div className="space-y-1.5">
             <label htmlFor="kakao_id" className={s.label}>카카오톡 ID</label>
             <input id="kakao_id" name="kakao_id" defaultValue={settings.kakao_id ?? ""} className={s.input} />
           </div>
@@ -87,12 +93,12 @@ export default async function SettingsPage({
 
           <div className="space-y-1.5">
             <label htmlFor="address" className={s.label}>주소</label>
-            <input id="address" name="address" defaultValue={settings.address ?? "서울시 종로구 종로 191, 2층"} className={s.input} />
+            <input id="address" name="address" defaultValue={settings.address ?? "서울특별시 마포구 동교로22길 19, 청송빌딩 4층"} className={s.input} />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="address_detail" className={s.label}>주소 부가정보</label>
-            <input id="address_detail" name="address_detail" defaultValue={settings.address_detail ?? "(종로5가역 12번출구)"} className={s.input} placeholder="(종로5가역 12번출구)" />
+            <input id="address_detail" name="address_detail" defaultValue={settings.address_detail ?? ""} className={s.input} placeholder="(부가 주소 정보)" />
           </div>
 
           <div className="space-y-1.5">
@@ -108,7 +114,7 @@ export default async function SettingsPage({
 
           <div className="space-y-1.5">
             <label htmlFor="slogan" className={s.label}>슬로건 (1줄)</label>
-            <input id="slogan" name="slogan" defaultValue={settings.slogan ?? "당구, 그 이상의 가치!"} className={s.input} />
+            <input id="slogan" name="slogan" defaultValue={settings.slogan ?? "프랜차이즈 비교는 필수입니다"} className={s.input} />
           </div>
 
           <div className="space-y-1.5">
@@ -118,12 +124,12 @@ export default async function SettingsPage({
 
           <div className="space-y-1.5">
             <label htmlFor="slogan_en" className={s.label}>영문 슬로건</label>
-            <input id="slogan_en" name="slogan_en" defaultValue={settings.slogan_en ?? "Premium Billiards Life"} className={s.input} />
+            <input id="slogan_en" name="slogan_en" defaultValue={settings.slogan_en ?? "MyFran Premium Franchise"} className={s.input} />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="copyright" className={s.label}>저작권 문구</label>
-            <input id="copyright" name="copyright" defaultValue={settings.copyright ?? "© 2025 HI Q BILLIARDS. All rights reserved."} className={s.input} />
+            <input id="copyright" name="copyright" defaultValue={settings.copyright ?? "© 2025 마이프랜. All rights reserved."} className={s.input} />
           </div>
         </fieldset>
 

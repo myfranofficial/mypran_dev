@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { readHomepageData, readListingBenefits } from "@/lib/site-data";
 import ListingClient from "./ListingClient";
 
 export const metadata: Metadata = {
@@ -13,5 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default function ListingPage() {
-  return <ListingClient />;
+  const hp = readHomepageData();
+  const listingBenefits = readListingBenefits();
+  return <ListingClient plans={hp.plans} listingBenefits={listingBenefits} />;
 }

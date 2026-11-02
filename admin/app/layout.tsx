@@ -9,8 +9,8 @@ const noto = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "HiQ Billiard 관리자",
-  description: "하이큐빌리어드 어드민 패널",
+  title: "마이프랜 관리자",
+  description: "마이프랜 어드민 패널",
   robots: "noindex, nofollow",
 };
 

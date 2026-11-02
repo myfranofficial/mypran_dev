@@ -1,14 +1,14 @@
 {
-  "name": "hiq-admin",
+  "name": "myfran-admin",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3002",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start -p 3002",
     "lint": "eslint",
     "db:seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts"
   },

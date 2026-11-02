@@ -2,12 +2,18 @@
 
 import { useState, type FormEvent } from "react";
 import PageHero from "@/components/PageHero";
-import { plans } from "@/data/brands";
 import { CheckCircleIcon, ChevronRight } from "@/components/icons";
+import type { HomePlan, ListingBenefit } from "@/lib/site-data";
 
 const PRODUCT_OPTIONS = ["베스트 브랜드", "프리미엄 브랜드", "스페셜 브랜드", "기타 (상담 후 결정)"];
 
-export default function ListingClient() {
+export default function ListingClient({
+  plans,
+  listingBenefits,
+}: {
+  plans: HomePlan[];
+  listingBenefits: ListingBenefit[];
+}) {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -49,14 +55,7 @@ export default function ListingClient() {
             marginRight: "auto",
           }}
         >
-          {[
-            { title: "자사 홈페이지 광고비", desc: "매월 1억원 규모의 온라인 마케팅 집행으로 브랜드 노출 극대화" },
-            { title: "창업매거진 전국 배포", desc: "오프라인 매거진에 브랜드 무료 게재, 전국 예비 창업자에게 도달" },
-            { title: "온라인 창업박람회", desc: "365일 운영되는 온라인 박람회에서 상시 브랜드 홍보" },
-            { title: "1:1 창업 상담 연결", desc: "관심 고객을 직접 브랜드 본사에 연결해 상담률 극대화" },
-            { title: "홈페이지 제작 지원", desc: "신생 브랜드를 위한 전문 홈페이지 제작 서비스 제공" },
-            { title: "마케팅비 지원", desc: "입점 브랜드에 디지털 마케팅 비용 일부 지원" },
-          ].map((item) => (
+          {listingBenefits.map((item) => (
             <div
               key={item.title}
               style={{

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
-import { dummyNotices } from "@/data/static-data";
 import { ChevronRight, FileIcon, BookIcon } from "@/components/icons";
+import type { NoticeItem } from "@/lib/site-data";
 
 const TABS = ["공지사항", "창업 자료", "브랜드 소식"] as const;
 
@@ -24,7 +24,7 @@ const brandNews = [
   { title: "빽다방, 가맹비 인하 프로모션", desc: "빽다방이 신규 가맹점주를 위한 가맹비 인하 프로모션을 진행합니다.", date: "2026-09-28", brand: "빽다방" },
 ];
 
-export default function ConsultingClient() {
+export default function ConsultingClient({ notices }: { notices: NoticeItem[] }) {
   const [activeTab, setActiveTab] = useState<(typeof TABS)[number]>("공지사항");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -70,13 +70,15 @@ export default function ConsultingClient() {
         {/* 공지사항 */}
         {activeTab === "공지사항" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {dummyNotices.map((notice) => (
+            {notices.map((notice) => {
+              const nid = String(notice.id);
+              return (
               <div
-                key={notice.id}
+                key={nid}
                 style={{ borderBottom: "1px solid var(--line)" }}
               >
                 <button
-                  onClick={() => setExpandedId(expandedId === notice.id ? null : notice.id)}
+                  onClick={() => setExpandedId(expandedId === nid ? null : nid)}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -109,10 +111,10 @@ export default function ConsultingClient() {
                   </span>
                   <ChevronRight
                     size={16}
-                    className={expandedId === notice.id ? "rotate-90" : ""}
+                    className={expandedId === nid ? "rotate-90" : ""}
                   />
                 </button>
-                {expandedId === notice.id && (
+                {expandedId === nid && (
                   <div
                     style={{
                       padding: "0 0 20px 0",
@@ -127,7 +129,8 @@ export default function ConsultingClient() {
                   </div>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

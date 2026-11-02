@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 /** Sticky bottom bar for mobile: phone + consult CTA */
-export default function MobileBottomBar() {
+export default function MobileBottomBar({ phone = "010-4708-6091" }: { phone?: string }) {
   return (
     <div
       className="md:hidden"
@@ -20,7 +20,7 @@ export default function MobileBottomBar() {
       }}
     >
       <a
-        href="tel:01047086091"
+        href={`tel:${phone.replace(/-/g, "")}`}
         style={{
           display: "inline-flex",
           alignItems: "center",

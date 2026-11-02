@@ -50,20 +50,23 @@ export function exportSite(): void {
   };
   writeJson("site.json", {
     phone: get("phone", "010-4708-6091"),
+    email: get("email", "myfriend2026@naver.com"),
     sms: get("sms_number", "010-4708-6091"),
-    address: get("address", "서울시 종로구 종로 191, 2층"),
-    addressDetail: get("address_detail", "(종로5가역 12번출구)"),
+    address: get("address", "서울특별시 마포구 동교로22길 19, 청송빌딩 4층"),
+    addressDetail: get("address_detail"),
     hours: get("business_hours", "평일 09:00 ~ 18:00"),
-    slogan: get("slogan", "당구, 그 이상의 가치!"),
+    slogan: get("slogan", "프랜차이즈 비교는 필수입니다"),
     sloganSub: get("slogan_sub", "함께 만드는 성공 스토리"),
-    sloganEn: get("slogan_en", "Premium Billiards Life"),
-    copyright: get("copyright", "© 2025 HI Q BILLIARDS. All rights reserved."),
+    sloganEn: get("slogan_en", "MyFran Premium Franchise"),
+    copyright: get("copyright", "© 2025 마이프랜. All rights reserved."),
     sns: {
       kakao: get("sns_kakao_channel"),
       instagram: get("sns_instagram"),
       youtube: get("sns_youtube"),
       blog: get("sns_blog"),
     },
+    terms: get("terms"),
+    privacyPolicy: get("privacy_policy"),
   });
 }
 
@@ -100,8 +103,8 @@ export function exportStores(): void {
 
   const hero = heroRow?.content_json ? JSON.parse(heroRow.content_json) : {
     label: "Store Guide",
-    title: "하이큐 빌리어드\n매장안내",
-    subtitle: "전국 하이큐 빌리어드 매장을 소개합니다.",
+    title: "마이프랜\n매장안내",
+    subtitle: "전국 마이프랜 매장을 소개합니다.",
     image: "/static/images/hero-2.jpg",
   };
   const intro = introRow?.content_json ? JSON.parse(introRow.content_json) : {
@@ -232,7 +235,7 @@ export function exportNews(): void {
   const hero = heroRow?.content_json ? JSON.parse(heroRow.content_json) : {
     label: "News & Notice",
     title: "뉴스 / 소식",
-    subtitle: "하이큐 빌리어드의 공지사항과 최신 소식을 전해드립니다.",
+    subtitle: "마이프랜의 공지사항과 최신 소식을 전해드립니다.",
     image: "/static/images/hero-3.jpg",
   };
 
@@ -265,7 +268,7 @@ export function exportEvents(): void {
   const hero = heroRow?.content_json ? JSON.parse(heroRow.content_json) : {
     label: "EVENTS",
     title: "이벤트",
-    desc: "하이큐빌리어드의 다양한 이벤트에 참여하세요",
+    desc: "마이프랜의 다양한 이벤트에 참여하세요",
   };
 
   writeJson("events.json", {
@@ -416,6 +419,115 @@ export function exportReviews(): void {
   writeJson("reviews.json", { reviews: exportReviewsData() });
 }
 
+export function exportHomepage(): void {
+  const db = getDb();
+
+  // homepage_sections 테이블에서 각 섹션을 읽기
+  const getSection = (key: string) => {
+    const row = db.prepare("SELECT content_json FROM homepage_sections WHERE section_key = ?").get(key) as { content_json: string | null } | undefined;
+    return row?.content_json ? JSON.parse(row.content_json) : null;
+  };
+
+  const stats = getSection("stats") ?? [
+    { icon: "trophy", value: "100+", label: "입점 브랜드" },
+    { icon: "people", value: "1,000+", label: "가맹 상담 진행" },
+    { icon: "chart", value: "500+", label: "성공 창업 사례" },
+    { icon: "shield", value: "98%", label: "고객 만족도" },
+  ];
+
+  const benefits = getSection("benefits") ?? [
+    { icon: "speaker", title: "자사 홈페이지 광고비", accent: "매월 1억원 집행" },
+    { icon: "book", title: "창업매거진 전국 배포", accent: "무료 게재" },
+    { icon: "monitor", title: "신생 브랜드", subtitle: "홈페이지 제작" },
+    { icon: "file", title: "카탈로그 제작" },
+    { icon: "chart", title: "마케팅비 지원" },
+    { icon: "people", title: "창업박람회", subtitle: "입점 대행" },
+  ];
+
+  const plans = getSection("plans") ?? [
+    {
+      tier: "best", eyebrow: "RECOMMENDED", no: "01",
+      name: "베스트 브랜드", desc: "메인 최상단 노출, 가장 먼저 보이는 자리",
+      price: "1,000", featured: true,
+      specs: [
+        { label: "노출 위치", value: "메인 1단" },
+        { label: "브랜드관 카드", value: "포함" },
+        { label: "추천 브랜드 노출", value: "포함" },
+      ],
+    },
+    {
+      tier: "premium", eyebrow: "PREMIUM", no: "02",
+      name: "프리미엄 브랜드", desc: "검증된 업종별 브랜드 영역 노출",
+      price: "700", featured: false,
+      specs: [
+        { label: "노출 위치", value: "메인 2단" },
+        { label: "브랜드관 카드", value: "포함" },
+        { label: "추천 브랜드 노출", value: "—" },
+      ],
+    },
+    {
+      tier: "special", eyebrow: "SPECIAL", no: "03",
+      name: "스페셜 브랜드", desc: "성장 가능성이 높은 생활밀착형 브랜드",
+      price: "500", featured: false,
+      specs: [
+        { label: "노출 위치", value: "메인 3단" },
+        { label: "브랜드관 카드", value: "포함" },
+        { label: "추천 브랜드 노출", value: "—" },
+      ],
+    },
+  ];
+
+  const heroServices = getSection("heroServices") ?? [
+    { icon: "people", label: "가맹영업대행" },
+    { icon: "chart", label: "상권분석" },
+    { icon: "home", label: "가맹본부 구축" },
+    { icon: "monitor", label: "온라인 창업박람회" },
+    { icon: "shield", label: "투자대행" },
+  ];
+
+  const listingBenefits = getSection("listingBenefits") ?? [
+    { title: "자사 홈페이지 광고비", desc: "매월 1억원 규모의 온라인 마케팅 집행으로 브랜드 노출 극대화" },
+    { title: "창업매거진 전국 배포", desc: "오프라인 매거진에 브랜드 무료 게재, 전국 예비 창업자에게 도달" },
+    { title: "온라인 창업박람회", desc: "365일 운영되는 온라인 박람회에서 상시 브랜드 홍보" },
+    { title: "1:1 창업 상담 연결", desc: "관심 고객을 직접 브랜드 본사에 연결해 상담률 극대화" },
+    { title: "홈페이지 제작 지원", desc: "신생 브랜드를 위한 전문 홈페이지 제작 서비스 제공" },
+    { title: "마케팅비 지원", desc: "입점 브랜드에 디지털 마케팅 비용 일부 지원" },
+  ];
+
+  writeJson("homepage.json", { stats, benefits, plans, heroServices, listingBenefits });
+}
+
+export function exportBrands(): void {
+  const db = getDb();
+  const categories = db.prepare("SELECT * FROM brand_categories WHERE is_active = 1 ORDER BY sort_order ASC, id ASC").all() as any[];
+  const brands = db.prepare(
+    `SELECT b.*, c.name AS category_name
+     FROM brands b
+     LEFT JOIN brand_categories c ON b.category_id = c.id
+     WHERE b.is_active = 1
+     ORDER BY b.sort_order ASC, b.id ASC`
+  ).all() as any[];
+
+  writeJson("brands.json", {
+    categories: categories.map((c: any) => ({ id: c.id, name: c.name })),
+    brands: brands.map((b: any) => ({
+      name: b.name,
+      category: b.category_name || "",
+      tagline: b.tagline || "",
+      description: b.description || "",
+      foundingCost: b.founding_cost || "",
+      storeCount: b.store_count || 0,
+      logo: b.logo_url ? resolveUrl(b.logo_url) : "",
+      image: b.main_image_url ? resolveUrl(b.main_image_url) : "",
+      images: b.images ? JSON.parse(b.images).map((u: string) => resolveUrl(u)) : [],
+      features: b.features ? JSON.parse(b.features) : [],
+      phone: b.phone || "",
+      kakaoUrl: b.kakao_url || "",
+      isFeatured: !!b.is_featured,
+    })),
+  });
+}
+
 export function exportAll(): void {
   try { exportSite(); } catch (e) { console.error("[json-export] site:", e); }
   try { exportBanners(); } catch (e) { console.error("[json-export] banners:", e); }
@@ -432,4 +544,6 @@ export function exportAll(): void {
   try { exportPopups(); } catch (e) { console.error("[json-export] popups:", e); }
   try { exportPageImages(); } catch (e) { console.error("[json-export] page-images:", e); }
   try { exportReviews(); } catch (e) { console.error("[json-export] reviews:", e); }
+  try { exportBrands(); } catch (e) { console.error("[json-export] brands:", e); }
+  try { exportHomepage(); } catch (e) { console.error("[json-export] homepage:", e); }
 }
