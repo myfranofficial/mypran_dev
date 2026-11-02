@@ -190,6 +190,37 @@ CREATE TABLE IF NOT EXISTS reviews (
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
 
+-- 브랜드 카테고리
+CREATE TABLE IF NOT EXISTS brand_categories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  sort_order INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
+  created_at TEXT DEFAULT (datetime('now','localtime'))
+);
+
+-- 브랜드
+CREATE TABLE IF NOT EXISTS brands (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  category_id INTEGER,
+  name TEXT NOT NULL,
+  tagline TEXT,
+  description TEXT,
+  founding_cost TEXT,
+  store_count INTEGER DEFAULT 0,
+  logo_url TEXT,
+  main_image_url TEXT,
+  images TEXT,                           -- JSON array string
+  features TEXT,                         -- JSON array string
+  phone TEXT,
+  kakao_url TEXT,
+  is_featured INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
+  sort_order INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now','localtime')),
+  FOREIGN KEY (category_id) REFERENCES brand_categories(id) ON DELETE SET NULL
+);
+
 -- 인덱스
 CREATE INDEX IF NOT EXISTS idx_notices_category ON notices(category);
 CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery_images(category);
@@ -198,4 +229,6 @@ CREATE INDEX IF NOT EXISTS idx_faq_category ON faq_items(category);
 CREATE INDEX IF NOT EXISTS idx_consultations_read ON consultations(is_read);
 CREATE INDEX IF NOT EXISTS idx_store_photos_store ON store_photos(store_id);
 CREATE INDEX IF NOT EXISTS idx_page_content_slug ON page_content(page_slug);
+CREATE INDEX IF NOT EXISTS idx_brands_category ON brands(category_id);
+CREATE INDEX IF NOT EXISTS idx_brands_active ON brands(is_active);
 `;

@@ -138,7 +138,7 @@ export function exportStores(): void {
         tables: s.tables_count || 0,
         phone: s.phone || "",
         hours: s.hours || "",
-        features: s.features ? JSON.parse(s.features) : [],
+        features: s.features ? (() => { try { return JSON.parse(s.features); } catch { return s.features.split(",").map((f: string) => f.trim()).filter(Boolean); } })() : [],
         image,
         photos: photoUrls.length > 0 ? photoUrls : [resolveUrl(s.image_url)],
         isNew: !!s.is_new,
