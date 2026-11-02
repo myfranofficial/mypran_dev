@@ -17,7 +17,9 @@ const TIER_ORDER: Record<BrandTier, number> = { best: 0, premium: 1, special: 2 
 
 export function readBrands(): Brand[] {
   const raw = fs.readFileSync(getDataPath(), "utf-8");
-  const brands: Brand[] = JSON.parse(raw);
+  const parsed = JSON.parse(raw);
+  // brands.json can be a plain array OR { brands: [...] } from admin export
+  const brands: Brand[] = Array.isArray(parsed) ? parsed : (parsed.brands ?? []);
   // Sort: best → premium → special, then by order within each tier
   return brands.sort((a, b) => {
     const tierDiff = TIER_ORDER[a.tier] - TIER_ORDER[b.tier];
