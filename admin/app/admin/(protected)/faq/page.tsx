@@ -63,14 +63,14 @@ export default async function FaqPage({
           <p className="mt-1 text-sm text-[#9E9F9C]">자주 묻는 질문 페이지에 아코디언 형태로 표시됩니다</p>
         </div>
         <div className="flex items-center gap-2">
-          <PreviewLink path="/faq" label="FAQ 보기" />
+          <PreviewLink path="/" label="메인 페이지 보기" />
           <CreateButton href="/admin/faq/new">새 FAQ</CreateButton>
         </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. FAQ 페이지에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/faq" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="FAQ 검색" />
       <DataTable columns={columns} rows={rows} total={items.length} tableId="faq" />

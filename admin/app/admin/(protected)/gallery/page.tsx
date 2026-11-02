@@ -69,14 +69,14 @@ export default async function GalleryPage({
           <p className="mt-1 text-sm text-[#9E9F9C]">갤러리 페이지에 카테고리별로 표시됩니다</p>
         </div>
         <div className="flex items-center gap-2">
-          <PreviewLink path="/gallery" label="갤러리 보기" />
+          <PreviewLink path="/" label="메인 페이지 보기" />
           <CreateButton href="/admin/gallery/new">새 사진</CreateButton>
         </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 갤러리 페이지에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/gallery" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="사진 검색" />
       <DataTable columns={columns} rows={rows} total={images.length} tableId="gallery" />

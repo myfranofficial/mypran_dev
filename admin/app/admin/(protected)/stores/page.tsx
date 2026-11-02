@@ -68,14 +68,14 @@ export default async function StoresPage({
           <p className="mt-1 text-sm text-[#9E9F9C]">매장안내 페이지에 카드형으로 표시됩니다</p>
         </div>
         <div className="flex items-center gap-2">
-          <PreviewLink path="/stores" label="매장안내 보기" />
+          <PreviewLink path="/" label="메인 페이지 보기" />
           <CreateButton href="/admin/stores/new">새 매장</CreateButton>
         </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 매장안내 페이지에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/stores" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="매장 검색" />
       <DataTable columns={columns} rows={rows} total={stores.length} tableId="stores" />

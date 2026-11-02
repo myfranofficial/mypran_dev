@@ -210,7 +210,7 @@ export default async function PagesEditorPage({
       </div>
 
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 각 페이지 상단에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/stores" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <form action={saveAction} className="mt-6 space-y-6">
         {PAGE_CONFIGS.map((page) => (

@@ -76,14 +76,14 @@ export default async function VideosPage({
           <p className="mt-1 text-sm text-[#9E9F9C]">영상 페이지에 썸네일 그리드로 표시됩니다</p>
         </div>
         <div className="flex items-center gap-2">
-          <PreviewLink path="/videos" label="영상 페이지 보기" />
+          <PreviewLink path="/" label="메인 페이지 보기" />
           <CreateButton href="/admin/videos/new">새 영상</CreateButton>
         </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 영상 페이지에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/videos" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="영상 검색" />
       <DataTable columns={columns} rows={rows} total={videos.length} tableId="videos" />

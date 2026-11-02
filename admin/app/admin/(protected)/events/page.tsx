@@ -88,14 +88,14 @@ export default async function EventsPage({
           <p className="mt-1 text-sm text-[#9E9F9C]">이벤트 페이지에 카드형으로 표시됩니다</p>
         </div>
         <div className="flex items-center gap-2">
-          <PreviewLink path="/events" label="이벤트 보기" />
+          <PreviewLink path="/" label="메인 페이지 보기" />
           <CreateButton href="/admin/events/new">새 이벤트</CreateButton>
         </div>
       </div>
 
       {sp.msg === "deleted" && <div className={`mt-4 ${s.okBox}`}>삭제되었습니다.</div>}
       {sp.msg === "saved" && <div className={`mt-4 ${s.okBox}`}>저장되었습니다. 이벤트 페이지에 즉시 반영됩니다.</div>}
-      <SavePreview previewPath="/events" saved={sp.msg === "saved"} />
+      <SavePreview previewPath="/" saved={sp.msg === "saved"} />
 
       <SearchBar placeholder="이벤트 검색" />
       <DataTable columns={columns} rows={rows} total={events.length} tableId="events" />

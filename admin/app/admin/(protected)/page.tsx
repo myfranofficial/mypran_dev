@@ -15,12 +15,12 @@ const MODULE_MAP: {
 }[] = [
   { label: "히어로 배너", table: "banners", href: "/admin/banners", frontPath: "/", frontLabel: "메인 페이지" },
   { label: "공지사항", table: "notices", href: "/admin/notices", frontPath: "/notices", frontLabel: "공지사항" },
-  { label: "사진 갤러리", table: "gallery_images", href: "/admin/gallery", frontPath: "/", frontLabel: "갤러리" },
-  { label: "영상 갤러리", table: "videos", href: "/admin/videos", frontPath: "/", frontLabel: "영상" },
   { label: "브랜드", table: "brands", href: "/admin/brands", frontPath: "/brands", frontLabel: "브랜드관" },
-  { label: "이벤트", table: "events", href: "/admin/events", frontPath: "/", frontLabel: "이벤트" },
-  { label: "자주 묻는 질문", table: "faq_items", href: "/admin/faq", frontPath: "/", frontLabel: "FAQ" },
-  { label: "자료실", table: "downloads", href: "/admin/downloads", frontPath: "/", frontLabel: "자료실" },
+  { label: "이벤트", table: "events", href: "/admin/events", frontPath: "/", frontLabel: "메인 페이지" },
+  { label: "자주 묻는 질문", table: "faq_items", href: "/admin/faq", frontPath: "/", frontLabel: "메인 페이지" },
+  { label: "사진 갤러리", table: "gallery_images", href: "/admin/gallery", frontPath: "/", frontLabel: "메인 페이지" },
+  { label: "영상 갤러리", table: "videos", href: "/admin/videos", frontPath: "/", frontLabel: "메인 페이지" },
+  { label: "자료실", table: "downloads", href: "/admin/downloads", frontPath: "/", frontLabel: "메인 페이지" },
 ];
 
 export default function DashboardPage() {
