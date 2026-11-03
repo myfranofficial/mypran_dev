@@ -24,13 +24,13 @@ jobs:
             WEB_CURRENT=/home/ubuntu/myfran/web/current
 
             echo "=== 1. Git Pull ==="
-            cd $REPO && git pull origin main
+            cd $REPO && git checkout -- . && git clean -fd && git pull origin main
 
             echo "=== 2. Admin Build ==="
-            cd $REPO/admin && npm install && npx next build
+            cd $REPO/admin && npm install && npx next build --webpack
 
             echo "=== 3. Web Build ==="
-            cd $REPO/web && npm install && npx next build
+            cd $REPO/web && npm install && npx next build --webpack
 
             echo "=== 4. Admin Deploy ==="
             cp -r $ADMIN_CURRENT/data /tmp/admin_data_backup
