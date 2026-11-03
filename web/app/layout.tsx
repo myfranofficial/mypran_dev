@@ -72,6 +72,9 @@ export default function RootLayout({
 
   return (
     <html lang="ko" className={notoSansKR.variable}>
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="마이프랜 RSS" href="/feed.xml" />
+      </head>
       <body style={{ fontFamily: "var(--font-noto), var(--font-sans)" }}>
         <Header phone={site.phone} />
         <main style={{ paddingBottom: 76 }}>
