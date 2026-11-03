@@ -1,0 +1,67 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          command_timeout: 10m
+          script: |
+            set -e
+
+            REPO=/home/ubuntu/myfran/repo
+            ADMIN_CURRENT=/home/ubuntu/myfran/admin/current
+            WEB_CURRENT=/home/ubuntu/myfran/web/current
+
+            echo "=== 1. Git Pull ==="
+            cd $REPO && git pull origin main
+
+            echo "=== 2. Admin Build ==="
+            cd $REPO/admin && npm install && npx next build
+
+            echo "=== 3. Web Build ==="
+            cd $REPO/web && npm install && npx next build
+
+            echo "=== 4. Admin Deploy ==="
+            cp -r $ADMIN_CURRENT/data /tmp/admin_data_backup
+            rm -rf $ADMIN_CURRENT
+            cp -r $REPO/admin/.next/standalone $ADMIN_CURRENT
+            cp -r $REPO/admin/public $ADMIN_CURRENT/public 2>/dev/null || true
+            cp -r $REPO/admin/.next/static $ADMIN_CURRENT/.next/static 2>/dev/null || true
+            cp -r /tmp/admin_data_backup $ADMIN_CURRENT/data
+            rm -rf /tmp/admin_data_backup
+
+            echo "=== 5. Web Deploy ==="
+            cp -r $WEB_CURRENT/data /tmp/web_data_backup
+            rm -rf $WEB_CURRENT
+            cp -r $REPO/web/.next/standalone $WEB_CURRENT
+            cp -r $REPO/web/public $WEB_CURRENT/public 2>/dev/null || true
+            cp -r $REPO/web/.next/static $WEB_CURRENT/.next/static 2>/dev/null || true
+            cp -r /tmp/web_data_backup $WEB_CURRENT/data
+            rm -rf /tmp/web_data_backup
+
+            echo "=== 6. PM2 Restart ==="
+            pm2 restart myfran-admin myfran-web
+            pm2 save
+
+            echo "=== 7. Health Check ==="
+            sleep 3
+            for p in "/" "/brands" "/notices"; do
+              CODE=$(curl -sL -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:3003$p")
+              echo "$p: $CODE"
+              if [ "$CODE" != "200" ]; then echo "WARN: $p returned $CODE"; fi
+            done
+            ADMIN_CODE=$(curl -sL -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:3002/admin/login")
+            echo "admin: $ADMIN_CODE"
+
+            echo "=== Deploy Complete ==="
