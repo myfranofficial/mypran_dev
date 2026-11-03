@@ -12,14 +12,27 @@ export interface Brand {
   id: number;
   category_id: number | null;
   name: string;
+  tier: string;
   tagline: string | null;
   description: string | null;
   founding_cost: string | null;
+  founding_cost_min: number;
+  listing_fee: number;
   store_count: number;
+  store_type: string | null;
   logo_url: string | null;
   main_image_url: string | null;
-  images: string | null;        // JSON array string
-  features: string | null;      // JSON array string
+  images: string | null;
+  features: string | null;
+  cost_breakdown: string | null;
+  franchise_fee: string | null;
+  education_fee: string | null;
+  royalty: string | null;
+  standard_area: string | null;
+  vat_included: number;
+  deposit_included: number;
+  startup_process: string | null;
+  headquarters: string | null;
   phone: string | null;
   kakao_url: string | null;
   is_featured: number;
@@ -28,19 +41,33 @@ export interface Brand {
   created_at: string;
   // join
   category_name?: string | null;
+  category_slug?: string | null;
 }
 
 export interface BrandInput {
   category_id: number | null;
   name: string;
+  tier: string;
   tagline: string | null;
   description: string | null;
   founding_cost: string | null;
+  founding_cost_min: number;
+  listing_fee: number;
   store_count: number;
+  store_type: string;
   logo_url: string | null;
   main_image_url: string | null;
   images: string | null;
   features: string | null;
+  cost_breakdown: string | null;
+  franchise_fee: string | null;
+  education_fee: string | null;
+  royalty: string | null;
+  standard_area: string | null;
+  vat_included: number;
+  deposit_included: number;
+  startup_process: string | null;
+  headquarters: string | null;
   phone: string | null;
   kakao_url: string | null;
   is_featured: number;
@@ -65,10 +92,10 @@ export function getCategory(id: number): BrandCategory | undefined {
   return getDb().prepare("SELECT * FROM brand_categories WHERE id = ?").get(id) as BrandCategory | undefined;
 }
 
-export function createCategory(name: string): number {
+export function createCategory(name: string, slug?: string): number {
   const db = getDb();
   const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM brand_categories").get() as { next: number }).next;
-  const info = db.prepare("INSERT INTO brand_categories (name, sort_order) VALUES (?, ?)").run(name, next);
+  const info = db.prepare("INSERT INTO brand_categories (name, slug, sort_order) VALUES (?, ?, ?)").run(name, slug ?? null, next);
   return Number(info.lastInsertRowid);
 }
 
@@ -125,15 +152,21 @@ export function createBrand(d: BrandInput): number {
   const info = db
     .prepare(
       `INSERT INTO brands
-        (category_id, name, tagline, description, founding_cost, store_count,
-         logo_url, main_image_url, images, features, phone, kakao_url,
-         is_featured, is_active, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        (category_id, name, tier, tagline, description, founding_cost,
+         founding_cost_min, listing_fee, store_count, store_type,
+         logo_url, main_image_url, images, features,
+         cost_breakdown, franchise_fee, education_fee, royalty, standard_area,
+         vat_included, deposit_included, startup_process, headquarters,
+         phone, kakao_url, is_featured, is_active, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      d.category_id, d.name, d.tagline, d.description, d.founding_cost, d.store_count,
-      d.logo_url, d.main_image_url, d.images, d.features, d.phone, d.kakao_url,
-      d.is_featured, d.is_active, next
+      d.category_id, d.name, d.tier, d.tagline, d.description, d.founding_cost,
+      d.founding_cost_min, d.listing_fee, d.store_count, d.store_type,
+      d.logo_url, d.main_image_url, d.images, d.features,
+      d.cost_breakdown, d.franchise_fee, d.education_fee, d.royalty, d.standard_area,
+      d.vat_included, d.deposit_included, d.startup_process, d.headquarters,
+      d.phone, d.kakao_url, d.is_featured, d.is_active, next
     );
   return Number(info.lastInsertRowid);
 }
@@ -142,16 +175,27 @@ export function updateBrand(id: number, d: BrandInput): void {
   getDb()
     .prepare(
       `UPDATE brands SET
-        category_id = ?, name = ?, tagline = ?, description = ?,
-        founding_cost = ?, store_count = ?, logo_url = ?, main_image_url = ?,
-        images = ?, features = ?, phone = ?, kakao_url = ?,
-        is_featured = ?, is_active = ?
+        category_id = ?, name = ?, tier = ?, tagline = ?, description = ?,
+        founding_cost = ?, founding_cost_min = ?, listing_fee = ?,
+        store_count = ?, store_type = ?,
+        logo_url = ?, main_image_url = ?, images = ?, features = ?,
+        cost_breakdown = ?, franchise_fee = ?, education_fee = ?,
+        royalty = ?, standard_area = ?,
+        vat_included = ?, deposit_included = ?,
+        startup_process = ?, headquarters = ?,
+        phone = ?, kakao_url = ?, is_featured = ?, is_active = ?
        WHERE id = ?`
     )
     .run(
-      d.category_id, d.name, d.tagline, d.description, d.founding_cost, d.store_count,
-      d.logo_url, d.main_image_url, d.images, d.features, d.phone, d.kakao_url,
-      d.is_featured, d.is_active, id
+      d.category_id, d.name, d.tier, d.tagline, d.description,
+      d.founding_cost, d.founding_cost_min, d.listing_fee,
+      d.store_count, d.store_type,
+      d.logo_url, d.main_image_url, d.images, d.features,
+      d.cost_breakdown, d.franchise_fee, d.education_fee,
+      d.royalty, d.standard_area,
+      d.vat_included, d.deposit_included,
+      d.startup_process, d.headquarters,
+      d.phone, d.kakao_url, d.is_featured, d.is_active, id
     );
 }
 

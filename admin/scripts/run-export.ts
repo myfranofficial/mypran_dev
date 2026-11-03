@@ -253,21 +253,60 @@ function exportReviews() {
   console.log("  ✓ reviews.json");
 }
 
+function safeParseJson(val: string | null, fallback: any): any {
+  if (!val) return fallback;
+  try { return JSON.parse(val); } catch { return fallback; }
+}
+
 function exportBrands() {
-  const categories = db.prepare("SELECT * FROM brand_categories WHERE is_active = 1 ORDER BY sort_order ASC").all() as any[];
   const brands = db
-    .prepare(`SELECT b.*, c.name AS category_name FROM brands b LEFT JOIN brand_categories c ON b.category_id = c.id WHERE b.is_active = 1 ORDER BY b.sort_order ASC`)
+    .prepare(
+      `SELECT b.*, c.name AS category_name, c.slug AS category_slug
+       FROM brands b
+       LEFT JOIN brand_categories c ON b.category_id = c.id
+       WHERE b.is_active = 1
+       ORDER BY b.sort_order ASC, b.id ASC`
+    )
     .all() as any[];
-  writeJson("brands.json", {
-    categories: categories.map((c: any) => ({ id: c.id, name: c.name })),
-    brands: brands.map((b: any) => ({
-      name: b.name, category: b.category_name || "", tagline: b.tagline || "",
-      description: b.description || "", foundingCost: b.founding_cost || "",
-      storeCount: b.store_count || 0, logo: b.logo_url || "", image: b.main_image_url || "",
-      features: b.features ? JSON.parse(b.features) : [],
-      phone: b.phone || "", kakaoUrl: b.kakao_url || "", isFeatured: !!b.is_featured,
-    })),
+
+  const TIER_ORDER: Record<string, number> = { best: 0, premium: 1, special: 2 };
+  const sorted = brands.sort((a: any, b: any) => {
+    const td = (TIER_ORDER[a.tier] ?? 2) - (TIER_ORDER[b.tier] ?? 2);
+    return td !== 0 ? td : (a.sort_order - b.sort_order);
   });
+
+  const result = sorted.map((b: any, idx: number) => ({
+    id: `brand-${String(b.id).padStart(3, "0")}`,
+    name: b.name,
+    tier: b.tier || "special",
+    order: idx + 1,
+    categoryId: b.category_slug || b.category_name || "",
+    categoryName: b.category_name || "",
+    tagline: b.tagline || "",
+    description: b.description || "",
+    foundingCost: b.founding_cost || "",
+    foundingCostMin: b.founding_cost_min || 0,
+    listingFeePerMonth: b.listing_fee || 0,
+    storeCount: b.store_count || 0,
+    storeType: b.store_type || "hall",
+    features: safeParseJson(b.features, []),
+    phone: b.phone || "",
+    logo: b.logo_url || undefined,
+    mainImage: b.main_image_url || undefined,
+    images: safeParseJson(b.images, []),
+    isFeatured: !!b.is_featured,
+    costBreakdown: safeParseJson(b.cost_breakdown, []),
+    franchiseFee: b.franchise_fee || "",
+    educationFee: b.education_fee || "",
+    royalty: b.royalty || "",
+    standardArea: b.standard_area || "",
+    vatIncluded: !!b.vat_included,
+    depositIncluded: !!b.deposit_included,
+    startupProcess: safeParseJson(b.startup_process, []),
+    headquarters: safeParseJson(b.headquarters, []),
+  }));
+
+  writeJson("brands.json", result);
   console.log("  ✓ brands.json");
 }
 
