@@ -2,7 +2,7 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
-const COOKIE_NAME = "hiq_session";
+const COOKIE_NAME = "myfran_session";
 const MAX_AGE_SEC = 60 * 60 * 24 * 7; // 7일
 
 function getSecret(): string {

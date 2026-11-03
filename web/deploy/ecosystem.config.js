@@ -3,7 +3,6 @@
  * 위치: /home/ubuntu/myfran/ecosystem.config.js
  *
  * 포트 배정:
- *   3001 = HiQ 어드민
  *   3002 = 마이프랜 어드민
  *   3003 = 마이프랜 프론트엔드 (web)
  */

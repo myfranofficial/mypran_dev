@@ -10,3 +10,5 @@ admin/.next/
 admin/node_modules/
 web/.next/
 web/node_modules/
+pem/
+temp/

@@ -92,7 +92,7 @@ export function DataTable({
     setSelected((prev) => (rows.every((r) => prev.has(r.id)) ? new Set() : new Set(rows.map((r) => r.id))));
   const clearSelection = () => setSelected(new Set());
 
-  const storeKey = tableId ? `hiq_grid_${tableId}` : "";
+  const storeKey = tableId ? `myfran_grid_${tableId}` : "";
 
   useEffect(() => {
     if (!storeKey) return;

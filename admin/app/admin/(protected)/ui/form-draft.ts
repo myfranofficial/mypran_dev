@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 
 export const DRAFT_KEYS = {
-  banner: "hiq:banner-draft:v1",
-  notice: "hiq:notice-draft:v1",
-  gallery: "hiq:gallery-draft:v1",
-  video: "hiq:video-draft:v1",
-  store: "hiq:store-draft:v1",
-  event: "hiq:event-draft:v1",
-  faq: "hiq:faq-draft:v1",
-  download: "hiq:download-draft:v1",
+  banner: "myfran:banner-draft:v1",
+  notice: "myfran:notice-draft:v1",
+  gallery: "myfran:gallery-draft:v1",
+  video: "myfran:video-draft:v1",
+  store: "myfran:store-draft:v1",
+  event: "myfran:event-draft:v1",
+  faq: "myfran:faq-draft:v1",
+  download: "myfran:download-draft:v1",
 } as const;
 
 export type Draft = Record<string, string[]>;
