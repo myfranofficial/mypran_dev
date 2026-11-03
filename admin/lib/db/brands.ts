@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder } from "./query-helpers";
 
 export interface BrandCategory {
   id: number;
@@ -94,7 +95,7 @@ export function getCategory(id: number): BrandCategory | undefined {
 
 export function createCategory(name: string, slug?: string): number {
   const db = getDb();
-  const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM brand_categories").get() as { next: number }).next;
+  const next = getNextSortOrder(db, "brand_categories");
   const info = db.prepare("INSERT INTO brand_categories (name, slug, sort_order) VALUES (?, ?, ?)").run(name, slug ?? null, next);
   return Number(info.lastInsertRowid);
 }
@@ -110,20 +111,7 @@ export function deleteCategory(id: number): void {
 // ── 브랜드 ──
 
 export function listBrands(filter: { q?: string; category_id?: number } = {}): Brand[] {
-  const where: string[] = [];
-  const params: (string | number)[] = [];
-
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(b.name LIKE ? OR b.tagline LIKE ?)");
-    params.push(like, like);
-  }
-  if (filter.category_id) {
-    where.push("b.category_id = ?");
-    params.push(filter.category_id);
-  }
-
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["b.name", "b.tagline"], [{ column: "b.category_id", value: filter.category_id }]);
   return getDb()
     .prepare(
       `SELECT b.*, c.name AS category_name
@@ -148,7 +136,7 @@ export function getBrand(id: number): Brand | undefined {
 
 export function createBrand(d: BrandInput): number {
   const db = getDb();
-  const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM brands").get() as { next: number }).next;
+  const next = getNextSortOrder(db, "brands");
   const info = db
     .prepare(
       `INSERT INTO brands

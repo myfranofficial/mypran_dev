@@ -36,22 +36,6 @@ export default function ConsultPage() {
         </div>
       </section>
 
-      <style>{`
-        .consult-layout {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-        }
-        @media (min-width: 768px) {
-          .consult-layout {
-            flex-direction: row;
-            gap: 64px;
-            align-items: flex-start;
-          }
-          .consult-image { flex: 0 0 420px; }
-          .consult-form-wrap { flex: 1; }
-        }
-      `}</style>
     </>
   );
 }

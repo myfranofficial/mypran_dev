@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { readBrands } from "@/lib/brands-store";
 
-const BASE_URL = "https://xn--lj2b54b90v2gn.com";
+const BASE_URL = "https://xn--lj2b54b90v2gn.kr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();

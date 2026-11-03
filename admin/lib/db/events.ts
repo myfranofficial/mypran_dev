@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere } from "./query-helpers";
 
 export interface Event {
   id: number;
@@ -24,18 +25,7 @@ export interface EventInput {
 }
 
 export function listEvents(filter: { q?: string; status?: string } = {}): Event[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR description LIKE ?)");
-    params.push(like, like);
-  }
-  if (filter.status) {
-    where.push("status = ?");
-    params.push(filter.status);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "description"], [{ column: "status", value: filter.status }]);
   return getDb()
     .prepare(`SELECT * FROM events ${clause} ORDER BY created_at DESC, id DESC`)
     .all(...params) as Event[];

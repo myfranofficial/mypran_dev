@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder } from "./query-helpers";
 
 export interface FaqItem {
   id: number;
@@ -17,18 +18,7 @@ export interface FaqItemInput {
 }
 
 export function listFaqItems(filter: { q?: string; category?: string } = {}): FaqItem[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(question LIKE ? OR answer LIKE ?)");
-    params.push(like, like);
-  }
-  if (filter.category) {
-    where.push("category = ?");
-    params.push(filter.category);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["question", "answer"], [{ column: "category", value: filter.category }]);
   return getDb()
     .prepare(`SELECT * FROM faq_items ${clause} ORDER BY sort_order ASC, id ASC`)
     .all(...params) as FaqItem[];
@@ -40,7 +30,7 @@ export function getFaqItem(id: number): FaqItem | undefined {
 
 export function createFaqItem(d: FaqItemInput): number {
   const db = getDb();
-  const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM faq_items").get() as { next: number }).next;
+  const next = getNextSortOrder(db, "faq_items");
   const info = db
     .prepare("INSERT INTO faq_items (category, question, answer, sort_order) VALUES (?, ?, ?, ?)")
     .run(d.category, d.question, d.answer, next);

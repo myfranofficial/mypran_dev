@@ -13,7 +13,7 @@ const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto",
 });
 
-const SITE_URL = "https://xn--lj2b54b90v2gn.com";
+const SITE_URL = "https://xn--lj2b54b90v2gn.kr";
 const SITE_NAME = "마이프랜";
 
 export const metadata: Metadata = {
@@ -54,9 +54,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   verification: {
-    // Naver/Google verification codes — replace with actual values after registration
-    // google: "GOOGLE_VERIFICATION_CODE",
-    // other: { "naver-site-verification": "NAVER_VERIFICATION_CODE" },
+    other: { "naver-site-verification": "befb94a2f3485139581136a3ec2d36bde7581a54" },
   },
 };
 

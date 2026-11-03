@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere } from "./query-helpers";
 
 export interface Download {
   id: number;
@@ -21,14 +22,7 @@ export interface DownloadInput {
 }
 
 export function listDownloads(filter: { q?: string } = {}): Download[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR description LIKE ? OR filename LIKE ?)");
-    params.push(like, like, like);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "description", "filename"]);
   return getDb()
     .prepare(`SELECT * FROM downloads ${clause} ORDER BY created_at DESC, id DESC`)
     .all(...params) as Download[];

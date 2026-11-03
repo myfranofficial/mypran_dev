@@ -1,6 +1,6 @@
 "use client";
 
-const SITE_URL = "https://xn--lj2b54b90v2gn.com";
+const SITE_URL = "https://xn--lj2b54b90v2gn.kr";
 
 interface PreviewLinkProps {
   /** Frontend path, e.g. "/" or "/stores" */

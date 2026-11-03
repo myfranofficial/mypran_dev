@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder, moveSortOrder } from "./query-helpers";
 
 export interface Popup {
   id: number;
@@ -31,14 +32,7 @@ export interface PopupFilter {
 }
 
 export function listPopups(filter: PopupFilter = {}): Popup[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR link_url LIKE ?)");
-    params.push(like, like);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "link_url"]);
   return getDb()
     .prepare(`SELECT * FROM popups ${clause} ORDER BY sort_order ASC, id ASC`)
     .all(...params) as Popup[];
@@ -50,11 +44,7 @@ export function getPopup(id: number): Popup | undefined {
 
 export function createPopup(d: PopupInput): number {
   const db = getDb();
-  const next = (
-    db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM popups").get() as {
-      next: number;
-    }
-  ).next;
+  const next = getNextSortOrder(db, "popups");
   const info = db
     .prepare(
       "INSERT INTO popups (title, image_url, link_url, link_text, position, start_at, end_at, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -100,17 +90,5 @@ export function deletePopup(id: number): void {
 }
 
 export function movePopup(id: number, dir: "up" | "down"): void {
-  const db = getDb();
-  const rows = listPopups();
-  const idx = rows.findIndex((r) => r.id === id);
-  const swapIdx = dir === "up" ? idx - 1 : idx + 1;
-  if (idx < 0 || swapIdx < 0 || swapIdx >= rows.length) return;
-  const a = rows[idx];
-  const b = rows[swapIdx];
-  const tx = db.transaction(() => {
-    const stmt = db.prepare("UPDATE popups SET sort_order = ? WHERE id = ?");
-    stmt.run(b.sort_order === a.sort_order ? a.sort_order + (dir === "up" ? -1 : 1) : b.sort_order, a.id);
-    stmt.run(a.sort_order, b.id);
-  });
-  tx();
+  moveSortOrder(getDb(), "popups", listPopups(), id, dir);
 }

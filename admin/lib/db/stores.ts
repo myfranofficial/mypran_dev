@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder } from "./query-helpers";
 
 export interface Store {
   id: number;
@@ -31,14 +32,7 @@ export interface StoreInput {
 }
 
 export function listStores(filter: { q?: string } = {}): Store[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(name LIKE ? OR address LIKE ?)");
-    params.push(like, like);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["name", "address"]);
   return getDb()
     .prepare(`SELECT * FROM stores ${clause} ORDER BY sort_order ASC, id ASC`)
     .all(...params) as Store[];
@@ -50,7 +44,7 @@ export function getStore(id: number): Store | undefined {
 
 export function createStore(d: StoreInput): number {
   const db = getDb();
-  const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM stores").get() as { next: number }).next;
+  const next = getNextSortOrder(db, "stores");
   const info = db
     .prepare("INSERT INTO stores (name, address, size, tables_count, phone, hours, features, image_url, is_new, is_active, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     .run(d.name, d.address, d.size, d.tables_count, d.phone, d.hours, d.features, d.image_url, d.is_new, d.is_active, next);

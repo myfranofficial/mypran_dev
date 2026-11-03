@@ -295,6 +295,24 @@ export function CatEtcIcon(p: StrokeIconProps) {
   </>);
 }
 
+/** Map: stat/benefit icon key → component */
+export const ICON_MAP: Record<string, (p: IconProps) => React.JSX.Element> = {
+  people: PeopleIcon,
+  chart: ChartIcon,
+  home: HomeIcon,
+  monitor: MonitorIcon,
+  shield: ShieldIcon,
+  trophy: TrophyIcon,
+  speaker: SpeakerIcon,
+  book: BookIcon,
+  file: FileIcon,
+};
+
+export function StatIcon({ name, ...props }: { name: string } & IconProps) {
+  const Icon = ICON_MAP[name] ?? ShieldIcon;
+  return <Icon {...props} />;
+}
+
 /** Map: categoryId → icon component */
 export const CATEGORY_ICONS: Record<string, (p: StrokeIconProps) => React.JSX.Element> = {
   korean: CatKoreanIcon,

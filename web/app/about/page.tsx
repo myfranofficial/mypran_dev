@@ -10,6 +10,7 @@ import {
   TrophyIcon,
   PhoneIcon,
   MailIcon,
+  ICON_MAP,
 } from "@/components/icons";
 import { readSiteData, readHomepageData } from "@/lib/site-data";
 
@@ -46,16 +47,6 @@ const BUSINESSES = [
     desc: "예비 창업자의 업종과 예산에 맞는 최적의 상권을 분석하고, 전국 네트워크를 통해 매장 위치를 제안합니다.",
   },
 ];
-
-/* ── 아이콘 매핑 ── */
-const ICON_MAP: Record<string, typeof PeopleIcon> = {
-  people: PeopleIcon,
-  chart: ChartIcon,
-  home: HomeIcon,
-  monitor: MonitorIcon,
-  shield: ShieldIcon,
-  trophy: TrophyIcon,
-};
 
 export default function AboutPage() {
   const site = readSiteData();
@@ -363,246 +354,16 @@ export default function AboutPage() {
             당신의 성공 창업, 마이프랜이 함께합니다.
           </p>
           <div style={{ marginTop: 20, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href={`tel:${phoneDigits}`}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                height: 48,
-                padding: "0 24px",
-                background: "rgba(255,255,255,0.15)",
-                color: "var(--on-brand)",
-                border: "1px solid rgba(255,255,255,0.4)",
-                borderRadius: "var(--radius-md)",
-                font: "700 15px/1 var(--font-sans)",
-                textDecoration: "none",
-              }}
-            >
+            <a href={`tel:${phoneDigits}`} className="btn-glass">
               <PhoneIcon size={18} fill="#ffffff" /> {site.phone}
             </a>
-            <a
-              href={`mailto:${site.email}`}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                height: 48,
-                padding: "0 24px",
-                background: "rgba(255,255,255,0.15)",
-                color: "var(--on-brand)",
-                border: "1px solid rgba(255,255,255,0.4)",
-                borderRadius: "var(--radius-md)",
-                font: "700 15px/1 var(--font-sans)",
-                textDecoration: "none",
-              }}
-            >
+            <a href={`mailto:${site.email}`} className="btn-glass">
               <MailIcon size={18} fill="#ffffff" /> 이메일 상담
             </a>
           </div>
         </div>
       </section>
 
-      {/* ═══════ STYLES ═══════ */}
-      <style>{`
-        /* ── Hero ── */
-        .about-hero {
-          position: relative;
-          background: var(--night);
-          min-height: 320px;
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-        }
-        @media (min-width: 768px) {
-          .about-hero { min-height: 400px; }
-        }
-        .about-hero-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, var(--night) 40%, rgba(10,18,32,0.7));
-        }
-        .about-hero-content {
-          position: relative;
-          z-index: 1;
-          color: var(--on-brand);
-          padding-top: 48px;
-          padding-bottom: 48px;
-        }
-        @media (min-width: 768px) {
-          .about-hero-content { padding-top: 72px; padding-bottom: 72px; }
-        }
-        .about-hero-title {
-          margin: 12px 0 0;
-          font: 900 34px/42px var(--font-sans);
-          letter-spacing: -0.02em;
-        }
-        @media (min-width: 768px) {
-          .about-hero-title { font: 900 48px/60px var(--font-sans); }
-        }
-        .about-accent { color: var(--red-500); }
-        .about-hero-sub {
-          margin: 16px 0 0;
-          font: 500 16px/26px var(--font-sans);
-          color: var(--night-muted);
-        }
-        @media (min-width: 768px) {
-          .about-hero-sub { font: 500 20px/30px var(--font-sans); }
-        }
-
-        /* ── Eyebrow ── */
-        .about-eyebrow {
-          display: block;
-          font: 700 12px/16px var(--font-sans);
-          letter-spacing: 0.18em;
-          color: var(--night-muted);
-        }
-
-        /* ── 회사소개 그리드 ── */
-        .about-intro-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-          margin-top: 24px;
-        }
-        @media (min-width: 768px) {
-          .about-intro-grid {
-            flex-direction: row;
-            gap: 48px;
-            align-items: flex-start;
-          }
-          .about-intro-text { flex: 1; }
-          .about-intro-image { flex: 0 0 420px; }
-        }
-
-        /* ── 사업분야 그리드 ── */
-        .biz-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-          margin-top: 32px;
-        }
-        @media (min-width: 768px) {
-          .biz-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 20px;
-          }
-        }
-        @media (min-width: 1200px) {
-          .biz-grid {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-          }
-        }
-        .biz-card {
-          padding: 24px;
-          background: var(--surface);
-          border-radius: var(--radius-lg);
-          box-shadow: var(--shadow-card);
-          border-top: 3px solid var(--red-500);
-        }
-        .biz-card-head {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .biz-no {
-          font: 900 28px/32px var(--font-sans);
-          color: var(--red-500);
-          letter-spacing: -0.02em;
-        }
-
-        /* ── 대표 인사말 ── */
-        .chairman-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-        }
-        @media (min-width: 768px) {
-          .chairman-grid {
-            flex-direction: row;
-            gap: 56px;
-            align-items: flex-start;
-          }
-          .chairman-photo { flex: 0 0 340px; }
-          .chairman-text { flex: 1; }
-        }
-        .chairman-quote {
-          margin: 24px 0 0;
-          padding: 0;
-          border: 0;
-          font: 900 24px/34px var(--font-sans);
-          color: var(--ink);
-          letter-spacing: -0.02em;
-        }
-        @media (min-width: 768px) {
-          .chairman-quote { font: 900 30px/42px var(--font-sans); }
-        }
-
-        /* ── 통계 ── */
-        .about-stats {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 24px;
-        }
-        @media (min-width: 768px) {
-          .about-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        }
-        .about-stat-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 4px;
-          text-align: center;
-        }
-        .about-stat-value {
-          font: 900 32px/38px var(--font-sans);
-          letter-spacing: -0.02em;
-          color: var(--ink);
-        }
-        @media (min-width: 768px) {
-          .about-stat-value { font: 900 40px/48px var(--font-sans); }
-        }
-        .about-stat-label {
-          font: 500 13px/18px var(--font-sans);
-          color: var(--ink-muted);
-        }
-
-        /* ── 연락처 ── */
-        .contact-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-        }
-        @media (min-width: 768px) {
-          .contact-grid {
-            flex-direction: row;
-            gap: 48px;
-          }
-          .contact-info { flex: 1; }
-          .contact-map { flex: 1; }
-        }
-        .contact-dl {
-          margin: 0;
-          display: grid;
-          gap: 12px;
-        }
-        .contact-row {
-          display: flex;
-          gap: 16px;
-          padding-bottom: 12px;
-          border-bottom: 1px solid var(--line);
-        }
-        .contact-row dt {
-          flex: 0 0 80px;
-          font: 700 14px/22px var(--font-sans);
-          color: var(--ink-muted);
-        }
-        .contact-row dd {
-          margin: 0;
-          font: 500 15px/22px var(--font-sans);
-          color: var(--ink);
-        }
-      `}</style>
     </>
   );
 }

@@ -4,7 +4,7 @@ import { countUnread } from "@/lib/db/consultations";
 import { PreviewLink } from "./ui/preview-link";
 import * as s from "./ui/styles";
 
-const SITE_URL = "https://xn--lj2b54b90v2gn.com";
+const SITE_URL = "https://xn--lj2b54b90v2gn.kr";
 
 const MODULE_MAP: {
   label: string;

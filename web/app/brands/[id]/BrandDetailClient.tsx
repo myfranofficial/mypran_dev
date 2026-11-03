@@ -43,17 +43,7 @@ export default function BrandDetailClient({ brand, phone = "010-4708-6091" }: { 
 
           {/* 정보 */}
           <div className="brand-detail-info">
-            <span
-              style={{
-                display: "inline-block",
-                padding: "4px 12px",
-                background: "var(--red-50)",
-                color: "var(--red-500)",
-                borderRadius: "var(--radius-sm)",
-                font: "500 13px/18px var(--font-sans)",
-                marginBottom: 12,
-              }}
-            >
+            <span className="badge-category" style={{ marginBottom: 12 }}>
               {brand.categoryName}
             </span>
             <h1
@@ -434,32 +424,6 @@ export default function BrandDetailClient({ brand, phone = "010-4708-6091" }: { 
         </div>
       </section>
 
-      <style>{`
-        .brand-detail-top {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-        @media (min-width: 768px) {
-          .brand-detail-top {
-            flex-direction: row;
-            gap: 48px;
-          }
-          .brand-detail-image { flex: 1; }
-          .brand-detail-info { flex: 1; }
-        }
-        .brand-gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 12px;
-        }
-        @media (min-width: 768px) {
-          .brand-gallery-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-          }
-        }
-      `}</style>
     </>
   );
 }

@@ -35,9 +35,12 @@ import {
   BookIcon,
   FileIcon,
   MailIcon,
+  ICON_MAP,
+  StatIcon,
   CATEGORY_ICONS,
 } from "@/components/icons";
 import { AnimatedStatBar } from "@/components/AnimatedStatBar";
+import SectionHeader from "@/components/SectionHeader";
 import {
   ownedBrands,
   stats,
@@ -48,24 +51,6 @@ import {
 import { categories, budgetRanges } from "@/data/static-data";
 import { readBrands } from "@/lib/brands-store";
 import type { Brand, BrandTier } from "@/lib/brand-types";
-
-/* ── Icon lookup helper ── */
-const ICON_MAP: Record<string, typeof PeopleIcon> = {
-  people: PeopleIcon,
-  chart: ChartIcon,
-  home: HomeIcon,
-  monitor: MonitorIcon,
-  shield: ShieldIcon,
-  trophy: TrophyIcon,
-  speaker: SpeakerIcon,
-  book: BookIcon,
-  file: FileIcon,
-};
-
-function StatIcon({ name, ...props }: { name: string } & { size?: number; fill?: string }) {
-  const Icon = ICON_MAP[name] ?? ShieldIcon;
-  return <Icon {...props} />;
-}
 
 /* ── Tier section config ── */
 const TIER_CONFIG: { tier: BrandTier; label: string; accent: string; icon: typeof CrownIcon; desc: string }[] = [
@@ -195,22 +180,7 @@ export default function HomePage() {
             >
               무료 창업 상담 신청
             </Link>
-            <Link
-              href="/brands"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 48,
-                padding: "0 28px",
-                background: "transparent",
-                color: "var(--surface)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid rgba(255,255,255,0.6)",
-                font: "700 16px/1 var(--font-sans)",
-                textDecoration: "none",
-              }}
-            >
+            <Link href="/brands" className="btn-ghost-dark">
               입점 브랜드 보기
             </Link>
           </div>
@@ -308,22 +278,7 @@ export default function HomePage() {
             >
               무료 상담 신청
             </Link>
-            <Link
-              href="/brands"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 48,
-                padding: "0 8px",
-                background: "transparent",
-                color: "var(--surface)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid rgba(255,255,255,0.6)",
-                font: "700 15px/1 var(--font-sans)",
-                textDecoration: "none",
-              }}
-            >
+            <Link href="/brands" className="btn-ghost-dark" style={{ padding: "0 8px", font: "700 15px/1 var(--font-sans)" }}>
               입점 브랜드
             </Link>
           </div>
@@ -533,14 +488,10 @@ export default function HomePage() {
       {/* ════ CATEGORY BRANDS (업종별 브랜드 찾기) ════ */}
       <section style={{ background: "var(--surface-muted)" }}>
         <div className="container-mf section-py">
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <h2 className="typo-h2" style={{ margin: 0 }}>
-              <span style={{ color: "var(--red-500)" }}>업종별</span> 브랜드 찾기
-            </h2>
-            <p className="typo-caption" style={{ margin: "8px 0 0", color: "var(--ink-muted)" }}>
-              관심있는 업종의 프랜차이즈 브랜드를 확인하세요
-            </p>
-          </div>
+          <SectionHeader
+            title={<><span style={{ color: "var(--red-500)" }}>업종별</span> 브랜드 찾기</>}
+            description="관심있는 업종의 프랜차이즈 브랜드를 확인하세요"
+          />
           <div className="cat-icon-grid">
             {categories.filter((c) => c.id !== "all").map((cat) => {
               const count = allBrands.filter((b) => b.categoryId === cat.id).length;
@@ -579,38 +530,15 @@ export default function HomePage() {
             })}
           </div>
         </div>
-        <style>{`
-          .cat-icon-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 12px;
-            max-width: 700px;
-            margin: 0 auto;
-          }
-          @media (max-width: 767px) {
-            .cat-icon-grid {
-              grid-template-columns: repeat(3, minmax(0, 1fr));
-              gap: 10px;
-            }
-          }
-          .cat-icon-card:hover {
-            border-color: var(--red-500) !important;
-            box-shadow: 0 2px 12px rgba(229,62,62,0.12);
-          }
-        `}</style>
       </section>
 
       {/* ════ BUDGET BRANDS (예산별 브랜드 찾기) ════ */}
       <section>
         <div className="container-mf section-py">
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <h2 className="typo-h2" style={{ margin: 0 }}>
-              <span style={{ color: "var(--red-500)" }}>예산별</span> 브랜드 찾기
-            </h2>
-            <p className="typo-caption" style={{ margin: "8px 0 0", color: "var(--ink-muted)" }}>
-              나의 투자 예산에 맞는 브랜드를 찾아보세요
-            </p>
-          </div>
+          <SectionHeader
+            title={<><span style={{ color: "var(--red-500)" }}>예산별</span> 브랜드 찾기</>}
+            description="나의 투자 예산에 맞는 브랜드를 찾아보세요"
+          />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {budgetRanges.map((range) => {
               const brands = allBrands.filter(
@@ -857,42 +785,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        <style>{`
-          @keyframes scrollLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          @keyframes scrollRight {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-          }
-          .scroll-row {
-            animation: scrollLeft 60s linear infinite;
-          }
-          .scroll-row-reverse {
-            animation: scrollRight 60s linear infinite;
-          }
-          @keyframes brandScrollLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          @keyframes brandScrollRight {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-          }
-          .brand-scroll-row {
-            animation: brandScrollLeft 40s linear infinite;
-          }
-          .brand-scroll-reverse {
-            animation: brandScrollRight 40s linear infinite;
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .scroll-row, .scroll-row-reverse,
-            .brand-scroll-row, .brand-scroll-reverse {
-              animation: none;
-            }
-          }
-        `}</style>
       </section>
 
       {/* ════ PRICING PLANS ════ */}

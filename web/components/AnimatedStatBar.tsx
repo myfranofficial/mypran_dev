@@ -4,32 +4,13 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import {
-  PeopleIcon,
-  ChartIcon,
-  HomeIcon,
-  MonitorIcon,
   ShieldIcon,
-  TrophyIcon,
-  SpeakerIcon,
-  BookIcon,
-  FileIcon,
   ChatIcon,
   ChevronRight,
+  ICON_MAP,
 } from "@/components/icons";
 
 type Stat = { icon: string; value: string; label: string };
-
-const ICON_MAP: Record<string, typeof PeopleIcon> = {
-  people: PeopleIcon,
-  chart: ChartIcon,
-  home: HomeIcon,
-  monitor: MonitorIcon,
-  shield: ShieldIcon,
-  trophy: TrophyIcon,
-  speaker: SpeakerIcon,
-  book: BookIcon,
-  file: FileIcon,
-};
 
 /* ── parse "100+", "1,000+", "98%" → { num, suffix } ── */
 function parseValue(v: string) {

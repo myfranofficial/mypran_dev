@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder, moveSortOrder } from "./query-helpers";
 
 export interface Banner {
   id: number;
@@ -30,14 +31,7 @@ export interface BannerFilter {
 }
 
 export function listBanners(filter: BannerFilter = {}): Banner[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR subtitle LIKE ? OR link_url LIKE ?)");
-    params.push(like, like, like);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "subtitle", "link_url"]);
   return getDb()
     .prepare(`SELECT * FROM banners ${clause} ORDER BY sort_order ASC, id ASC`)
     .all(...params) as Banner[];
@@ -49,11 +43,7 @@ export function getBanner(id: number): Banner | undefined {
 
 export function createBanner(d: BannerInput): number {
   const db = getDb();
-  const next = (
-    db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM banners").get() as {
-      next: number;
-    }
-  ).next;
+  const next = getNextSortOrder(db, "banners");
   const info = db
     .prepare(
       "INSERT INTO banners (image_url, image_url_mobile, link_url, title, subtitle, start_at, end_at, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -99,17 +89,5 @@ export function deleteBanner(id: number): void {
 }
 
 export function moveBanner(id: number, dir: "up" | "down"): void {
-  const db = getDb();
-  const rows = listBanners();
-  const idx = rows.findIndex((r) => r.id === id);
-  const swapIdx = dir === "up" ? idx - 1 : idx + 1;
-  if (idx < 0 || swapIdx < 0 || swapIdx >= rows.length) return;
-  const a = rows[idx];
-  const b = rows[swapIdx];
-  const tx = db.transaction(() => {
-    const stmt = db.prepare("UPDATE banners SET sort_order = ? WHERE id = ?");
-    stmt.run(b.sort_order === a.sort_order ? a.sort_order + (dir === "up" ? -1 : 1) : b.sort_order, a.id);
-    stmt.run(a.sort_order, b.id);
-  });
-  tx();
+  moveSortOrder(getDb(), "banners", listBanners(), id, dir);
 }

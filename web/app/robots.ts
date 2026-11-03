@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/"],
       },
     ],
-    sitemap: "https://xn--lj2b54b90v2gn.com/sitemap.xml",
+    sitemap: "https://xn--lj2b54b90v2gn.kr/sitemap.xml",
   };
 }

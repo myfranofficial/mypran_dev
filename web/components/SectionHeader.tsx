@@ -6,7 +6,7 @@ export default function SectionHeader({
   align = "center",
 }: {
   eyebrow?: string;
-  title: string;
+  title: React.ReactNode;
   description?: string;
   align?: "center" | "left";
 }) {

@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere, getNextSortOrder } from "./query-helpers";
 
 export interface GalleryImage {
   id: number;
@@ -19,18 +20,7 @@ export interface GalleryImageInput {
 }
 
 export function listGalleryImages(filter: { q?: string; category?: string } = {}): GalleryImage[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR branch LIKE ?)");
-    params.push(like, like);
-  }
-  if (filter.category) {
-    where.push("category = ?");
-    params.push(filter.category);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "branch"], [{ column: "category", value: filter.category }]);
   return getDb()
     .prepare(`SELECT * FROM gallery_images ${clause} ORDER BY sort_order ASC, id DESC`)
     .all(...params) as GalleryImage[];
@@ -42,7 +32,7 @@ export function getGalleryImage(id: number): GalleryImage | undefined {
 
 export function createGalleryImage(d: GalleryImageInput): number {
   const db = getDb();
-  const next = (db.prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM gallery_images").get() as { next: number }).next;
+  const next = getNextSortOrder(db, "gallery_images");
   const info = db
     .prepare("INSERT INTO gallery_images (title, category, branch, image_url, sort_order) VALUES (?, ?, ?, ?, ?)")
     .run(d.title, d.category, d.branch, d.image_url, next);

@@ -1,5 +1,6 @@
 import "server-only";
 import { getDb } from "./index";
+import { buildFilterWhere } from "./query-helpers";
 
 export interface Notice {
   id: number;
@@ -32,18 +33,7 @@ export interface NoticeFilter {
 }
 
 export function listNotices(filter: NoticeFilter = {}): Notice[] {
-  const where: string[] = [];
-  const params: string[] = [];
-  if (filter.q) {
-    const like = `%${filter.q}%`;
-    where.push("(title LIKE ? OR content LIKE ? OR category LIKE ?)");
-    params.push(like, like, like);
-  }
-  if (filter.category) {
-    where.push("category = ?");
-    params.push(filter.category);
-  }
-  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const { clause, params } = buildFilterWhere(filter.q, ["title", "content", "category"], [{ column: "category", value: filter.category }]);
   return getDb()
     .prepare(
       `SELECT * FROM notices ${clause} ORDER BY is_pinned DESC, created_at DESC, id DESC`
