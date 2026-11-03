@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PhotoSlot from "@/components/PhotoSlot";
+import { readSiteData } from "@/lib/site-data";
 
-export const metadata: Metadata = {
-  title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
-  description:
-    "100+ 프랜차이즈 브랜드를 한눈에 비교! 업종별·예산별 브랜드 찾기, 창업비용 비교, 무료 창업 상담까지. 마이프랜 온라인 창업박람회.",
-  openGraph: {
-    title: "마이프랜 — 프랜차이즈 비교는 필수입니다",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = readSiteData();
+  const title = `마이프랜 — ${site.slogan}`;
+  return {
+    title,
     description:
-      "100+ 프랜차이즈 브랜드를 한눈에 비교하고, 무료 창업 상담을 신청하세요.",
-    type: "website",
-  },
-};
+      "100+ 프랜차이즈 브랜드를 한눈에 비교! 업종별·예산별 브랜드 찾기, 창업비용 비교, 무료 창업 상담까지. 마이프랜 온라인 창업박람회.",
+    openGraph: {
+      title,
+      description:
+        "100+ 프랜차이즈 브랜드를 한눈에 비교하고, 무료 창업 상담을 신청하세요.",
+      type: "website",
+    },
+  };
+}
 import ConsultForm from "@/components/ConsultForm";
 import {
   PhoneIcon,
@@ -42,7 +47,6 @@ import {
 } from "@/data/brands";
 import { categories, budgetRanges } from "@/data/static-data";
 import { readBrands } from "@/lib/brands-store";
-import { readSiteData } from "@/lib/site-data";
 import type { Brand, BrandTier } from "@/lib/brand-types";
 
 /* ── Icon lookup helper ── */
