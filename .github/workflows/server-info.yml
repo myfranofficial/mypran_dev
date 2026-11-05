@@ -33,11 +33,17 @@ jobs:
   outside:
     runs-on: ubuntu-latest
     steps:
-      - name: Check ports from outside
-        env:
-          HOST: ${{ secrets.SERVER_IP }}
+      - name: Check site and preview from outside
         run: |
-          for p in 80 443 3002 3004; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 8 "http://$HOST:$p/" || true)
-            echo "port $p from outside → $CODE (000 = blocked/unreachable)"
+          D=https://xn--lj2b54b90v2gn.kr
+          for u in / /brands /preview/home-test /preview; do
+            echo "$u → $(curl -s -o /dev/null -w '%{http_code}' -L --max-redirs 0 $D$u)"
           done
+          curl -s $D/preview/home-test -o page.html
+          echo "title: $(grep -o '<title>[^<]*' page.html | head -1)"
+          echo "robots: $(grep -o '<meta name="robots"[^>]*' page.html | head -1)"
+          echo "header: $(curl -sI $D/preview/home-test | grep -i x-robots-tag)"
+          CSS=$(grep -o '/preview/_next/static/[^"]*\.css' page.html | head -1)
+          echo "css $CSS → $(curl -s -o /dev/null -w '%{http_code}' $D$CSS)"
+          JS=$(grep -o '/preview/_next/static/[^"]*\.js' page.html | head -1)
+          echo "js → $(curl -s -o /dev/null -w '%{http_code}' $D$JS)"
