@@ -26,6 +26,9 @@ jobs:
             echo "== aws instance type"; curl -s -m 2 -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type || true; echo
             echo "== ufw"; sudo -n ufw status 2>&1 | head -20 || true
             echo "== listening"; ss -ltn | grep -E ":(80|443|3002|3003|3004) " || true
+            echo "== nginx sites-enabled"; ls -la /etc/nginx/sites-enabled/
+            for f in /etc/nginx/sites-enabled/*; do echo "----- $f"; sudo -n cat "$f"; done
+            echo "== nginx -t"; sudo -n nginx -t 2>&1 || true
 
   outside:
     runs-on: ubuntu-latest
