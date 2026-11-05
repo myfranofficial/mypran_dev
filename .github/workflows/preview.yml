@@ -72,8 +72,15 @@ jobs:
               --max-memory-restart 300M
 
             echo "=== 5. 확인 ==="
-            sleep 3
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:$PORT/home-test")
-            echo "/home-test → $CODE"
-            [ "$CODE" = "200" ]
+            CODE=000
+            for i in $(seq 1 20); do
+              sleep 3
+              CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:$PORT/home-test" || true)
+              echo "시도 $i: /home-test → $CODE"
+              [ "$CODE" = "200" ] && break
+            done
+            if [ "$CODE" != "200" ]; then
+              pm2 logs myfran-preview --lines 40 --nostream || true
+              exit 1
+            fi
             echo "미리보기 주소: http://<서버 IP>:$PORT/home-test"
