@@ -1,12 +1,14 @@
 name: Preview (home-test)
 
 # home-test 브랜치 전용 미리보기 배포.
-# 실제 사이트(main, 포트 3003)와 완전히 분리된 폴더·포트(3004)에서 실행됩니다.
-# 접속: http://<서버 IP>:3004/home-test
+# 실제 사이트(main, 포트 3003)와 분리된 폴더·포트(3004)에서 실행하고,
+# nginx의 /preview/ 경로로만 연결합니다. 실제 사이트의 다른 경로는 그대로입니다.
+# 접속: https://마이프랜.kr/preview/home-test
 
 on:
   push:
     branches: [home-test]
+    paths-ignore: [".github/workflows/server-info.yml"]
   workflow_dispatch:
 
 concurrency:
@@ -33,6 +35,11 @@ jobs:
             REPO=$PREVIEW/repo
             APP=$PREVIEW/web
             PORT=3004
+            DOMAIN=xn--lj2b54b90v2gn.kr
+            NGINX_SITE=/etc/nginx/sites-available/myfran-web
+
+            echo "=== 0. 실제 사이트 상태 (변경 전) ==="
+            curl -sk -o /dev/null -w "실제 사이트 / → %{http_code}\n" --resolve $DOMAIN:443:127.0.0.1 https://$DOMAIN/
 
             echo "=== 1. 브랜치 받기 (실제 사이트 저장소와 별도 폴더) ==="
             mkdir -p $PREVIEW
@@ -45,12 +52,13 @@ jobs:
             git reset --hard origin/$BRANCH
             git clean -fd
 
-            echo "=== 2. 빌드 ==="
+            echo "=== 2. 빌드 (/preview 경로용, 미리보기 폴더에서만) ==="
             cd $REPO/web
-            # 관리자에서 올린 이미지가 미리보기에서도 보이도록 연결 (빌드 전에 있어야 함)
-            if [ -d /home/ubuntu/myfran/data/uploads ] && [ ! -e public/uploads ]; then
-              ln -s /home/ubuntu/myfran/data/uploads public/uploads
-            fi
+            cat > next.config.ts <<'CFG'
+            import type { NextConfig } from "next";
+            const nextConfig: NextConfig = { output: "standalone", basePath: "/preview" };
+            export default nextConfig;
+            CFG
             npm install
             npx next build --webpack
 
@@ -63,23 +71,71 @@ jobs:
             rm -rf $APP/data
             cp -r /home/ubuntu/myfran/web/current/data $APP/data
 
-            echo "=== 4. 미리보기 실행 (포트 $PORT) ==="
+            echo "=== 4. 미리보기 실행 (서버 내부 포트 $PORT) ==="
             pm2 delete myfran-preview 2>/dev/null || true
             cd $APP
-            NODE_ENV=production PORT=$PORT HOSTNAME=0.0.0.0 \
+            NODE_ENV=production PORT=$PORT HOSTNAME=127.0.0.1 \
               pm2 start server.js --name myfran-preview \
               --max-memory-restart 300M
 
-            echo "=== 5. 확인 ==="
             CODE=000
             for i in $(seq 1 20); do
               sleep 3
-              CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:$PORT/home-test" || true)
-              echo "시도 $i: /home-test → $CODE"
+              CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 "http://127.0.0.1:$PORT/preview/home-test" || true)
+              echo "시도 $i: 미리보기 내부 /preview/home-test → $CODE"
               [ "$CODE" = "200" ] && break
             done
             if [ "$CODE" != "200" ]; then
               pm2 logs myfran-preview --lines 40 --nostream || true
               exit 1
             fi
-            echo "미리보기 주소: http://<서버 IP>:$PORT/home-test"
+
+            echo "=== 5. nginx에 /preview/ 경로 추가 (최초 1회, 백업·검사·실패 시 복구) ==="
+            if sudo grep -q "location /preview/" $NGINX_SITE; then
+              echo "이미 추가되어 있음 — 건너뜀"
+            else
+              BACKUP=$NGINX_SITE.bak-$(date +%Y%m%d%H%M%S)
+              sudo cp $NGINX_SITE $BACKUP
+              echo "백업: $BACKUP"
+              sudo python3 - "$NGINX_SITE" <<'PY'
+            import sys
+            p = sys.argv[1]
+            s = open(p).read()
+            anchor = "    location /_next/static/ {\n        proxy_pass http://127.0.0.1:3003;"
+            assert s.count(anchor) == 1, "삽입 위치를 찾지 못함"
+            block = (
+                "    # ── 미리보기 (home-test 브랜치, 포트 3004) ──\n"
+                "    location = /preview { return 301 /preview/; }\n"
+                "    location /preview/ {\n"
+                "        proxy_pass http://127.0.0.1:3004;\n"
+                "        proxy_http_version 1.1;\n"
+                "        proxy_set_header Host $host;\n"
+                "        proxy_set_header X-Real-IP $remote_addr;\n"
+                "        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n"
+                "        proxy_set_header X-Forwarded-Proto $scheme;\n"
+                "        proxy_buffering off;\n"
+                "        add_header X-Frame-Options \"SAMEORIGIN\" always;\n"
+                "        add_header X-Content-Type-Options \"nosniff\" always;\n"
+                "        add_header X-Robots-Tag \"noindex, nofollow\" always;\n"
+                "    }\n\n"
+            )
+            open(p, "w").write(s.replace(anchor, block + anchor, 1))
+            PY
+              if sudo nginx -t; then
+                sudo systemctl reload nginx
+                echo "nginx 반영 완료"
+              else
+                sudo cp $BACKUP $NGINX_SITE
+                echo "nginx 검사 실패 — 원래 설정으로 복구함"
+                exit 1
+              fi
+            fi
+
+            echo "=== 6. 확인 ==="
+            sleep 2
+            LIVE=$(curl -sk -o /dev/null -w "%{http_code}" --resolve $DOMAIN:443:127.0.0.1 https://$DOMAIN/)
+            PREV=$(curl -sk -o /dev/null -w "%{http_code}" --resolve $DOMAIN:443:127.0.0.1 https://$DOMAIN/preview/home-test)
+            echo "실제 사이트 / → $LIVE"
+            echo "미리보기 /preview/home-test → $PREV"
+            [ "$LIVE" = "200" ] && [ "$PREV" = "200" ]
+            echo "미리보기 주소: https://마이프랜.kr/preview/home-test"
