@@ -1,7 +1,7 @@
 name: Server info (read-only)
 
-# 읽기 전용 점검: 서버 종류, 서버 내부 방화벽 상태, 외부에서 3004 포트 접속 가능 여부.
-# 서버 설정은 아무것도 바꾸지 않습니다.
+# 읽기 전용 점검. 서버 설정과 데이터는 아무것도 바꾸지 않습니다.
+# 외부 확인은 GET/HEAD 요청만 보냅니다(등록·삭제 요청 없음).
 
 on:
   push:
@@ -19,31 +19,40 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "== vendor"; cat /sys/class/dmi/id/sys_vendor 2>/dev/null; cat /sys/class/dmi/id/product_name 2>/dev/null
-            echo "== hostname"; hostname
-            TOKEN=$(curl -s -m 2 -X PUT http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 60" || true)
-            echo "== aws region"; curl -s -m 2 -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region || true; echo
-            echo "== aws instance type"; curl -s -m 2 -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type || true; echo
-            echo "== ufw"; sudo -n ufw status 2>&1 | head -20 || true
-            echo "== listening"; ss -ltn | grep -E ":(80|443|3002|3003|3004) " || true
-            echo "== nginx sites-enabled"; ls -la /etc/nginx/sites-enabled/
-            for f in /etc/nginx/sites-enabled/*; do echo "----- $f"; sudo -n cat "$f"; done
-            echo "== nginx -t"; sudo -n nginx -t 2>&1 || true
+            echo "== os/node"; . /etc/os-release; echo "$PRETTY_NAME"; node -v; pm2 -v
+            echo "== disk"; df -h / | tail -1
+            echo "== memory"; free -m | sed -n 2,3p
+            echo "== pm2 restarts"; pm2 jlist 2>/dev/null | python3 -c "import sys,json;[print(p['name'],'restarts',p['pm2_env']['restart_time'],'status',p['pm2_env']['status']) for p in json.load(sys.stdin)]"
+            echo "== env files (names only)"; ls -la /home/ubuntu/myfran/ 2>/dev/null; find /home/ubuntu/myfran -maxdepth 3 -name ".env*" -not -path "*/node_modules/*" -not -path "*/preview/*" 2>/dev/null
+            echo "== admin db"; ls -la /home/ubuntu/myfran/admin/current/data/ 2>/dev/null | head; ls -la /home/ubuntu/myfran/data/ 2>/dev/null | head
+            echo "== uploads count"; ls /home/ubuntu/myfran/data/uploads 2>/dev/null | wc -l; ls /home/ubuntu/myfran/admin/current/data/uploads 2>/dev/null | wc -l
+            echo "== backups (cron)"; crontab -l 2>&1 | head; sudo -n ls /etc/cron.d 2>&1
+            echo "== certbot timer"; systemctl list-timers 2>/dev/null | grep -i certbot || echo "certbot 타이머 없음"
+            echo "== certs"; sudo -n certbot certificates 2>/dev/null | grep -E "Certificate Name|Domains|Expiry" || true
+            echo "== security updates"; apt list --upgradable 2>/dev/null | grep -ci security || true
+            echo "== ssh password login"; sudo -n grep -hiE "^\s*PasswordAuthentication" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* 2>/dev/null || echo "(기본값)"
+            echo "== web brand upload dir"; ls /home/ubuntu/myfran/web/current/public/brands 2>/dev/null | wc -l
 
   outside:
     runs-on: ubuntu-latest
     steps:
-      - name: Check site and preview from outside
+      - name: Check public endpoints (GET/HEAD only)
         run: |
           D=https://xn--lj2b54b90v2gn.kr
-          for u in / /brands /preview/home-test /preview; do
-            echo "$u → $(curl -s -o /dev/null -w '%{http_code}' -L --max-redirs 0 $D$u)"
-          done
-          curl -s $D/preview/home-test -o page.html
-          echo "title: $(grep -o '<title>[^<]*' page.html | head -1)"
-          echo "robots: $(grep -o '<meta name="robots"[^>]*' page.html | head -1)"
-          echo "header: $(curl -sI $D/preview/home-test | grep -i x-robots-tag)"
-          CSS=$(grep -o '/preview/_next/static/[^"]*\.css' page.html | head -1)
-          echo "css $CSS → $(curl -s -o /dev/null -w '%{http_code}' $D$CSS)"
-          JS=$(grep -o '/preview/_next/static/[^"]*\.js' page.html | head -1)
-          echo "js → $(curl -s -o /dev/null -w '%{http_code}' $D$JS)"
+          A=https://admin.xn--lj2b54b90v2gn.kr
+          C=https://xn--lj2b54b90v2gn.com
+          code() { curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$@"; }
+          echo "site /                 → $(code $D/)"
+          echo "web /admin (잠금 확인)  → $(code $D/admin)"
+          echo "web /admin/brands      → $(code $D/admin/brands)"
+          echo "web GET /api/brands    → $(code $D/api/brands)"
+          echo "web GET /api/upload    → $(code $D/api/upload)  (405=업로드 기능 존재)"
+          echo "web GET /api/consultation → $(code $D/api/consultation)  (404=상담 접수 주소 없음)"
+          echo "admin login page       → $(code $A/admin/login)"
+          echo "admin GET /api/consultation → $(code $A/api/consultation)"
+          echo ".com /                 → $(code $C/)"
+          echo ".com cert/redirect: $(curl -sI --max-time 15 $C/ 2>&1 | head -1)"
+          echo "www.kr                 → $(code https://www.xn--lj2b54b90v2gn.kr/)"
+          echo "kr cert expiry: $(echo | openssl s_client -connect xn--lj2b54b90v2gn.kr:443 -servername xn--lj2b54b90v2gn.kr 2>/dev/null | openssl x509 -noout -enddate)"
+          echo "admin/brands page title: $(curl -s --max-time 15 $D/admin/brands | grep -o '<title>[^<]*' | head -1)"
+          echo "admin page has brand list fetch: $(curl -s --max-time 15 $D/admin | grep -c '마이프랜 어드민')"
